@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beba Água</title>
-<meta name="description" content="Registre a água que você bebe e veja os benefícios no seu corpo.">
+<meta name="description" content="Registre a água que você bebe, receba avisos na hora certa e veja os benefícios no seu corpo.">
 <meta name="theme-color" content="#0b84d8">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
@@ -32,7 +32,7 @@ body{
 header{display:flex;justify-content:space-between;align-items:center;gap:12px}
 h1{font-size:1.3rem;margin:0}
 .sub{color:var(--muted);font-size:.85rem;text-transform:capitalize}
-.numbers .sub{text-transform:none}
+.numbers .sub,.pace{text-transform:none}
 .icon-btn{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:8px 12px;font-size:.9rem;cursor:pointer}
 
 .stage{position:relative;margin:10px auto 0;width:min(56vw,220px)}
@@ -55,7 +55,17 @@ h1{font-size:1.3rem;margin:0}
 .bar{height:10px;background:var(--line);border-radius:99px;margin:10px auto 6px;max-width:320px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--water1),var(--water2));border-radius:99px;transition:width 1.2s ease}
 
-.adds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.status{margin-top:16px;border-radius:16px;padding:14px 16px;border:1px solid var(--line);border-left-width:5px;background:var(--card)}
+.status .st-title{font-weight:800;font-size:1.05rem;margin-bottom:4px}
+.status .st-text{font-size:.92rem;line-height:1.45}
+.status[data-s="ok"]{border-left-color:#1d9bf0;background:rgba(29,155,240,.10)}
+.status[data-s="due"]{border-left-color:#f5a524;background:rgba(245,165,36,.16)}
+.status[data-s="late"]{border-left-color:#e5484d;background:rgba(229,72,77,.15)}
+.status[data-s="over"]{border-left-color:#e5484d;background:rgba(229,72,77,.15)}
+.status[data-s="rest"],.status[data-s="setup"]{border-left-color:#8a9aa6;background:rgba(128,140,150,.12)}
+.pace{margin-top:8px;text-align:center;font-size:.85rem;color:var(--muted);min-height:1.2em}
+
+.adds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .add{border:0;border-radius:16px;padding:14px 4px;font-size:1rem;font-weight:700;color:#fff;background:linear-gradient(180deg,var(--water1),var(--water2));cursor:pointer}
 .add.alt{background:var(--card);color:var(--accent);border:1px solid var(--line)}
 .add:active{transform:scale(.96)}
@@ -65,6 +75,7 @@ h1{font-size:1.3rem;margin:0}
 .kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
 .card h2{font-size:1.15rem;margin:0 0 6px}
 .latest{margin:0;line-height:1.45}
+.hint{margin:10px 0 0;font-size:.85rem;color:var(--muted);line-height:1.4}
 .list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .list li{line-height:1.4;font-size:.95rem;padding-left:10px;border-left:3px solid var(--water1)}
 .list li b{display:block;font-size:.75rem;color:var(--accent);margin-bottom:2px}
@@ -86,10 +97,12 @@ footer{margin-top:22px;text-align:center}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
 .overlay.open{display:flex}
-.modal{background:var(--card);border-radius:20px;padding:20px;width:100%;max-width:380px}
+.modal{background:var(--card);border-radius:20px;padding:20px;width:100%;max-width:380px;max-height:92vh;overflow:auto}
 .modal h3{margin:0 0 8px;font-size:1.15rem}
 .modal p{margin:0 0 12px;color:var(--muted);font-size:.9rem;line-height:1.45}
-.modal input{width:100%;padding:12px;font-size:1.1rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+.modal input,.modal select{width:100%;padding:12px;font-size:1.05rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+.lbl{display:block;font-size:.8rem;color:var(--muted);margin:12px 0 4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .err{color:#d93025;font-size:.85rem;min-height:1.2em;margin-top:6px}
 .row{display:flex;gap:8px;margin-top:12px}
 .btn{flex:1;border:0;border-radius:12px;padding:12px;font-size:1rem;font-weight:700;cursor:pointer;background:var(--line);color:var(--text)}
@@ -104,7 +117,7 @@ footer{margin-top:22px;text-align:center}
       <h1>💧 Beba Água</h1>
       <div class="sub" id="dateTxt"></div>
     </div>
-    <button class="icon-btn" id="btnWeight" type="button">⚖️ <span id="wLabel">Peso</span></button>
+    <button class="icon-btn" id="btnWeight" type="button" aria-label="Ajustes">⚙️ <span id="wLabel">Ajustes</span></button>
   </header>
 
   <div class="stage" id="stage">
@@ -161,6 +174,12 @@ footer{margin-top:22px;text-align:center}
     <div class="sub" id="left"></div>
   </div>
 
+  <div class="status" id="statusBox" data-s="setup" role="status" aria-live="polite">
+    <div class="st-title" id="stTitle"></div>
+    <div class="st-text" id="stText"></div>
+  </div>
+  <div class="pace" id="paceTxt"></div>
+
   <div class="adds">
     <button class="add" type="button" data-ml="200">+200</button>
     <button class="add" type="button" data-ml="300">+300</button>
@@ -168,11 +187,13 @@ footer{margin-top:22px;text-align:center}
     <button class="add alt" type="button" id="btnOther">Outro</button>
   </div>
   <button class="link" id="btnUndo" type="button">↩ Desfazer último</button>
+  <button class="link" id="btnNotify" type="button" style="display:none">🔔 Ativar avisos neste aparelho</button>
 
   <section class="card">
     <div class="kicker">Seu corpo agora</div>
     <h2 id="headline"></h2>
     <p class="latest" id="latest"></p>
+    <p class="hint" id="usedHint"></p>
   </section>
 
   <section class="card">
@@ -187,7 +208,7 @@ footer{margin-top:22px;text-align:center}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico.</p>
+    <p class="note">Gratuito e sem anúncios. Os avisos aparecem enquanto o app estiver aberto ou em segundo plano. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico.</p>
   </footer>
 </div>
 
@@ -195,9 +216,26 @@ footer{margin-top:22px;text-align:center}
 
 <div class="overlay" id="mWeight">
   <div class="modal">
-    <h3>Qual é o seu peso?</h3>
-    <p>Calculamos sua meta diária em cerca de 37 ml de água por kg.</p>
+    <h3 id="setTitle">Ajustes</h3>
+    <p>Calculamos sua meta (cerca de 37 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme.</p>
+    <label class="lbl" for="weightInput">Seu peso (kg)</label>
     <input id="weightInput" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Ex.: 80">
+    <div class="two">
+      <div>
+        <label class="lbl" for="wakeInput">Acordo às</label>
+        <input id="wakeInput" type="time" value="07:00">
+      </div>
+      <div>
+        <label class="lbl" for="sleepInput">Durmo às</label>
+        <input id="sleepInput" type="time" value="22:00">
+      </div>
+    </div>
+    <label class="lbl" for="intervalInput">Me avisar para beber a cada</label>
+    <select id="intervalInput">
+      <option value="60">1 hora</option>
+      <option value="90">1 hora e 30 min</option>
+      <option value="120">2 horas</option>
+    </select>
     <div class="err" id="weightErr"></div>
     <div class="row">
       <button class="btn" id="wCancel" type="button">Cancelar</button>
@@ -244,7 +282,9 @@ footer{margin-top:22px;text-align:center}
    link:   opcional, um link de doação (ex.: Apoia.se, Ko-fi, Mercado Pago). Deixe '' se não tiver. */
 var DONATE = { pixKey: 'SUA-CHAVE-PIX-AQUI', link: '' };
 
-var ML_PER_KG = 37.5; // 80 kg -> 3000 ml
+var ML_PER_KG = 37.5;          // 80 kg -> 3000 ml
+var MAX_PER_HOUR = 1000;       // acima disso em 60 min, o app avisa que é exagero
+var MS_MIN = 60000;
 
 var MILESTONES = [
   {ml:250,  t:'💧 Primeiros goles: seu corpo começa a se hidratar e a levar nutrientes para as células.'},
@@ -267,17 +307,29 @@ function load(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d
 function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 
 var weight = load('weight', null);
+var cfg = load('cfg', null) || {wake: 420, sleep: 1320, interval: 90};
 var log = load('log', {});
+/* registros antigos eram só números; agora cada um tem ml e horário */
+Object.keys(log).forEach(function(k){
+  log[k] = (log[k] || []).map(function(e){ return (typeof e === 'number') ? {ml: e, t: null} : e; });
+});
 
-function key(d){
-  d = d || new Date();
-  var z = function(n){ return String(n).padStart(2, '0'); };
-  return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate());
-}
-function sum(a){ return (a || []).reduce(function(x, y){ return x + y; }, 0); }
+function pad(n){ return String(n).padStart(2, '0'); }
+function key(d){ d = d || new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function sum(a){ return (a || []).reduce(function(x, e){ return x + e.ml; }, 0); }
 function totalOf(k){ return sum(log[k]); }
 function goal(){ return weight ? Math.max(1000, Math.round(weight * ML_PER_KG / 50) * 50) : 2000; }
 function fmt(n){ return Number(n).toLocaleString('pt-BR'); }
+function toMin(s){ var p = String(s).split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
+function toHHMM(m){ return pad(Math.floor(m / 60)) + ':' + pad(m % 60); }
+function at(min){ var d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime() + min * MS_MIN; }
+function hhmm(ts){ return new Date(ts).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}); }
+function dur(ms){
+  var m = Math.max(1, Math.round(ms / MS_MIN));
+  if(m < 60) return m + ' min';
+  var h = Math.floor(m / 60), r = m % 60;
+  return h + 'h' + (r ? pad(r) : '');
+}
 
 function persist(){
   var cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90);
@@ -286,42 +338,133 @@ function persist(){
   save('log', log);
 }
 
-function items(){
-  var arr = MILESTONES.slice();
-  if(weight) arr.push({ml: goal(), t: GOAL_MSG, goal: true});
+/* ---------- ritmo e hidratação ----------
+   A meta é dividida entre a hora de acordar e a de dormir. Cada copo "cobre" um tempo
+   proporcional ao volume (um copo padrão cobre o intervalo escolhido). Beber muito de uma vez
+   não estica a cobertura além de 2 intervalos: o resto não conta para os benefícios. */
+function analyze(k){
+  var awakeMin = Math.max(60, cfg.sleep - cfg.wake);
+  var perDrink = goal() * cfg.interval / awakeMin;           // ml que cobrem um intervalo
+  var rate = perDrink / (cfg.interval * MS_MIN);             // ml por ms
+  var maxAhead = 2 * cfg.interval * MS_MIN;
+  var cov = null, used = 0;
+  var list = (log[k] || []).filter(function(e){ return e.t; }).sort(function(a, b){ return a.t - b.t; });
+  list.forEach(function(e){
+    var base = (cov !== null && cov > e.t) ? cov : e.t;
+    var room = Math.max(0, e.t + maxAhead - base);
+    var d = Math.min(e.ml / rate, room);
+    used += d * rate;
+    cov = base + d;
+  });
+  (log[k] || []).forEach(function(e){ if(!e.t) used += e.ml; });
+  return {cov: cov, used: used};
+}
+function lastDrink(k){
+  var l = (log[k] || []).filter(function(e){ return e.t; });
+  return l.length ? l[l.length - 1].t : null;
+}
+
+function getStatus(){
+  if(!weight) return {s: 'setup'};
+  var now = Date.now(), k = key(), g = goal(), t = totalOf(k);
+  var wakeTs = at(cfg.wake), sleepTs = at(cfg.sleep);
+  var hour = 0;
+  (log[k] || []).forEach(function(e){ if(e.t && e.t >= now - 60 * MS_MIN && e.t <= now) hour += e.ml; });
+  if(hour > MAX_PER_HOUR) return {s: 'over', kind: 'hour', hour: hour};
+  if(t >= g * 1.5) return {s: 'over', kind: 'day', total: t};
+  if(now < wakeTs || now > sleepTs) return {s: 'rest'};
+  var cov = analyze(k).cov;
+  if(cov === null || cov < wakeTs) cov = wakeTs;
+  if(now < cov) return {s: 'ok', until: cov};
+  if(now - cov >= cfg.interval * 30000) return {s: 'late', since: cov};
+  return {s: 'due', since: cov};
+}
+
+function renderStatus(st){
+  $('statusBox').setAttribute('data-s', st.s);
+  var now = Date.now(), title = '', text = '', ld;
+  switch(st.s){
+    case 'setup':
+      title = 'Vamos configurar'; text = 'Informe seu peso e seus horários para ativar a meta e os avisos.'; break;
+    case 'ok':
+      title = '💧 Hidratado';
+      text = 'Próximo copo às ' + hhmm(st.until) + ' (em ' + dur(st.until - now) + ').'; break;
+    case 'due':
+      title = '⏰ Hora de beber água';
+      text = 'Já passou o tempo do seu último copo. Beba um copo agora e mantenha o ritmo.'; break;
+    case 'late':
+      ld = lastDrink(key());
+      title = '⚠️ Muito tempo sem beber';
+      text = 'Seu corpo pode estar ficando desidratado. Beba um copo de água agora.' +
+             (ld ? ' Seu último registro foi às ' + hhmm(ld) + '.' : ' Você ainda não registrou nada hoje.'); break;
+    case 'over':
+      if(st.kind === 'hour'){
+        title = '🛑 Calma, você está exagerando';
+        text = 'Você bebeu ' + fmt(st.hour) + ' ml na última hora. Beber muito de uma vez não hidrata mais e, em excesso, pode fazer mal. Espere um pouco antes do próximo copo.';
+      } else {
+        title = '🛑 Você passou bem da meta';
+        text = 'Hoje você já bebeu ' + fmt(st.total) + ' ml, bem acima da meta de ' + fmt(goal()) + ' ml. Pode parar por aqui.';
+      }
+      break;
+    case 'rest':
+      title = '😴 Fora do horário ativo';
+      text = 'Seus horários são das ' + toHHMM(cfg.wake) + ' às ' + toHHMM(cfg.sleep) + '. Os avisos voltam quando você acordar.'; break;
+  }
+  $('stTitle').textContent = title;
+  $('stText').textContent = text;
+}
+
+function renderPace(){
+  var el = $('paceTxt');
+  if(!weight){ el.textContent = ''; return; }
+  var now = Date.now(), w = at(cfg.wake), s = at(cfg.sleep);
+  if(now < w || now > s){ el.textContent = ''; return; }
+  var g = goal(), t = totalOf(key());
+  var expected = Math.round(g * (now - w) / (s - w) / 50) * 50;
+  var diff = Math.round((t - expected) / 50) * 50;
+  if(Math.abs(diff) < 150) el.textContent = 'Você está no ritmo ✅ (o ideal até agora é ' + fmt(expected) + ' ml)';
+  else if(diff > 0) el.textContent = 'Você está adiantado: ' + fmt(diff) + ' ml acima do ritmo de agora';
+  else el.textContent = 'Você está atrasado: faltam ' + fmt(-diff) + ' ml para o ritmo de agora. Vá bebendo aos poucos.';
+}
+
+function reachedItems(used, t){
+  var arr = MILESTONES.filter(function(x){ return x.ml <= used; });
+  if(weight && t >= goal()) arr.push({ml: goal(), t: GOAL_MSG, goal: true});
   return arr.sort(function(a, b){ return a.ml - b.ml || (a.goal ? 1 : 0) - (b.goal ? 1 : 0); });
 }
-function reached(t){ return items().filter(function(x){ return x.ml <= t; }); }
 
-function headline(pct, t){
+function headline(pct, t, g){
   if(!weight) return 'Vamos começar? Informe seu peso.';
+  if(t >= g) return 'Meta batida! Corpo hidratado 🎉';
   if(t === 0) return 'Seu corpo está pedindo água';
   if(pct < 1/3) return 'Seu corpo começou a se hidratar';
   if(pct < 2/3) return 'Hidratação a caminho: mais energia e foco';
-  if(pct < 1) return 'Quase lá! Seu corpo está chegando na meta';
-  return 'Meta batida! Corpo hidratado 🎉';
+  return 'Quase lá! Seu corpo está chegando na meta';
 }
 
+var lastState = null;
+
 function render(){
-  var g = goal(), k = key(), t = totalOf(k), pct = g ? t / g : 0;
+  var g = goal(), k = key(), t = totalOf(k), a = analyze(k), used = Math.min(a.used, t);
+  var pct = g ? t / g : 0;
   $('water').style.transform = 'translateY(' + (410 - Math.min(pct, 1) * 400) + 'px)';
   $('total').textContent = fmt(t);
   $('goalTxt').textContent = weight ? ('de ' + fmt(g) + ' ml · ' + Math.round(pct * 100) + '%') : 'Informe seu peso para calcular a meta';
   $('bar').style.width = (Math.min(pct, 1) * 100) + '%';
   $('left').textContent = !weight ? '' : (t < g ? 'Faltam ' + fmt(g - t) + ' ml' : 'Meta atingida! 🎉');
-  $('wLabel').textContent = weight ? (String(weight).replace('.', ',') + ' kg') : 'Peso';
-  $('headline').textContent = headline(pct, t);
+  $('wLabel').textContent = weight ? (String(weight).replace('.', ',') + ' kg') : 'Ajustes';
+  $('headline').textContent = headline(used / g, t, g);
 
-  var got = reached(t);
-  var latest = got.length ? got[got.length - 1].t : 'Beba o primeiro copo e veja o que acontece no seu corpo. 💧';
-  if(weight && t >= g * 1.5){
-    latest = 'Você já passou bem da meta de hoje. Pode parar por aqui: mais água não traz mais benefícios e, em excesso, pode fazer mal.';
-  }
-  $('latest').textContent = latest;
+  var got = reachedItems(used, t);
+  $('latest').textContent = got.length ? got[got.length - 1].t : 'Beba o primeiro copo e veja o que acontece no seu corpo. 💧';
+  var lost = t - used;
+  $('usedHint').textContent = (weight && lost >= 150)
+    ? '💡 Cerca de ' + fmt(Math.round(lost / 50) * 50) + ' ml foram bebidos rápido demais e não contam para os benefícios. O corpo aproveita melhor a água bebida aos poucos, ao longo do dia.'
+    : '';
 
   var ul = $('unlocked');
   if(!got.length){
-    ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Nada ainda. Cada gole desbloqueia um benefício.</li>';
+    ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Nada ainda. Beba aos poucos ao longo do dia para desbloquear os benefícios.</li>';
   } else {
     ul.innerHTML = got.slice().reverse().map(function(x){
       return '<li><b>' + fmt(x.ml) + ' ml</b>' + x.t + '</li>';
@@ -338,17 +481,79 @@ function render(){
           d.toLocaleDateString('pt-BR', {weekday: 'narrow'}) + '</span></div>';
   }
   $('week').innerHTML = wk;
+
+  updateNotifyBtn();
+  tick(false);
 }
 
+/* ---------- avisos ---------- */
 var toastTimer;
 function toast(msg){
   var el = $('toast');
   el.textContent = msg;
   el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 4200);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 5000);
+}
+function beep(){
+  try{
+    var A = window.AudioContext || window.webkitAudioContext;
+    if(!A) return;
+    var ctx = new A(), o = ctx.createOscillator(), gn = ctx.createGain();
+    o.connect(gn); gn.connect(ctx.destination);
+    o.type = 'sine'; o.frequency.value = 880;
+    gn.gain.setValueAtTime(0.001, ctx.currentTime);
+    gn.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.05);
+    gn.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    o.start(); o.stop(ctx.currentTime + 0.55);
+    setTimeout(function(){ try{ ctx.close(); }catch(e){} }, 900);
+  }catch(e){}
+}
+function buzz(){ if(navigator.vibrate){ try{ navigator.vibrate([200, 100, 200]); }catch(e){} } }
+function notify(title, body){
+  if(!('Notification' in window) || Notification.permission !== 'granted') return;
+  try{
+    var opts = {body: body, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'beba-agua'};
+    if(navigator.serviceWorker && navigator.serviceWorker.getRegistration){
+      navigator.serviceWorker.getRegistration().then(function(r){
+        if(r && r.showNotification) r.showNotification(title, opts); else new Notification(title, opts);
+      });
+    } else { new Notification(title, opts); }
+  }catch(e){}
+}
+function alertUser(title, body){
+  toast(title + ' ' + body);
+  if(!document.hidden) beep();
+  buzz();
+  notify(title, body);
+}
+function updateNotifyBtn(){
+  var b = $('btnNotify');
+  b.style.display = (weight && ('Notification' in window) && Notification.permission === 'default') ? '' : 'none';
+}
+$('btnNotify').onclick = function(){
+  if(!('Notification' in window)) return;
+  var p = Notification.requestPermission();
+  if(p && p.then){
+    p.then(function(r){
+      updateNotifyBtn();
+      toast(r === 'granted' ? 'Avisos ativados 🔔' : 'Avisos não ativados. Você continua vendo os alertas dentro do app.');
+    });
+  }
+};
+
+function tick(fire){
+  var st = getStatus();
+  renderStatus(st);
+  renderPace();
+  if(fire && lastState !== null && st.s !== lastState){
+    if(st.s === 'due') alertUser('⏰ Hora de beber água!', 'Já passou o tempo do seu último copo.');
+    else if(st.s === 'late') alertUser('⚠️ Muito tempo sem beber!', 'Seu corpo pode estar ficando desidratado. Beba um copo agora.');
+  }
+  lastState = st.s;
 }
 
+/* ---------- efeitos ---------- */
 function effects(ml){
   var stage = $('stage');
   stage.classList.remove('pulse'); void stage.offsetWidth; stage.classList.add('pulse');
@@ -416,51 +621,70 @@ function celebrate(){
   }
 }
 
+/* ---------- registrar água ---------- */
 function add(ml){
-  if(!weight){ openWeight(true); return; }
-  var k = key(), before = totalOf(k), g = goal();
-  (log[k] = log[k] || []).push(ml);
+  if(!weight){ openSettings(true); return; }
+  var k = key(), g = goal(), tb = totalOf(k), ub = analyze(k).used;
+  (log[k] = log[k] || []).push({ml: ml, t: Date.now()});
   persist();
-  var after = totalOf(k);
+  var ta = totalOf(k), ua = analyze(k).used;
   render();
   effects(ml);
-  if(before < g && after >= g){
+  var st = getStatus();
+  if(st.s === 'over'){
+    buzz();
+    if(!document.hidden) beep();
+    toast(st.kind === 'hour'
+      ? '🛑 Calma! Você bebeu ' + fmt(st.hour) + ' ml na última hora. Espere um pouco antes do próximo copo.'
+      : '🛑 Você já passou bem da meta de hoje. Pode parar por aqui.');
+    return;
+  }
+  if(tb < g && ta >= g){
     celebrate();
     toast(GOAL_MSG);
     return;
   }
-  var fresh = items().filter(function(x){ return x.ml > before && x.ml <= after && !x.goal; });
+  var fresh = MILESTONES.filter(function(x){ return x.ml > ub && x.ml <= ua; });
   toast(fresh.length ? fresh[fresh.length - 1].t : '+' + fmt(ml) + ' ml registrados 💧');
 }
 
-/* ----- modais ----- */
+/* ---------- janelas ---------- */
 function open(id){ $(id).classList.add('open'); }
 function close(id){ $(id).classList.remove('open'); }
 var weightLocked = false;
 
-function openWeight(first){
+function openSettings(first){
   weightLocked = !!first && !weight;
+  $('setTitle').textContent = weightLocked ? 'Vamos configurar' : 'Ajustes';
   $('wCancel').style.display = weightLocked ? 'none' : '';
   $('weightInput').value = weight || '';
+  $('wakeInput').value = toHHMM(cfg.wake);
+  $('sleepInput').value = toHHMM(cfg.sleep);
+  $('intervalInput').value = String(cfg.interval);
   $('weightErr').textContent = '';
   open('mWeight');
   setTimeout(function(){ $('weightInput').focus(); }, 50);
 }
-$('btnWeight').onclick = function(){ openWeight(false); };
+$('btnWeight').onclick = function(){ openSettings(false); };
 $('wCancel').onclick = function(){ close('mWeight'); };
 $('wSave').onclick = function(){
   var v = parseFloat(String($('weightInput').value).replace(',', '.'));
   if(!(v >= 20 && v <= 300)){ $('weightErr').textContent = 'Digite um peso entre 20 e 300 kg.'; return; }
+  var w = toMin($('wakeInput').value), s = toMin($('sleepInput').value);
+  if(isNaN(w) || isNaN(s)){ $('weightErr').textContent = 'Informe os horários de acordar e dormir.'; return; }
+  if(s - w < 360){ $('weightErr').textContent = 'Precisa haver pelo menos 6 horas entre acordar e dormir.'; return; }
   weight = Math.round(v * 10) / 10;
+  cfg = {wake: w, sleep: s, interval: parseInt($('intervalInput').value, 10) || 90};
   save('weight', weight);
+  save('cfg', cfg);
   weightLocked = false;
   close('mWeight');
   render();
-  toast('Sua meta diária é ' + fmt(goal()) + ' ml 💧');
+  toast('Meta de hoje: ' + fmt(goal()) + ' ml, com um copo a cada ' + dur(cfg.interval * MS_MIN) + ' 💧');
 };
 
 $('btnOther').onclick = function(){
-  if(!weight){ openWeight(true); return; }
+  if(!weight){ openSettings(true); return; }
   $('otherInput').value = ''; $('otherErr').textContent = '';
   open('mOther');
   setTimeout(function(){ $('otherInput').focus(); }, 50);
@@ -505,18 +729,23 @@ $('btnUndo').onclick = function(){
     var r = log[k].pop();
     if(!log[k].length) delete log[k];
     persist(); render();
-    toast('Removido: ' + fmt(r) + ' ml');
+    toast('Removido: ' + fmt(r.ml) + ' ml');
   }
 };
 
+function setDate(){
+  $('dateTxt').textContent = new Date().toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'long'});
+}
 document.addEventListener('visibilitychange', function(){
-  if(!document.hidden){ $('dateTxt').textContent = new Date().toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'long'}); render(); }
+  if(!document.hidden){ setDate(); render(); }
 });
 
-/* ----- início ----- */
-$('dateTxt').textContent = new Date().toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'long'});
+/* ---------- início ---------- */
+setDate();
 requestAnimationFrame(function(){ requestAnimationFrame(render); });
-if(!weight) setTimeout(function(){ openWeight(true); }, 400);
+tick(false);
+setInterval(function(){ tick(true); }, 30000);
+if(!weight) setTimeout(function(){ openSettings(true); }, 400);
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
