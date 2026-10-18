@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beba Água</title>
+<meta name="description" content="Registre a água que você bebe e veja os benefícios no seu corpo.">
+<meta name="theme-color" content="#0b84d8">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Beba Água">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+:root{
+  --bg:#f2f8fd; --card:#ffffff; --text:#0f2a3d; --muted:#5b7487;
+  --accent:#0b84d8; --line:#d6e6f2; --water1:#4fc3f7; --water2:#0b84d8; --shape:#e3effa;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#14293a; --accent:#4fb3f5; }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+}
+.app{max-width:480px;margin:0 auto;padding:16px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+h1{font-size:1.3rem;margin:0}
+.sub{color:var(--muted);font-size:.85rem;text-transform:capitalize}
+.numbers .sub{text-transform:none}
+.icon-btn{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:8px 12px;font-size:.9rem;cursor:pointer}
+
+.stage{position:relative;margin:10px auto 0;width:min(56vw,220px)}
+.stage svg{width:100%;height:auto;display:block;overflow:visible}
+.stage.pulse svg{animation:pulse .6s ease}
+@keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.05)}100%{transform:scale(1)}}
+#water{transition:transform 1.8s cubic-bezier(.25,.8,.25,1)}
+.wave{animation:slide 4s linear infinite}
+.wave.b{animation-duration:6s;animation-direction:reverse}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-100px)}}
+.drop{fill:var(--water1)}
+.ripple{fill:none;stroke:var(--water1);stroke-width:2;transform-box:fill-box;transform-origin:center}
+.float{position:absolute;left:50%;top:8%;font-weight:800;font-size:1.2rem;color:var(--accent);pointer-events:none;animation:floatUp 1.5s ease-out forwards}
+@keyframes floatUp{0%{opacity:0;transform:translate(-50%,12px)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-46px)}}
+.particle{position:absolute;left:50%;top:45%;font-size:1.3rem;pointer-events:none}
+
+.numbers{text-align:center;margin-top:6px}
+.big{font-size:2.6rem;font-weight:800;line-height:1.1}
+.big small{font-size:1rem;font-weight:600;color:var(--muted)}
+.bar{height:10px;background:var(--line);border-radius:99px;margin:10px auto 6px;max-width:320px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--water1),var(--water2));border-radius:99px;transition:width 1.2s ease}
+
+.adds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.add{border:0;border-radius:16px;padding:14px 4px;font-size:1rem;font-weight:700;color:#fff;background:linear-gradient(180deg,var(--water1),var(--water2));cursor:pointer}
+.add.alt{background:var(--card);color:var(--accent);border:1px solid var(--line)}
+.add:active{transform:scale(.96)}
+.link{display:block;margin:10px auto 0;background:none;border:0;color:var(--muted);font-size:.9rem;cursor:pointer;padding:6px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:14px}
+.kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+.card h2{font-size:1.15rem;margin:0 0 6px}
+.latest{margin:0;line-height:1.45}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.list li{line-height:1.4;font-size:.95rem;padding-left:10px;border-left:3px solid var(--water1)}
+.list li b{display:block;font-size:.75rem;color:var(--accent);margin-bottom:2px}
+.empty{color:var(--muted);font-size:.9rem}
+
+.week{display:flex;align-items:flex-end;gap:8px;height:110px}
+.week .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
+.week .b{width:100%;max-width:30px;border-radius:8px 8px 4px 4px;background:var(--line);min-height:4px}
+.week .col.hit .b{background:linear-gradient(180deg,var(--water1),var(--water2))}
+.week .col.part .b{background:var(--water1);opacity:.55}
+.week span{font-size:.75rem;color:var(--muted);text-transform:uppercase}
+
+footer{margin-top:22px;text-align:center}
+.donate{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:14px;padding:12px 18px;font-size:.95rem;font-weight:600;cursor:pointer}
+.note{color:var(--muted);font-size:.75rem;line-height:1.5;margin:14px 6px 0}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#0f2a3d;color:#fff;padding:12px 16px;border-radius:14px;max-width:min(92vw,420px);font-size:.9rem;line-height:1.4;opacity:0;pointer-events:none;transition:.3s;z-index:20}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.overlay.open{display:flex}
+.modal{background:var(--card);border-radius:20px;padding:20px;width:100%;max-width:380px}
+.modal h3{margin:0 0 8px;font-size:1.15rem}
+.modal p{margin:0 0 12px;color:var(--muted);font-size:.9rem;line-height:1.45}
+.modal input{width:100%;padding:12px;font-size:1.1rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+.err{color:#d93025;font-size:.85rem;min-height:1.2em;margin-top:6px}
+.row{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;border:0;border-radius:12px;padding:12px;font-size:1rem;font-weight:700;cursor:pointer;background:var(--line);color:var(--text)}
+.btn.primary{background:linear-gradient(180deg,var(--water1),var(--water2));color:#fff}
+.pix{word-break:break-all;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <h1>💧 Beba Água</h1>
+      <div class="sub" id="dateTxt"></div>
+    </div>
+    <button class="icon-btn" id="btnWeight" type="button">⚖️ <span id="wLabel">Peso</span></button>
+  </header>
+
+  <div class="stage" id="stage">
+    <svg viewBox="0 0 200 400" role="img" aria-label="Corpo se enchendo de água">
+      <defs>
+        <clipPath id="clip">
+          <circle cx="100" cy="46" r="30"/>
+          <rect x="62" y="82" width="76" height="150" rx="34"/>
+          <rect x="30" y="92" width="26" height="130" rx="13"/>
+          <rect x="144" y="92" width="26" height="130" rx="13"/>
+          <rect x="66" y="214" width="32" height="170" rx="16"/>
+          <rect x="102" y="214" width="32" height="170" rx="16"/>
+        </clipPath>
+        <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style="stop-color:var(--water1)"/>
+          <stop offset="1" style="stop-color:var(--water2)"/>
+        </linearGradient>
+      </defs>
+      <g fill="var(--shape)">
+        <circle cx="100" cy="46" r="30"/>
+        <rect x="62" y="82" width="76" height="150" rx="34"/>
+        <rect x="30" y="92" width="26" height="130" rx="13"/>
+        <rect x="144" y="92" width="26" height="130" rx="13"/>
+        <rect x="66" y="214" width="32" height="170" rx="16"/>
+        <rect x="102" y="214" width="32" height="170" rx="16"/>
+      </g>
+      <g clip-path="url(#clip)">
+        <g id="water" style="transform:translateY(410px)">
+          <rect x="-100" y="2" width="500" height="420" fill="url(#wg)"/>
+          <g class="wave b" opacity=".55">
+            <path fill="var(--water1)" d="M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z"/>
+          </g>
+          <g class="wave">
+            <path fill="url(#wg)" d="M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z"/>
+          </g>
+        </g>
+      </g>
+      <g fill="none" stroke="var(--water2)" stroke-opacity=".35" stroke-width="2">
+        <circle cx="100" cy="46" r="30"/>
+        <rect x="62" y="82" width="76" height="150" rx="34"/>
+        <rect x="30" y="92" width="26" height="130" rx="13"/>
+        <rect x="144" y="92" width="26" height="130" rx="13"/>
+        <rect x="66" y="214" width="32" height="170" rx="16"/>
+        <rect x="102" y="214" width="32" height="170" rx="16"/>
+      </g>
+      <g id="drops"></g>
+    </svg>
+  </div>
+
+  <div class="numbers">
+    <div class="big"><span id="total">0</span><small> ml</small></div>
+    <div class="sub" id="goalTxt"></div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="sub" id="left"></div>
+  </div>
+
+  <div class="adds">
+    <button class="add" type="button" data-ml="200">+200</button>
+    <button class="add" type="button" data-ml="300">+300</button>
+    <button class="add" type="button" data-ml="500">+500</button>
+    <button class="add alt" type="button" id="btnOther">Outro</button>
+  </div>
+  <button class="link" id="btnUndo" type="button">↩ Desfazer último</button>
+
+  <section class="card">
+    <div class="kicker">Seu corpo agora</div>
+    <h2 id="headline"></h2>
+    <p class="latest" id="latest"></p>
+  </section>
+
+  <section class="card">
+    <div class="kicker">Benefícios desbloqueados hoje</div>
+    <ul class="list" id="unlocked"></ul>
+  </section>
+
+  <section class="card">
+    <div class="kicker">Últimos 7 dias</div>
+    <div class="week" id="week"></div>
+  </section>
+
+  <footer>
+    <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
+    <p class="note">Gratuito e sem anúncios. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico.</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="overlay" id="mWeight">
+  <div class="modal">
+    <h3>Qual é o seu peso?</h3>
+    <p>Calculamos sua meta diária em cerca de 37 ml de água por kg.</p>
+    <input id="weightInput" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Ex.: 80">
+    <div class="err" id="weightErr"></div>
+    <div class="row">
+      <button class="btn" id="wCancel" type="button">Cancelar</button>
+      <button class="btn primary" id="wSave" type="button">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="mOther">
+  <div class="modal">
+    <h3>Quanto você bebeu?</h3>
+    <input id="otherInput" type="number" inputmode="numeric" min="10" max="2000" step="10" placeholder="Em ml, ex.: 350">
+    <div class="err" id="otherErr"></div>
+    <div class="row">
+      <button class="btn" id="oCancel" type="button">Cancelar</button>
+      <button class="btn primary" id="oSave" type="button">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="mDonate">
+  <div class="modal">
+    <h3>Apoie o Beba Água 💙</h3>
+    <p>O app é gratuito e não tem propaganda. Se ele te ajuda a beber mais água, uma doação ajuda a melhorá-lo.</p>
+    <div class="pix" id="pixKey"></div>
+    <div class="row">
+      <button class="btn primary" id="copyPix" type="button">Copiar chave Pix</button>
+    </div>
+    <div class="row" id="linkRow" style="display:none">
+      <a class="btn" id="donateLink" href="#" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">Abrir link de doação</a>
+    </div>
+    <div class="row">
+      <button class="btn" id="dClose" type="button">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ====== CONFIGURE AQUI SUA DOAÇÃO ======
+   pixKey: sua chave Pix (e-mail, telefone, CPF ou chave aleatória).
+   link:   opcional, um link de doação (ex.: Apoia.se, Ko-fi, Mercado Pago). Deixe '' se não tiver. */
+var DONATE = { pixKey: 'SUA-CHAVE-PIX-AQUI', link: '' };
+
+var ML_PER_KG = 37.5; // 80 kg -> 3000 ml
+
+var MILESTONES = [
+  {ml:250,  t:'💧 Primeiros goles: seu corpo começa a se hidratar e a levar nutrientes para as células.'},
+  {ml:500,  t:'🧠 Seu cérebro agradece: boa hidratação ajuda na concentração e no humor.'},
+  {ml:750,  t:'🌡️ A água ajuda a regular a temperatura do corpo e a manter as articulações lubrificadas.'},
+  {ml:1000, t:'⚡ 1 litro! Seu corpo está hidratado e com mais disposição — até uma leve desidratação pode causar cansaço.'},
+  {ml:1250, t:'🌿 Seu intestino agradece: água ajuda na digestão e a evitar a prisão de ventre.'},
+  {ml:1500, t:'🫘 Seus rins agradecem: beber bastante água ajuda a filtrar o sangue e reduz o risco de pedras nos rins.'},
+  {ml:1750, t:'💪 Seus músculos ficam mais bem hidratados, o que ajuda no desempenho e a evitar cãibras.'},
+  {ml:2000, t:'✨ 2 litros! Você está chegando na meta. A pele tende a ficar mais hidratada e com melhor aparência.'},
+  {ml:2250, t:'❤️ Seu coração agradece: com boa hidratação, o sangue circula com menos esforço.'},
+  {ml:2500, t:'🍽️ Falta pouco! Água ajuda a diferenciar sede de fome e a controlar a vontade de beliscar.'},
+  {ml:2750, t:'😴 Corpo quase 100% hidratado: isso ajuda na recuperação e em uma noite de sono melhor.'},
+  {ml:3000, t:'🏆 3 litros! Seu corpo está muito bem hidratado.'}
+];
+var GOAL_MSG = '🎉 Meta batida! Seu corpo está hidratado: mais energia, rins bem cuidados e músculos agradecendo. Parabéns!';
+
+function $(id){ return document.getElementById(id); }
+function load(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } }
+function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+var weight = load('weight', null);
+var log = load('log', {});
+
+function key(d){
+  d = d || new Date();
+  var z = function(n){ return String(n).padStart(2, '0'); };
+  return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate());
+}
+function sum(a){ return (a || []).reduce(function(x, y){ return x + y; }, 0); }
+function totalOf(k){ return sum(log[k]); }
+function goal(){ return weight ? Math.max(1000, Math.round(weight * ML_PER_KG / 50) * 50) : 2000; }
+function fmt(n){ return Number(n).toLocaleString('pt-BR'); }
+
+function persist(){
+  var cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90);
+  var ck = key(cutoff);
+  Object.keys(log).forEach(function(k){ if(k < ck) delete log[k]; });
+  save('log', log);
+}
+
+function items(){
+  var arr = MILESTONES.slice();
+  if(weight) arr.push({ml: goal(), t: GOAL_MSG, goal: true});
+  return arr.sort(function(a, b){ return a.ml - b.ml || (a.goal ? 1 : 0) - (b.goal ? 1 : 0); });
+}
+function reached(t){ return items().filter(function(x){ return x.ml <= t; }); }
+
+function headline(pct, t){
+  if(!weight) return 'Vamos começar? Informe seu peso.';
+  if(t === 0) return 'Seu corpo está pedindo água';
+  if(pct < 1/3) return 'Seu corpo começou a se hidratar';
+  if(pct < 2/3) return 'Hidratação a caminho: mais energia e foco';
+  if(pct < 1) return 'Quase lá! Seu corpo está chegando na meta';
+  return 'Meta batida! Corpo hidratado 🎉';
+}
+
+function render(){
+  var g = goal(), k = key(), t = totalOf(k), pct = g ? t / g : 0;
+  $('water').style.transform = 'translateY(' + (410 - Math.min(pct, 1) * 400) + 'px)';
+  $('total').textContent = fmt(t);
+  $('goalTxt').textContent = weight ? ('de ' + fmt(g) + ' ml · ' + Math.round(pct * 100) + '%') : 'Informe seu peso para calcular a meta';
+  $('bar').style.width = (Math.min(pct, 1) * 100) + '%';
+  $('left').textContent = !weight ? '' : (t < g ? 'Faltam ' + fmt(g - t) + ' ml' : 'Meta atingida! 🎉');
+  $('wLabel').textContent = weight ? (String(weight).replace('.', ',') + ' kg') : 'Peso';
+  $('headline').textContent = headline(pct, t);
+
+  var got = reached(t);
+  var latest = got.length ? got[got.length - 1].t : 'Beba o primeiro copo e veja o que acontece no seu corpo. 💧';
+  if(weight && t >= g * 1.5){
+    latest = 'Você já passou bem da meta de hoje. Pode parar por aqui: mais água não traz mais benefícios e, em excesso, pode fazer mal.';
+  }
+  $('latest').textContent = latest;
+
+  var ul = $('unlocked');
+  if(!got.length){
+    ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Nada ainda. Cada gole desbloqueia um benefício.</li>';
+  } else {
+    ul.innerHTML = got.slice().reverse().map(function(x){
+      return '<li><b>' + fmt(x.ml) + ' ml</b>' + x.t + '</li>';
+    }).join('');
+  }
+
+  var wk = '';
+  for(var i = 6; i >= 0; i--){
+    var d = new Date(); d.setDate(d.getDate() - i);
+    var tot = totalOf(key(d));
+    var h = Math.max(4, Math.min(tot / g, 1.2) / 1.2 * 80);
+    var cls = tot >= g ? 'hit' : (tot > 0 ? 'part' : '');
+    wk += '<div class="col ' + cls + '"><div class="b" style="height:' + h + 'px" title="' + fmt(tot) + ' ml"></div><span>' +
+          d.toLocaleDateString('pt-BR', {weekday: 'narrow'}) + '</span></div>';
+  }
+  $('week').innerHTML = wk;
+}
+
+var toastTimer;
+function toast(msg){
+  var el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 4200);
+}
+
+function effects(ml){
+  var stage = $('stage');
+  stage.classList.remove('pulse'); void stage.offsetWidth; stage.classList.add('pulse');
+  if(navigator.vibrate){ try{ navigator.vibrate(25); }catch(e){} }
+
+  var lab = document.createElement('div');
+  lab.className = 'float';
+  lab.textContent = '+' + fmt(ml) + ' ml';
+  stage.appendChild(lab);
+  setTimeout(function(){ lab.remove(); }, 1600);
+
+  if(!Element.prototype.animate) return;
+  var NS = 'http://www.w3.org/2000/svg', box = $('drops');
+  var n = Math.min(10, 3 + Math.round(ml / 100));
+  for(var i = 0; i < n; i++){
+    (function(i){
+      var c = document.createElementNS(NS, 'circle');
+      c.setAttribute('class', 'drop');
+      c.setAttribute('cx', 100 + (Math.random() * 30 - 15));
+      c.setAttribute('cy', -20);
+      c.setAttribute('r', 3 + Math.random() * 3);
+      box.appendChild(c);
+      var dist = 78 + Math.random() * 16;
+      var a = c.animate([
+        {transform: 'translateY(0px)', opacity: 0},
+        {transform: 'translateY(' + (dist * 0.15) + 'px)', opacity: 1, offset: 0.15},
+        {transform: 'translateY(' + dist + 'px)', opacity: 1, offset: 0.85},
+        {transform: 'translateY(' + dist + 'px) scale(.2)', opacity: 0}
+      ], {duration: 800 + Math.random() * 300, delay: i * 90, easing: 'ease-in', fill: 'forwards'});
+      a.onfinish = function(){
+        c.remove();
+        if(i === n - 1) ripple();
+      };
+    })(i);
+  }
+}
+function ripple(){
+  var NS = 'http://www.w3.org/2000/svg', box = $('drops');
+  var r = document.createElementNS(NS, 'circle');
+  r.setAttribute('class', 'ripple');
+  r.setAttribute('cx', 100); r.setAttribute('cy', 64); r.setAttribute('r', 14);
+  box.appendChild(r);
+  var a = r.animate([
+    {transform: 'scale(.3)', opacity: .9},
+    {transform: 'scale(2.2)', opacity: 0}
+  ], {duration: 800, easing: 'ease-out', fill: 'forwards'});
+  a.onfinish = function(){ r.remove(); };
+}
+function celebrate(){
+  if(!Element.prototype.animate) return;
+  var stage = $('stage'), em = ['💙', '✨', '💧', '🎉'];
+  for(var i = 0; i < 18; i++){
+    (function(i){
+      var s = document.createElement('span');
+      s.className = 'particle';
+      s.textContent = em[i % em.length];
+      stage.appendChild(s);
+      var ang = Math.random() * Math.PI * 2, dist = 70 + Math.random() * 90;
+      var a = s.animate([
+        {transform: 'translate(-50%,-50%) scale(.4)', opacity: 1},
+        {transform: 'translate(calc(-50% + ' + Math.cos(ang) * dist + 'px), calc(-50% + ' + Math.sin(ang) * dist + 'px)) scale(1.1)', opacity: 0}
+      ], {duration: 1300 + Math.random() * 500, easing: 'ease-out', fill: 'forwards'});
+      a.onfinish = function(){ s.remove(); };
+    })(i);
+  }
+}
+
+function add(ml){
+  if(!weight){ openWeight(true); return; }
+  var k = key(), before = totalOf(k), g = goal();
+  (log[k] = log[k] || []).push(ml);
+  persist();
+  var after = totalOf(k);
+  render();
+  effects(ml);
+  if(before < g && after >= g){
+    celebrate();
+    toast(GOAL_MSG);
+    return;
+  }
+  var fresh = items().filter(function(x){ return x.ml > before && x.ml <= after && !x.goal; });
+  toast(fresh.length ? fresh[fresh.length - 1].t : '+' + fmt(ml) + ' ml registrados 💧');
+}
+
+/* ----- modais ----- */
+function open(id){ $(id).classList.add('open'); }
+function close(id){ $(id).classList.remove('open'); }
+var weightLocked = false;
+
+function openWeight(first){
+  weightLocked = !!first && !weight;
+  $('wCancel').style.display = weightLocked ? 'none' : '';
+  $('weightInput').value = weight || '';
+  $('weightErr').textContent = '';
+  open('mWeight');
+  setTimeout(function(){ $('weightInput').focus(); }, 50);
+}
+$('btnWeight').onclick = function(){ openWeight(false); };
+$('wCancel').onclick = function(){ close('mWeight'); };
+$('wSave').onclick = function(){
+  var v = parseFloat(String($('weightInput').value).replace(',', '.'));
+  if(!(v >= 20 && v <= 300)){ $('weightErr').textContent = 'Digite um peso entre 20 e 300 kg.'; return; }
+  weight = Math.round(v * 10) / 10;
+  save('weight', weight);
+  weightLocked = false;
+  close('mWeight');
+  render();
+  toast('Sua meta diária é ' + fmt(goal()) + ' ml 💧');
+};
+
+$('btnOther').onclick = function(){
+  if(!weight){ openWeight(true); return; }
+  $('otherInput').value = ''; $('otherErr').textContent = '';
+  open('mOther');
+  setTimeout(function(){ $('otherInput').focus(); }, 50);
+};
+$('oCancel').onclick = function(){ close('mOther'); };
+$('oSave').onclick = function(){
+  var v = Math.round(parseFloat(String($('otherInput').value).replace(',', '.')));
+  if(!(v >= 10 && v <= 2000)){ $('otherErr').textContent = 'Digite entre 10 e 2000 ml.'; return; }
+  close('mOther');
+  add(v);
+};
+
+$('btnDonate').onclick = function(){
+  $('pixKey').textContent = DONATE.pixKey;
+  if(DONATE.link){ $('linkRow').style.display = ''; $('donateLink').href = DONATE.link; }
+  open('mDonate');
+};
+$('dClose').onclick = function(){ close('mDonate'); };
+$('copyPix').onclick = function(){
+  var txt = DONATE.pixKey;
+  function fallback(){ window.prompt('Copie a chave Pix:', txt); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast('Chave Pix copiada. Obrigado! 💙'); }, fallback);
+  } else { fallback(); }
+};
+
+['mWeight', 'mOther', 'mDonate'].forEach(function(id){
+  $(id).addEventListener('click', function(e){
+    if(e.target !== $(id)) return;
+    if(id === 'mWeight' && weightLocked) return;
+    close(id);
+  });
+});
+
+document.querySelectorAll('.add[data-ml]').forEach(function(b){
+  b.onclick = function(){ add(parseInt(b.getAttribute('data-ml'), 10)); };
+});
+
+$('btnUndo').onclick = function(){
+  var k = key();
+  if(log[k] && log[k].length){
+    var r = log[k].pop();
+    if(!log[k].length) delete log[k];
+    persist(); render();
+    toast('Removido: ' + fmt(r) + ' ml');
+  }
+};
+
+document.addEventListener('visibilitychange', function(){
+  if(!document.hidden){ $('dateTxt').textContent = new Date().toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'long'}); render(); }
+});
+
+/* ----- início ----- */
+$('dateTxt').textContent = new Date().toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'long'});
+requestAnimationFrame(function(){ requestAnimationFrame(render); });
+if(!weight) setTimeout(function(){ openWeight(true); }, 400);
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}
+})();
+</script>
+</body>
+</html>
