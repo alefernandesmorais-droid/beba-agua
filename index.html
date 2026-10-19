@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beba Água</title>
-<meta name="description" content="Registre a água que você bebe, receba avisos na hora certa e veja os benefícios no seu corpo.">
-<meta name="theme-color" content="#0b84d8">
+<meta name="description" content="Água, exercício e o seu corpo em um só lugar.">
+<meta name="theme-color" content="#0b84d8" id="metaTheme">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -13,41 +13,73 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Beba Água">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>
+/* aplica o tema salvo antes de desenhar a tela (evita piscar) */
+(function(){ try{ var t = JSON.parse(localStorage.getItem('theme')); if(t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); }catch(e){} })();
+</script>
 <style>
 :root{
   --bg:#f2f8fd; --card:#ffffff; --text:#0f2a3d; --muted:#5b7487;
   --accent:#0b84d8; --line:#d6e6f2; --water1:#4fc3f7; --water2:#0b84d8; --shape:#e3effa;
+  --fx1:#ffb347; --fx2:#ff5a3c; --fxtext:#d9480f; --nav:rgba(255,255,255,.94);
 }
 @media (prefers-color-scheme: dark){
-  :root{ --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#14293a; --accent:#4fb3f5; }
+  :root:not([data-theme="light"]){
+    --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#16303f; --accent:#4fb3f5;
+    --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#16303f; --accent:#4fb3f5;
+  --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none !important}
 html,body{margin:0}
 body{
   background:var(--bg);color:var(--text);
   font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  min-height:100vh;padding:env(safe-area-inset-top) 0 0;
 }
-.app{max-width:480px;margin:0 auto;padding:16px 16px 48px}
+.app{max-width:480px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
 header{display:flex;justify-content:space-between;align-items:center;gap:12px}
 h1{font-size:1.3rem;margin:0}
-.sub{color:var(--muted);font-size:.85rem;text-transform:capitalize}
-.numbers .sub,.pace{text-transform:none}
+.sub{color:var(--muted);font-size:.85rem}
+#dateTxt::first-letter{text-transform:uppercase}
+.hbtns{display:flex;gap:8px}
 .icon-btn{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:8px 12px;font-size:.9rem;cursor:pointer}
 
-.stage{position:relative;margin:10px auto 0;width:min(56vw,220px)}
+.stage{position:relative;margin:10px auto 0;width:min(46vw,185px)}
 .stage svg{width:100%;height:auto;display:block;overflow:visible}
 .stage.pulse svg{animation:pulse .6s ease}
 @keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.05)}100%{transform:scale(1)}}
-#water{transition:transform 1.8s cubic-bezier(.25,.8,.25,1)}
+.water{transition:transform 1.8s cubic-bezier(.25,.8,.25,1)}
 .wave{animation:slide 4s linear infinite}
 .wave.b{animation-duration:6s;animation-direction:reverse}
 @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-100px)}}
 .drop{fill:var(--water1)}
 .ripple{fill:none;stroke:var(--water1);stroke-width:2;transform-box:fill-box;transform-origin:center}
-.float{position:absolute;left:50%;top:8%;font-weight:800;font-size:1.2rem;color:var(--accent);pointer-events:none;animation:floatUp 1.5s ease-out forwards}
+.ripple.fx{stroke:var(--fx2)}
+.float{position:absolute;left:50%;top:4%;font-weight:800;font-size:1.2rem;color:var(--accent);pointer-events:none;animation:floatUp 1.5s ease-out forwards;white-space:nowrap}
+.float.fx{color:var(--fxtext)}
 @keyframes floatUp{0%{opacity:0;transform:translate(-50%,12px)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-46px)}}
 .particle{position:absolute;left:50%;top:45%;font-size:1.3rem;pointer-events:none}
+
+/* músculos */
+.m{fill:transparent;stroke:var(--water2);stroke-opacity:.28;stroke-width:1;transform-box:fill-box;transform-origin:center;transition:fill .8s,fill-opacity .8s,transform .8s,stroke .8s}
+.m.lv1{fill:var(--fx1);fill-opacity:.62;stroke:var(--fx1);stroke-opacity:.9}
+.m.lv2{fill:var(--fx1);fill-opacity:.95;stroke:var(--fx2);stroke-opacity:.9;transform:scale(1.04)}
+.m.lv3{fill:var(--fx2);fill-opacity:1;stroke:var(--fx2);stroke-opacity:1;stroke-width:2;transform:scale(1.08)}
+/* na aba Corpo a água fica azul limpa e os músculos aparecem com contorno laranja */
+.both .m.lv1{fill-opacity:.07;stroke-opacity:1;stroke-width:2.5}
+.both .m.lv2{fill-opacity:.11;stroke:var(--fx2);stroke-opacity:1;stroke-width:3}
+.both .m.lv3{fill-opacity:.16;stroke:var(--fx2);stroke-opacity:1;stroke-width:3.5}
+.m-cardio.lv1,.m-cardio.lv2,.m-cardio.lv3{animation:beat 1s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.28)}60%{transform:scale(1.08)}}
+.m.flash{animation:pump .9s ease-out}
+@keyframes pump{0%{transform:scale(1)}35%{transform:scale(1.26)}100%{transform:scale(1)}}
+.m-cardio.flash{animation:pump .9s ease-out}
+.absline{stroke:var(--water2);stroke-opacity:.3;stroke-width:1.5;fill:none}
 
 .numbers{text-align:center;margin-top:6px}
 .big{font-size:2.6rem;font-weight:800;line-height:1.1}
@@ -60,16 +92,24 @@ h1{font-size:1.3rem;margin:0}
 .status .st-text{font-size:.92rem;line-height:1.45}
 .status[data-s="ok"]{border-left-color:#1d9bf0;background:rgba(29,155,240,.10)}
 .status[data-s="due"]{border-left-color:#f5a524;background:rgba(245,165,36,.16)}
-.status[data-s="late"]{border-left-color:#e5484d;background:rgba(229,72,77,.15)}
-.status[data-s="over"]{border-left-color:#e5484d;background:rgba(229,72,77,.15)}
+.status[data-s="late"],.status[data-s="over"]{border-left-color:#e5484d;background:rgba(229,72,77,.15)}
 .status[data-s="rest"],.status[data-s="setup"]{border-left-color:#8a9aa6;background:rgba(128,140,150,.12)}
-.pace{margin-top:8px;text-align:center;font-size:.85rem;color:var(--muted);min-height:1.2em}
+.pace{margin-top:8px;text-align:center;font-size:.85rem;color:var(--muted);min-height:1.2em;line-height:1.4}
 
 .adds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .add{border:0;border-radius:16px;padding:14px 4px;font-size:1rem;font-weight:700;color:#fff;background:linear-gradient(180deg,var(--water1),var(--water2));cursor:pointer}
 .add.alt{background:var(--card);color:var(--accent);border:1px solid var(--line)}
 .add:active{transform:scale(.96)}
 .link{display:block;margin:10px auto 0;background:none;border:0;color:var(--muted);font-size:.9rem;cursor:pointer;padding:6px}
+
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.tile{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:16px;padding:12px;cursor:pointer;font:inherit}
+.tile:active{transform:scale(.97)}
+.tile .em{font-size:1.6rem}
+.tile b{display:block;font-size:.95rem}
+.tile small{display:block;color:var(--muted);font-size:.75rem;margin-top:2px}
+.tile.on{border-color:var(--fx2);background:rgba(255,122,69,.10)}
+.tile.on small{color:var(--fxtext);font-weight:700}
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:14px}
 .kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
@@ -78,7 +118,9 @@ h1{font-size:1.3rem;margin:0}
 .hint{margin:10px 0 0;font-size:.85rem;color:var(--muted);line-height:1.4}
 .list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .list li{line-height:1.4;font-size:.95rem;padding-left:10px;border-left:3px solid var(--water1)}
+.list.ex li{border-left-color:var(--fx2)}
 .list li b{display:block;font-size:.75rem;color:var(--accent);margin-bottom:2px}
+.list.ex li b{color:var(--fxtext)}
 .empty{color:var(--muted);font-size:.9rem}
 
 .week{display:flex;align-items:flex-end;gap:8px;height:110px}
@@ -86,16 +128,38 @@ h1{font-size:1.3rem;margin:0}
 .week .b{width:100%;max-width:30px;border-radius:8px 8px 4px 4px;background:var(--line);min-height:4px}
 .week .col.hit .b{background:linear-gradient(180deg,var(--water1),var(--water2))}
 .week .col.part .b{background:var(--water1);opacity:.55}
+.week.ex .col.hit .b{background:linear-gradient(180deg,var(--fx1),var(--fx2))}
 .week span{font-size:.75rem;color:var(--muted);text-transform:uppercase}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center}
+.stat .v{font-weight:800;font-size:1rem;line-height:1.25}
+.stat .l{font-size:.7rem;color:var(--muted);margin-top:2px}
+.legend{margin:10px 0 0;text-align:center;font-size:.8rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:6px 10px;font-size:.82rem;background:var(--bg)}
+.chip i{font-style:normal;color:var(--muted);margin-left:4px}
+.chip.l1{background:rgba(255,179,71,.22);border-color:var(--fx1)}
+.chip.l2{background:rgba(255,138,61,.28);border-color:var(--fx2)}
+.chip.l3{background:rgba(255,90,60,.34);border-color:var(--fx2);font-weight:700}
 
 footer{margin-top:22px;text-align:center}
 .donate{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:14px;padding:12px 18px;font-size:.95rem;font-weight:600;cursor:pointer}
 .note{color:var(--muted);font-size:.75rem;line-height:1.5;margin:14px 6px 0}
 
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#0f2a3d;color:#fff;padding:12px 16px;border-radius:14px;max-width:min(92vw,420px);font-size:.9rem;line-height:1.4;opacity:0;pointer-events:none;transition:.3s;z-index:20}
-.toast.show{opacity:1;transform:translate(-50%,0)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--nav);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.nav-in{display:flex;width:100%;max-width:480px}
+.nav button{flex:1;background:none;border:0;color:var(--muted);padding:8px 4px 10px;font:inherit;font-size:.72rem;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav button span{font-size:1.35rem;line-height:1.2;filter:grayscale(.9);opacity:.7}
+.nav button.on{color:var(--accent)}
+.nav button.on span{filter:none;opacity:1}
 
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#0f2a3d;color:#fff;padding:12px 16px;border-radius:14px;max-width:min(92vw,420px);font-size:.9rem;line-height:1.4;opacity:0;pointer-events:none;transition:.3s;z-index:20}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+:root[data-theme="dark"] .toast{background:#e6f3fb;color:#08141d}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .toast{background:#e6f3fb;color:#08141d} }
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:30}
 .overlay.open{display:flex}
 .modal{background:var(--card);border-radius:20px;padding:20px;width:100%;max-width:380px;max-height:92vh;overflow:auto}
 .modal h3{margin:0 0 8px;font-size:1.15rem}
@@ -103,10 +167,13 @@ footer{margin-top:22px;text-align:center}
 .modal input,.modal select{width:100%;padding:12px;font-size:1.05rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
 .lbl{display:block;font-size:.8rem;color:var(--muted);margin:12px 0 4px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mins{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 4px}
+.mins button{border:0;border-radius:12px;padding:12px 4px;font-size:.95rem;font-weight:700;color:#fff;background:linear-gradient(180deg,var(--fx1),var(--fx2));cursor:pointer}
 .err{color:#d93025;font-size:.85rem;min-height:1.2em;margin-top:6px}
 .row{display:flex;gap:8px;margin-top:12px}
 .btn{flex:1;border:0;border-radius:12px;padding:12px;font-size:1rem;font-weight:700;cursor:pointer;background:var(--line);color:var(--text)}
 .btn.primary{background:linear-gradient(180deg,var(--water1),var(--water2));color:#fff}
+.btn.fx{background:linear-gradient(180deg,var(--fx1),var(--fx2));color:#fff}
 .pix{word-break:break-all;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;margin-bottom:4px}
 </style>
 </head>
@@ -114,110 +181,142 @@ footer{margin-top:22px;text-align:center}
 <div class="app">
   <header>
     <div>
-      <h1>💧 Beba Água</h1>
+      <h1 id="pageTitle">💧 Água</h1>
       <div class="sub" id="dateTxt"></div>
     </div>
-    <button class="icon-btn" id="btnWeight" type="button" aria-label="Ajustes">⚙️ <span id="wLabel">Ajustes</span></button>
+    <div class="hbtns">
+      <button class="icon-btn" id="btnTheme" type="button" aria-label="Alternar tema claro e escuro">🌓</button>
+      <button class="icon-btn" id="btnWeight" type="button" aria-label="Ajustes">⚙️ <span id="wLabel">Ajustes</span></button>
+    </div>
   </header>
 
-  <div class="stage" id="stage">
-    <svg viewBox="0 0 200 400" role="img" aria-label="Corpo se enchendo de água">
-      <defs>
-        <clipPath id="clip">
-          <circle cx="100" cy="46" r="30"/>
-          <rect x="62" y="82" width="76" height="150" rx="34"/>
-          <rect x="30" y="92" width="26" height="130" rx="13"/>
-          <rect x="144" y="92" width="26" height="130" rx="13"/>
-          <rect x="66" y="214" width="32" height="170" rx="16"/>
-          <rect x="102" y="214" width="32" height="170" rx="16"/>
-        </clipPath>
-        <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" style="stop-color:var(--water1)"/>
-          <stop offset="1" style="stop-color:var(--water2)"/>
-        </linearGradient>
-      </defs>
-      <g fill="var(--shape)">
-        <circle cx="100" cy="46" r="30"/>
-        <rect x="62" y="82" width="76" height="150" rx="34"/>
-        <rect x="30" y="92" width="26" height="130" rx="13"/>
-        <rect x="144" y="92" width="26" height="130" rx="13"/>
-        <rect x="66" y="214" width="32" height="170" rx="16"/>
-        <rect x="102" y="214" width="32" height="170" rx="16"/>
-      </g>
-      <g clip-path="url(#clip)">
-        <g id="water" style="transform:translateY(410px)">
-          <rect x="-100" y="2" width="500" height="420" fill="url(#wg)"/>
-          <g class="wave b" opacity=".55">
-            <path fill="var(--water1)" d="M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z"/>
-          </g>
-          <g class="wave">
-            <path fill="url(#wg)" d="M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z"/>
-          </g>
-        </g>
-      </g>
-      <g fill="none" stroke="var(--water2)" stroke-opacity=".35" stroke-width="2">
-        <circle cx="100" cy="46" r="30"/>
-        <rect x="62" y="82" width="76" height="150" rx="34"/>
-        <rect x="30" y="92" width="26" height="130" rx="13"/>
-        <rect x="144" y="92" width="26" height="130" rx="13"/>
-        <rect x="66" y="214" width="32" height="170" rx="16"/>
-        <rect x="102" y="214" width="32" height="170" rx="16"/>
-      </g>
-      <g id="drops"></g>
-    </svg>
-  </div>
+  <!-- ================= ÁGUA ================= -->
+  <main id="tab-agua">
+    <div class="stage" id="stageW"></div>
 
-  <div class="numbers">
-    <div class="big"><span id="total">0</span><small> ml</small></div>
-    <div class="sub" id="goalTxt"></div>
-    <div class="bar"><i id="bar"></i></div>
-    <div class="sub" id="left"></div>
-  </div>
+    <div class="numbers">
+      <div class="big"><span id="total">0</span><small> ml</small></div>
+      <div class="sub" id="goalTxt"></div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="sub" id="left"></div>
+    </div>
 
-  <div class="status" id="statusBox" data-s="setup" role="status" aria-live="polite">
-    <div class="st-title" id="stTitle"></div>
-    <div class="st-text" id="stText"></div>
-  </div>
-  <div class="pace" id="paceTxt"></div>
+    <div class="status" id="statusBox" data-s="setup" role="status" aria-live="polite">
+      <div class="st-title" id="stTitle"></div>
+      <div class="st-text" id="stText"></div>
+    </div>
+    <div class="pace" id="paceTxt"></div>
 
-  <div class="adds">
-    <button class="add" type="button" data-ml="200">+200</button>
-    <button class="add" type="button" data-ml="300">+300</button>
-    <button class="add" type="button" data-ml="500">+500</button>
-    <button class="add alt" type="button" id="btnOther">Outro</button>
-  </div>
-  <button class="link" id="btnUndo" type="button">↩ Desfazer último</button>
-  <button class="link" id="btnNotify" type="button" style="display:none">🔔 Ativar avisos neste aparelho</button>
+    <div class="adds">
+      <button class="add" type="button" data-ml="200">+200</button>
+      <button class="add" type="button" data-ml="300">+300</button>
+      <button class="add" type="button" data-ml="500">+500</button>
+      <button class="add alt" type="button" id="btnOther">Outro</button>
+    </div>
+    <button class="link" id="btnUndo" type="button">↩ Desfazer último</button>
+    <button class="link" id="btnNotify" type="button" style="display:none">🔔 Ativar avisos neste aparelho</button>
 
-  <section class="card">
-    <div class="kicker">Seu corpo agora</div>
-    <h2 id="headline"></h2>
-    <p class="latest" id="latest"></p>
-    <p class="hint" id="usedHint"></p>
-  </section>
+    <section class="card">
+      <div class="kicker">Seu corpo agora</div>
+      <h2 id="headline"></h2>
+      <p class="latest" id="latest"></p>
+      <p class="hint" id="usedHint"></p>
+    </section>
 
-  <section class="card">
-    <div class="kicker">Benefícios desbloqueados hoje</div>
-    <ul class="list" id="unlocked"></ul>
-  </section>
+    <section class="card">
+      <div class="kicker">Benefícios desbloqueados hoje</div>
+      <ul class="list" id="unlocked"></ul>
+    </section>
 
-  <section class="card">
-    <div class="kicker">Últimos 7 dias</div>
-    <div class="week" id="week"></div>
-  </section>
+    <section class="card">
+      <div class="kicker">Últimos 7 dias</div>
+      <div class="week" id="week"></div>
+    </section>
+
+    <p class="note">Os avisos aparecem enquanto o app estiver aberto ou em segundo plano. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico.</p>
+  </main>
+
+  <!-- ================= EXERCÍCIO ================= -->
+  <main id="tab-ex" hidden>
+    <div class="stage" id="stageX"></div>
+
+    <div class="numbers">
+      <div class="big"><span id="exTotal">0</span><small> min hoje</small></div>
+      <div class="sub" id="exGroupsTxt"></div>
+    </div>
+
+    <div class="tiles" id="exTiles"></div>
+    <button class="link" id="btnUndoEx" type="button">↩ Desfazer último treino</button>
+
+    <section class="card">
+      <div class="kicker">Seu corpo agora</div>
+      <h2 id="exHeadline"></h2>
+      <p class="latest" id="exLatest"></p>
+      <p class="hint" id="exHint"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Benefícios do treino de hoje</div>
+      <ul class="list ex" id="exUnlocked"></ul>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Minutos nos últimos 7 dias</div>
+      <div class="week ex" id="exWeek"></div>
+    </section>
+
+    <p class="note">As informações são de caráter geral e não substituem a orientação de um médico ou de um profissional de educação física. Se sentir dor forte, tontura ou mal-estar durante o exercício, pare e procure orientação. Os músculos se fortalecem no descanso, então respeite os intervalos entre os treinos.</p>
+  </main>
+
+  <!-- ================= CORPO ================= -->
+  <main id="tab-corpo" hidden>
+    <div class="stage both" id="stageC"></div>
+    <p class="legend">💧 Azul: água de hoje · 🔥 Laranja: músculos trabalhados nos últimos 7 dias</p>
+
+    <div class="stats">
+      <div class="stat"><div class="v" id="cWater">—</div><div class="l" id="cWaterSub">Água hoje</div></div>
+      <div class="stat"><div class="v" id="cEx">0 min</div><div class="l" id="cExSub">Treino hoje</div></div>
+      <div class="stat"><div class="v" id="cWeek">0 de 7</div><div class="l">Dias com treino</div></div>
+    </div>
+
+    <section class="card">
+      <div class="kicker">Resumo do dia</div>
+      <h2 id="cHeadline"></h2>
+      <p class="latest" id="cText"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Músculos da semana</div>
+      <div class="chips" id="cChips"></div>
+      <p class="hint" id="cHint"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Em breve</div>
+      <p class="latest">🍎 <b>Alimentação:</b> registre frutas, legumes, carnes e peixes e veja o que cada grupo faz pelo seu corpo. Quando chegar, ele também vai aparecer aqui.</p>
+    </section>
+  </main>
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Os avisos aparecem enquanto o app estiver aberto ou em segundo plano. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico.</p>
+    <p class="note">Gratuito e sem anúncios.</p>
   </footer>
 </div>
+
+<nav class="nav" aria-label="Navegação">
+  <div class="nav-in">
+    <button type="button" id="nav-agua" data-tab="agua"><span>💧</span>Água</button>
+    <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
+    <button type="button" id="nav-corpo" data-tab="corpo"><span>🧍</span>Corpo</button>
+  </div>
+</nav>
 
 <div class="toast" id="toast"></div>
 
 <div class="overlay" id="mWeight">
   <div class="modal">
     <h3 id="setTitle">Ajustes</h3>
-    <p>Calculamos sua meta (cerca de 37 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme.</p>
+    <p>Calculamos sua meta de água (cerca de 37 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme.</p>
     <label class="lbl" for="weightInput">Seu peso (kg)</label>
     <input id="weightInput" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Ex.: 80">
     <div class="two">
@@ -235,6 +334,12 @@ footer{margin-top:22px;text-align:center}
       <option value="60">1 hora</option>
       <option value="90">1 hora e 30 min</option>
       <option value="120">2 horas</option>
+    </select>
+    <label class="lbl" for="themeInput">Tema</label>
+    <select id="themeInput">
+      <option value="auto">Automático (segue o celular)</option>
+      <option value="light">Claro</option>
+      <option value="dark">Escuro</option>
     </select>
     <div class="err" id="weightErr"></div>
     <div class="row">
@@ -256,10 +361,30 @@ footer{margin-top:22px;text-align:center}
   </div>
 </div>
 
+<div class="overlay" id="mEx">
+  <div class="modal">
+    <h3 id="exModalTitle">Quanto tempo?</h3>
+    <p id="exModalHint"></p>
+    <div class="mins">
+      <button type="button" data-min="15">15 min</button>
+      <button type="button" data-min="30">30 min</button>
+      <button type="button" data-min="45">45 min</button>
+      <button type="button" data-min="60">60 min</button>
+    </div>
+    <label class="lbl" for="exInput">Ou digite os minutos</label>
+    <input id="exInput" type="number" inputmode="numeric" min="5" max="240" step="5" placeholder="Ex.: 20">
+    <div class="err" id="exErr"></div>
+    <div class="row">
+      <button class="btn" id="exCancel" type="button">Cancelar</button>
+      <button class="btn fx" id="exSave" type="button">Adicionar</button>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="mDonate">
   <div class="modal">
     <h3>Apoie o Beba Água 💙</h3>
-    <p>O app é gratuito e não tem propaganda. Se ele te ajuda a beber mais água, uma doação ajuda a melhorá-lo.</p>
+    <p>O app é gratuito e não tem propaganda. Se ele te ajuda, uma doação ajuda a melhorá-lo.</p>
     <div class="pix" id="pixKey"></div>
     <div class="row">
       <button class="btn primary" id="copyPix" type="button">Copiar chave Pix</button>
@@ -284,8 +409,11 @@ var DONATE = { pixKey: 'SUA-CHAVE-PIX-AQUI', link: '' };
 
 var ML_PER_KG = 37.5;          // 80 kg -> 3000 ml
 var MAX_PER_HOUR = 1000;       // acima disso em 60 min, o app avisa que é exagero
+var MAX_EX_MIN = 90;           // acima disso no mesmo grupo no dia, o app pede descanso
 var MS_MIN = 60000;
+var NS = 'http://www.w3.org/2000/svg';
 
+/* ---------- conteúdo: água ---------- */
 var MILESTONES = [
   {ml:250,  t:'💧 Primeiros goles: seu corpo começa a se hidratar e a levar nutrientes para as células.'},
   {ml:500,  t:'🧠 Seu cérebro agradece: boa hidratação ajuda na concentração e no humor.'},
@@ -302,23 +430,122 @@ var MILESTONES = [
 ];
 var GOAL_MSG = '🎉 Meta batida! Seu corpo está hidratado: mais energia, rins bem cuidados e músculos agradecendo. Parabéns!';
 
+/* ---------- conteúdo: exercício ----------
+   Cada grupo tem 3 mensagens, liberadas conforme o tempo treinado no dia:
+   a partir de 1 min (nível 1), 25 min (nível 2) e 40 min (nível 3). */
+var EX = [
+  {id:'bracos', nome:'Braços', emoji:'💪', dica:'rosca, tríceps, barra', msgs:[
+    '💪 Braços acordados! Treinar bíceps e tríceps ajuda na força para as tarefas do dia a dia, como carregar compras e abrir portas pesadas.',
+    '🦾 Braços em alta! Músculos mais fortes dão mais estabilidade aos cotovelos e ombros e ajudam a manter a massa muscular com o passar dos anos.',
+    '🔥 Treino de braços completo! Exercícios de força também ajudam a manter os ossos fortes e o metabolismo ativo. Agora é descansar e recuperar.'
+  ]},
+  {id:'peito', nome:'Peito', emoji:'🏋️', dica:'supino, flexão, crucifixo', msgs:[
+    '🏋️ Peito ativado! Trabalhar o peitoral melhora a força de empurrar e ajuda a manter ombros e postura mais alinhados.',
+    '💥 Peitoral e ombros trabalhando juntos: mais força para empurrar, levantar e até para se levantar do chão.',
+    '🔥 Treino de peito completo! Com constância, você fortalece o tronco e ganha mais base para todos os outros exercícios.'
+  ]},
+  {id:'costas', nome:'Costas', emoji:'🧗', dica:'remada, puxada, barra fixa', msgs:[
+    '🧗 Costas ativadas! Uma musculatura forte nas costas ajuda a sustentar a coluna e a manter a postura.',
+    '🛡️ Costas fortes ajudam a compensar as muitas horas sentado e a aliviar a sobrecarga na coluna.',
+    '🔥 Treino de costas completo! Costas e abdômen fortes formam a base de sustentação do corpo todo.'
+  ]},
+  {id:'ombros', nome:'Ombros', emoji:'🙌', dica:'desenvolvimento, elevação', msgs:[
+    '🙌 Ombros acordados! Ombros fortes facilitam levantar objetos acima da cabeça e ajudam na postura.',
+    '⚙️ Mais estabilidade para as articulações dos ombros, que são das mais móveis do corpo e precisam de músculos fortes ao redor.',
+    '🔥 Ombros completos! Ombros e costas equilibrados ajudam a manter o corpo alinhado.'
+  ]},
+  {id:'abdomen', nome:'Abdômen', emoji:'🔥', dica:'prancha, abdominal', msgs:[
+    '🔥 Abdômen ativado! O core é o centro de força do corpo e ajuda no equilíbrio.',
+    '🧱 Um core forte dá estabilidade à coluna e melhora a postura em quase todo movimento do dia.',
+    '🏆 Treino de abdômen completo! Um core forte ajuda em todos os outros treinos. Lembre que o abdômen também depende de alimentação e sono.'
+  ]},
+  {id:'pernas', nome:'Pernas', emoji:'🦵', dica:'agachamento, leg press', msgs:[
+    '🦵 Pernas ativadas! Elas têm os maiores músculos do corpo: treiná-las gasta bastante energia e melhora o equilíbrio.',
+    '🚀 Coxas e panturrilhas trabalhando: mais força para subir escadas, caminhar e se levantar, além de ajudar a circulação.',
+    '🔥 Treino de pernas completo! Pernas fortes ajudam a manter a independência e a saúde dos ossos com o passar dos anos.'
+  ]},
+  {id:'cardio', nome:'Esteira / cardio', emoji:'🏃', dica:'esteira, corrida, bike', msgs:[
+    '🏃 Coração acelerando! O exercício aeróbico fortalece o coração e melhora a disposição.',
+    '🫁 Mais oxigênio circulando: o cardio melhora a capacidade respiratória e costuma melhorar o humor e o sono.',
+    '🏆 Cardio completo! Atividade aeróbica regular faz bem ao coração e ajuda no controle do peso e da pressão. Não esqueça de beber água! 💧'
+  ]}
+];
+var MOTIV = [
+  'Constância vale mais do que intensidade. Mais um dia contado! 💙',
+  'Seu corpo agradece cada minuto que você dedica a ele. 🙌',
+  'Mais um treino no bolso. Quem aparece todo dia chega longe! 🚀',
+  'Você está construindo um hábito, e isso é o que mais conta. 🌱',
+  'Boa! Agora hidrate-se e deixe o corpo recuperar. 💧',
+  'Cada treino de hoje é um favor para o seu eu do futuro. 🏆'
+];
+function exById(id){ for(var i = 0; i < EX.length; i++) if(EX[i].id === id) return EX[i]; return null; }
+
+/* ---------- o corpo (desenho) ----------
+   g = grupo muscular (null = silhueta); m = tem lado espelhado; rot = [graus, x, y] */
+var ITEMS = [
+  {g:null,      s:'<circle cx="100" cy="36" r="22"/>'},
+  {g:null,      s:'<rect x="93" y="54" width="14" height="18" rx="6"/>'},
+  {g:null,      s:'<path d="M60 84 Q100 70 140 84 Q134 146 127 202 L73 202 Q66 146 60 84 Z"/>'},
+  {g:null,      s:'<rect x="71" y="190" width="58" height="26" rx="13"/>'},
+  {g:null,      s:'<rect x="66" y="378" width="30" height="12" rx="6"/>', m:true},
+  {g:'costas',  s:'<rect x="68" y="118" width="11" height="60" rx="5.5"/>', m:true},
+  {g:'peito',   s:'<rect x="66" y="84" width="33" height="42" rx="16"/>', m:true},
+  {g:'abdomen', s:'<rect x="82" y="128" width="36" height="66" rx="12"/>'},
+  {g:'ombros',  s:'<ellipse cx="57" cy="90" rx="15" ry="14"/>', m:true},
+  {g:'bracos',  s:'<rect x="40" y="98" width="19" height="56" rx="9.5"/>', rot:[9, 49, 98], m:true},
+  {g:'bracos',  s:'<rect x="41" y="152" width="17" height="58" rx="8.5"/>', rot:[9, 49, 98], m:true},
+  {g:'pernas',  s:'<rect x="68" y="200" width="30" height="98" rx="15"/>', m:true},
+  {g:'pernas',  s:'<rect x="71" y="296" width="23" height="84" rx="11.5"/>', m:true},
+  {g:'cardio',  s:'<path d="M112 120 C98 109 97 97 105 94 C109 92.5 112 95 112 98 C112 95 115 92.5 119 94 C127 97 126 109 112 120 Z"/>'}
+];
+function addAttr(s, attr){ return s.replace(/^<(\w+)/, '<$1 ' + attr); }
+/* com wrappers <g> (para desenhar) */
+function layer(it, cls){
+  var s = cls ? addAttr(it.s, 'class="' + cls + '"') : it.s;
+  if(it.rot) s = '<g transform="rotate(' + it.rot.join(' ') + ')">' + s + '</g>';
+  return it.m ? s + '<g transform="translate(200 0) scale(-1 1)">' + s + '</g>' : s;
+}
+/* só com atributo transform (clipPath não aceita <g>) */
+function clipShape(it){
+  var tf = it.rot ? 'rotate(' + it.rot.join(' ') + ')' : '';
+  var a = tf ? addAttr(it.s, 'transform="' + tf + '"') : it.s;
+  if(!it.m) return a;
+  return a + addAttr(it.s, 'transform="translate(200 0) scale(-1 1)' + (tf ? ' ' + tf : '') + '"');
+}
+var WAVE = 'M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z';
+
+function bodySVG(p, mode){
+  var plain = ITEMS.map(function(it){ return layer(it, ''); }).join('');
+  var clip = ITEMS.map(clipShape).join('');
+  var mus = ITEMS.filter(function(it){ return it.g; }).map(function(it){ return layer(it, 'm m-' + it.g); }).join('');
+  var s = '<svg viewBox="0 0 200 400" role="img" aria-label="Corpo humano">';
+  s += '<defs><clipPath id="cp-' + p + '">' + clip + '</clipPath>' +
+       '<linearGradient id="wg-' + p + '" x1="0" y1="0" x2="0" y2="1">' +
+       '<stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient></defs>';
+  s += '<g fill="var(--shape)">' + plain + '</g>';
+  if(mode !== 'muscle'){
+    s += '<g clip-path="url(#cp-' + p + ')"><g class="water" id="water-' + p + '" style="transform:translateY(410px)">' +
+         '<rect x="-100" y="2" width="500" height="420" fill="url(#wg-' + p + ')"/>' +
+         '<g class="wave b" opacity=".55"><path fill="var(--water1)" d="' + WAVE + '"/></g>' +
+         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g></g>';
+  }
+  /* no modo água o contorno é só da silhueta, braços e pernas (sem os músculos do tronco) */
+  var outline = mode === 'water'
+    ? ITEMS.filter(function(it){ return !it.g || it.g === 'bracos' || it.g === 'pernas'; }).map(function(it){ return layer(it, ''); }).join('')
+    : plain;
+  s += '<g fill="none" stroke="var(--water2)" stroke-opacity=".35" stroke-width="2">' + outline + '</g>';
+  if(mode !== 'water') s += '<path class="absline" d="M100 132 V190 M86 152 H114 M86 172 H114"/>';
+  if(mode !== 'water') s += '<g class="mus">' + mus + '</g>';
+  s += '<g id="fx-' + p + '"></g></svg>';
+  return s;
+}
+
+/* ---------- utilidades ---------- */
 function $(id){ return document.getElementById(id); }
 function load(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } }
 function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-
-var weight = load('weight', null);
-var cfg = load('cfg', null) || {wake: 420, sleep: 1320, interval: 90};
-var log = load('log', {});
-/* registros antigos eram só números; agora cada um tem ml e horário */
-Object.keys(log).forEach(function(k){
-  log[k] = (log[k] || []).map(function(e){ return (typeof e === 'number') ? {ml: e, t: null} : e; });
-});
-
 function pad(n){ return String(n).padStart(2, '0'); }
 function key(d){ d = d || new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
-function sum(a){ return (a || []).reduce(function(x, e){ return x + e.ml; }, 0); }
-function totalOf(k){ return sum(log[k]); }
-function goal(){ return weight ? Math.max(1000, Math.round(weight * ML_PER_KG / 50) * 50) : 2000; }
 function fmt(n){ return Number(n).toLocaleString('pt-BR'); }
 function toMin(s){ var p = String(s).split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
 function toHHMM(m){ return pad(Math.floor(m / 60)) + ':' + pad(m % 60); }
@@ -330,22 +557,43 @@ function dur(ms){
   var h = Math.floor(m / 60), r = m % 60;
   return h + 'h' + (r ? pad(r) : '');
 }
+function daysBack(i){ var d = new Date(); d.setDate(d.getDate() - i); return d; }
+function rand(a, b){ return a + Math.random() * (b - a); }
+
+/* ---------- estado ---------- */
+var weight = load('weight', null);
+var cfg = load('cfg', null) || {wake: 420, sleep: 1320, interval: 90};
+var log = load('log', {});
+var ex = load('ex', {});
+var theme = load('theme', 'auto');
+var tab = load('tab', 'agua');
+if(['agua', 'ex', 'corpo'].indexOf(tab) < 0) tab = 'agua';
+/* registros antigos eram só números; agora cada um tem ml e horário */
+Object.keys(log).forEach(function(k){
+  log[k] = (log[k] || []).map(function(e){ return (typeof e === 'number') ? {ml: e, t: null} : e; });
+});
+
+function sum(a){ return (a || []).reduce(function(x, e){ return x + e.ml; }, 0); }
+function totalOf(k){ return sum(log[k]); }
+function goal(){ return weight ? Math.max(1000, Math.round(weight * ML_PER_KG / 50) * 50) : 2000; }
 
 function persist(){
   var cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90);
   var ck = key(cutoff);
   Object.keys(log).forEach(function(k){ if(k < ck) delete log[k]; });
+  Object.keys(ex).forEach(function(k){ if(k < ck) delete ex[k]; });
   save('log', log);
+  save('ex', ex);
 }
 
-/* ---------- ritmo e hidratação ----------
+/* ---------- água: ritmo e hidratação ----------
    A meta é dividida entre a hora de acordar e a de dormir. Cada copo "cobre" um tempo
    proporcional ao volume (um copo padrão cobre o intervalo escolhido). Beber muito de uma vez
    não estica a cobertura além de 2 intervalos: o resto não conta para os benefícios. */
 function analyze(k){
   var awakeMin = Math.max(60, cfg.sleep - cfg.wake);
-  var perDrink = goal() * cfg.interval / awakeMin;           // ml que cobrem um intervalo
-  var rate = perDrink / (cfg.interval * MS_MIN);             // ml por ms
+  var perDrink = goal() * cfg.interval / awakeMin;
+  var rate = perDrink / (cfg.interval * MS_MIN);
   var maxAhead = 2 * cfg.interval * MS_MIN;
   var cov = null, used = 0;
   var list = (log[k] || []).filter(function(e){ return e.t; }).sort(function(a, b){ return a.t - b.t; });
@@ -424,7 +672,7 @@ function renderPace(){
   var diff = Math.round((t - expected) / 50) * 50;
   if(Math.abs(diff) < 150) el.textContent = 'Você está no ritmo ✅ (o ideal até agora é ' + fmt(expected) + ' ml)';
   else if(diff > 0) el.textContent = 'Você está adiantado: ' + fmt(diff) + ' ml acima do ritmo de agora';
-  else el.textContent = 'Você está atrasado: faltam ' + fmt(-diff) + ' ml para o ritmo de agora. Vá bebendo aos poucos.';
+  else el.textContent = 'Sem pressa: beba um copo agora e siga um a cada ' + dur(cfg.interval * MS_MIN) + ' para fechar sua meta até as ' + toHHMM(cfg.sleep) + '.';
 }
 
 function reachedItems(used, t){
@@ -442,12 +690,19 @@ function headline(pct, t, g){
   return 'Quase lá! Seu corpo está chegando na meta';
 }
 
+function setWater(pct){
+  ['w', 'c'].forEach(function(p){
+    var el = $('water-' + p);
+    if(el) el.style.transform = 'translateY(' + (410 - Math.min(pct, 1) * 400) + 'px)';
+  });
+}
+
 var lastState = null;
 
-function render(){
+function renderWater(){
   var g = goal(), k = key(), t = totalOf(k), a = analyze(k), used = Math.min(a.used, t);
   var pct = g ? t / g : 0;
-  $('water').style.transform = 'translateY(' + (410 - Math.min(pct, 1) * 400) + 'px)';
+  setWater(pct);
   $('total').textContent = fmt(t);
   $('goalTxt').textContent = weight ? ('de ' + fmt(g) + ' ml · ' + Math.round(pct * 100) + '%') : 'Informe seu peso para calcular a meta';
   $('bar').style.width = (Math.min(pct, 1) * 100) + '%';
@@ -473,7 +728,7 @@ function render(){
 
   var wk = '';
   for(var i = 6; i >= 0; i--){
-    var d = new Date(); d.setDate(d.getDate() - i);
+    var d = daysBack(i);
     var tot = totalOf(key(d));
     var h = Math.max(4, Math.min(tot / g, 1.2) / 1.2 * 80);
     var cls = tot >= g ? 'hit' : (tot > 0 ? 'part' : '');
@@ -485,6 +740,139 @@ function render(){
   updateNotifyBtn();
   tick(false);
 }
+
+/* ---------- exercício ---------- */
+function exTotals(k){
+  var o = {};
+  (ex[k] || []).forEach(function(e){ o[e.g] = (o[e.g] || 0) + e.min; });
+  return o;
+}
+function weekTotals(){
+  var o = {};
+  for(var i = 0; i < 7; i++){
+    var t = exTotals(key(daysBack(i)));
+    Object.keys(t).forEach(function(g){ o[g] = (o[g] || 0) + t[g]; });
+  }
+  return o;
+}
+function lvDay(min){ return min >= 40 ? 3 : (min >= 25 ? 2 : (min > 0 ? 1 : 0)); }
+function lvWeek(min){ return min >= 120 ? 3 : (min >= 60 ? 2 : (min > 0 ? 1 : 0)); }
+function sumVals(o){ return Object.keys(o).reduce(function(a, g){ return a + o[g]; }, 0); }
+
+function setLevels(stageId, totals, fn){
+  var st = $(stageId);
+  if(!st) return;
+  EX.forEach(function(e){
+    var lv = fn(totals[e.id] || 0);
+    var els = st.querySelectorAll('.m-' + e.id);
+    for(var i = 0; i < els.length; i++){
+      var c = els[i].getAttribute('class').replace(/\s*\blv\d\b/g, '');
+      els[i].setAttribute('class', c + ' lv' + lv);
+    }
+  });
+}
+
+function renderEx(){
+  var k = key(), tot = exTotals(k), all = sumVals(tot);
+  setLevels('stageX', tot, lvDay);
+  $('exTotal').textContent = fmt(all);
+  var trained = EX.filter(function(e){ return tot[e.id]; });
+  $('exGroupsTxt').textContent = trained.length
+    ? trained.map(function(e){ return e.nome + ' ' + tot[e.id] + ' min'; }).join(' · ')
+    : 'Nenhum treino registrado hoje';
+
+  var tiles = $('exTiles');
+  if(!tiles.children.length){
+    tiles.innerHTML = EX.map(function(e){
+      return '<button type="button" class="tile" data-g="' + e.id + '"><span class="em">' + e.emoji + '</span><span><b>' + e.nome + '</b><small></small></span></button>';
+    }).join('');
+    var btns = tiles.querySelectorAll('.tile');
+    for(var i = 0; i < btns.length; i++){
+      (function(b){ b.onclick = function(){ openEx(b.getAttribute('data-g')); }; })(btns[i]);
+    }
+  }
+  EX.forEach(function(e){
+    var b = tiles.querySelector('[data-g="' + e.id + '"]');
+    b.classList.toggle('on', !!tot[e.id]);
+    b.querySelector('small').textContent = tot[e.id] ? tot[e.id] + ' min hoje' : e.dica;
+  });
+
+  var list = ex[k] || [];
+  var last = list.length ? list[list.length - 1] : null;
+  var h;
+  if(!trained.length) h = 'Seu corpo está pronto para treinar';
+  else if(trained.length === 1) h = 'Hoje você treinou: ' + trained[0].nome.toLowerCase();
+  else h = 'Hoje você treinou: ' + trained.map(function(e){ return e.nome.toLowerCase(); }).join(', ');
+  $('exHeadline').textContent = h;
+  if(last){
+    var lg = exById(last.g), lv = lvDay(tot[last.g]);
+    $('exLatest').textContent = lg.msgs[Math.max(0, lv - 1)];
+  } else {
+    $('exLatest').textContent = 'Escolha um grupo muscular e registre o treino. Cada exercício deixa o seu corpo mais forte aqui. 💪';
+  }
+  var over = trained.filter(function(e){ return tot[e.id] > MAX_EX_MIN; });
+  $('exHint').textContent = over.length
+    ? '🛑 Você já passou de ' + MAX_EX_MIN + ' min em ' + over.map(function(e){ return e.nome.toLowerCase(); }).join(' e ') + ' hoje. Os músculos crescem no descanso, então é melhor parar por hoje.'
+    : '';
+
+  var ul = $('exUnlocked');
+  if(!trained.length){
+    ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Nada ainda. Registre um treino para ver o que ele faz pelo seu corpo.</li>';
+  } else {
+    var items = [];
+    trained.forEach(function(e){
+      var lv = lvDay(tot[e.id]);
+      for(var n = lv; n >= 1; n--) items.push('<li><b>' + e.nome + ' · ' + tot[e.id] + ' min</b>' + e.msgs[n - 1] + '</li>');
+    });
+    ul.innerHTML = items.join('');
+  }
+
+  var wk = '', max = 60, mins = [];
+  for(var d = 6; d >= 0; d--){ var m = sumVals(exTotals(key(daysBack(d)))); mins.push(m); if(m > max) max = m; }
+  for(var j = 6; j >= 0; j--){
+    var dt = daysBack(j), mm = mins[6 - j];
+    var hh = Math.max(4, mm / max * 80);
+    wk += '<div class="col ' + (mm >= 30 ? 'hit' : (mm > 0 ? 'part' : '')) + '"><div class="b" style="height:' + hh + 'px" title="' + mm + ' min"></div><span>' +
+          dt.toLocaleDateString('pt-BR', {weekday: 'narrow'}) + '</span></div>';
+  }
+  $('exWeek').innerHTML = wk;
+}
+
+/* ---------- corpo (visão geral) ---------- */
+function renderCorpo(){
+  var g = goal(), k = key(), t = totalOf(k), pct = g ? t / g : 0;
+  var wkT = weekTotals(), today = exTotals(k), minToday = sumVals(today), nToday = Object.keys(today).length;
+  setLevels('stageC', wkT, lvWeek);
+
+  $('cWater').textContent = weight ? fmt(t) + ' ml' : '—';
+  $('cWaterSub').textContent = weight ? Math.round(pct * 100) + '% da meta' : 'Informe seu peso';
+  $('cEx').textContent = minToday + ' min';
+  $('cExSub').textContent = nToday ? nToday + (nToday > 1 ? ' grupos' : ' grupo') + ' hoje' : 'Nenhum treino hoje';
+  var active = 0;
+  for(var i = 0; i < 7; i++) if(sumVals(exTotals(key(daysBack(i)))) > 0) active++;
+  $('cWeek').textContent = active + ' de 7';
+
+  var water = weight && t >= g, trained = minToday > 0, h, tx;
+  if(water && trained){ h = '🎉 Dia completo!'; tx = 'Corpo hidratado e em movimento: meta de água batida e treino feito. É assim que se constrói saúde, um dia de cada vez.'; }
+  else if(water){ h = '💧 Hidratação em dia'; tx = 'Você bateu a meta de água. Que tal mexer o corpo hoje, nem que seja um treino curto de 15 minutos?'; }
+  else if(trained){ h = '💪 Treino feito!'; tx = 'Não esqueça da água: o músculo precisa estar hidratado para se recuperar bem.' + (weight ? ' Faltam ' + fmt(Math.max(0, g - t)) + ' ml para a sua meta.' : ''); }
+  else { h = 'Seu corpo espera por você'; tx = 'Comece com um copo de água ou um treino curto. Os dois aparecem aqui no seu corpo.'; }
+  $('cHeadline').textContent = h;
+  $('cText').textContent = tx;
+
+  $('cChips').innerHTML = EX.map(function(e){
+    var m = wkT[e.id] || 0;
+    return '<span class="chip l' + lvWeek(m) + '">' + e.emoji + ' ' + e.nome + '<i>' + m + ' min</i></span>';
+  }).join('');
+  var missing = EX.filter(function(e){ return !wkT[e.id]; });
+  var hint;
+  if(missing.length === EX.length) hint = 'Nenhum treino nos últimos 7 dias. Comece com 15 minutos de qualquer grupo.';
+  else if(missing.length) hint = 'Ainda sem treino esta semana: ' + missing.map(function(e){ return e.nome.toLowerCase(); }).join(', ') + '. Equilibrar os grupos é bom para o corpo todo.';
+  else hint = 'Você trabalhou todos os grupos nos últimos 7 dias. Corpo equilibrado! 🏆';
+  $('cHint').textContent = hint;
+}
+
+function renderAll(){ renderWater(); renderEx(); renderCorpo(); }
 
 /* ---------- avisos ---------- */
 var toastTimer;
@@ -554,29 +942,48 @@ function tick(fire){
 }
 
 /* ---------- efeitos ---------- */
-function effects(ml){
-  var stage = $('stage');
+function pulseStage(stage){
   stage.classList.remove('pulse'); void stage.offsetWidth; stage.classList.add('pulse');
-  if(navigator.vibrate){ try{ navigator.vibrate(25); }catch(e){} }
-
+}
+function floatLabel(stage, text, cls){
   var lab = document.createElement('div');
-  lab.className = 'float';
-  lab.textContent = '+' + fmt(ml) + ' ml';
+  lab.className = 'float' + (cls ? ' ' + cls : '');
+  lab.textContent = text;
   stage.appendChild(lab);
   setTimeout(function(){ lab.remove(); }, 1600);
+}
+function ripple(boxId, cx, cy, cls){
+  var box = $(boxId);
+  if(!box || !Element.prototype.animate) return;
+  var r = document.createElementNS(NS, 'circle');
+  r.setAttribute('class', 'ripple' + (cls ? ' ' + cls : ''));
+  r.setAttribute('cx', cx); r.setAttribute('cy', cy); r.setAttribute('r', 14);
+  box.appendChild(r);
+  var a = r.animate([
+    {transform: 'scale(.3)', opacity: .9},
+    {transform: 'scale(2.4)', opacity: 0}
+  ], {duration: 800, easing: 'ease-out', fill: 'forwards'});
+  a.onfinish = function(){ r.remove(); };
+}
+
+function waterEffects(ml){
+  var stage = $('stageW');
+  pulseStage(stage);
+  if(navigator.vibrate){ try{ navigator.vibrate(25); }catch(e){} }
+  floatLabel(stage, '+' + fmt(ml) + ' ml');
 
   if(!Element.prototype.animate) return;
-  var NS = 'http://www.w3.org/2000/svg', box = $('drops');
+  var box = $('fx-w');
   var n = Math.min(10, 3 + Math.round(ml / 100));
   for(var i = 0; i < n; i++){
     (function(i){
       var c = document.createElementNS(NS, 'circle');
       c.setAttribute('class', 'drop');
-      c.setAttribute('cx', 100 + (Math.random() * 30 - 15));
+      c.setAttribute('cx', 100 + rand(-12, 12));
       c.setAttribute('cy', -20);
       c.setAttribute('r', 3 + Math.random() * 3);
       box.appendChild(c);
-      var dist = 78 + Math.random() * 16;
+      var dist = rand(54, 66);
       var a = c.animate([
         {transform: 'translateY(0px)', opacity: 0},
         {transform: 'translateY(' + (dist * 0.15) + 'px)', opacity: 1, offset: 0.15},
@@ -585,26 +992,52 @@ function effects(ml){
       ], {duration: 800 + Math.random() * 300, delay: i * 90, easing: 'ease-in', fill: 'forwards'});
       a.onfinish = function(){
         c.remove();
-        if(i === n - 1) ripple();
+        if(i === n - 1) ripple('fx-w', 100, 44);
       };
     })(i);
   }
 }
-function ripple(){
-  var NS = 'http://www.w3.org/2000/svg', box = $('drops');
-  var r = document.createElementNS(NS, 'circle');
-  r.setAttribute('class', 'ripple');
-  r.setAttribute('cx', 100); r.setAttribute('cy', 64); r.setAttribute('r', 14);
-  box.appendChild(r);
-  var a = r.animate([
-    {transform: 'scale(.3)', opacity: .9},
-    {transform: 'scale(2.2)', opacity: 0}
-  ], {duration: 800, easing: 'ease-out', fill: 'forwards'});
-  a.onfinish = function(){ r.remove(); };
-}
-function celebrate(){
+
+var FX_POS = {
+  bracos:[[36,128],[164,128]], peito:[[100,104]], costas:[[73,148],[127,148]], ombros:[[57,90],[143,90]],
+  abdomen:[[100,162]], pernas:[[83,250],[117,250]], cardio:[[112,104]]
+};
+function muscleEffects(g, lv){
+  var stage = $('stageX'), e = exById(g);
+  pulseStage(stage);
+  if(navigator.vibrate){ try{ navigator.vibrate(40); }catch(er){} }
+  floatLabel(stage, e.emoji + ' ' + e.nome, 'fx');
+  var els = stage.querySelectorAll('.m-' + g);
+  for(var i = 0; i < els.length; i++){
+    els[i].classList.remove('flash'); void els[i].getBoundingClientRect();
+    els[i].classList.add('flash');
+    (function(el){ setTimeout(function(){ el.classList.remove('flash'); }, 1000); })(els[i]);
+  }
   if(!Element.prototype.animate) return;
-  var stage = $('stage'), em = ['💙', '✨', '💧', '🎉'];
+  var box = $('fx-x'), em = ['✨', '💥', '🔥'];
+  (FX_POS[g] || []).forEach(function(p){
+    ripple('fx-x', p[0], p[1], 'fx');
+    for(var n = 0; n < 3; n++){
+      (function(n){
+        var t = document.createElementNS(NS, 'text');
+        t.setAttribute('x', p[0]); t.setAttribute('y', p[1]);
+        t.setAttribute('font-size', '14'); t.setAttribute('text-anchor', 'middle');
+        t.textContent = em[n % em.length];
+        box.appendChild(t);
+        var a = t.animate([
+          {transform: 'translate(0px,0px) scale(.5)', opacity: 0},
+          {opacity: 1, offset: 0.3},
+          {transform: 'translate(' + rand(-22, 22) + 'px,' + rand(-44, -26) + 'px) scale(1.2)', opacity: 0}
+        ], {duration: 900 + Math.random() * 300, delay: n * 120, easing: 'ease-out', fill: 'forwards'});
+        a.onfinish = function(){ t.remove(); };
+      })(n);
+    }
+  });
+}
+
+function celebrate(stageId, em){
+  if(!Element.prototype.animate) return;
+  var stage = $(stageId);
   for(var i = 0; i < 18; i++){
     (function(i){
       var s = document.createElement('span');
@@ -628,8 +1061,8 @@ function add(ml){
   (log[k] = log[k] || []).push({ml: ml, t: Date.now()});
   persist();
   var ta = totalOf(k), ua = analyze(k).used;
-  render();
-  effects(ml);
+  renderAll();
+  waterEffects(ml);
   var st = getStatus();
   if(st.s === 'over'){
     buzz();
@@ -640,13 +1073,64 @@ function add(ml){
     return;
   }
   if(tb < g && ta >= g){
-    celebrate();
+    celebrate('stageW', ['💙', '✨', '💧', '🎉']);
     toast(GOAL_MSG);
     return;
   }
   var fresh = MILESTONES.filter(function(x){ return x.ml > ub && x.ml <= ua; });
   toast(fresh.length ? fresh[fresh.length - 1].t : '+' + fmt(ml) + ' ml registrados 💧');
 }
+
+/* ---------- registrar exercício ---------- */
+var exGroup = null;
+function openEx(g){
+  exGroup = g;
+  var e = exById(g);
+  $('exModalTitle').textContent = e.emoji + ' ' + e.nome + ': quanto tempo?';
+  $('exModalHint').textContent = 'Ex.: ' + e.dica + '. 30 min ou mais já desbloqueia mais benefícios.';
+  $('exInput').value = ''; $('exErr').textContent = '';
+  open('mEx');
+}
+function addEx(g, min){
+  var k = key(), e = exById(g);
+  var before = exTotals(k)[g] || 0, lb = lvDay(before);
+  (ex[k] = ex[k] || []).push({g: g, min: min, t: Date.now()});
+  persist();
+  var after = before + min, la = lvDay(after);
+  renderAll();
+  muscleEffects(g, la);
+  if(after > MAX_EX_MIN){
+    buzz();
+    toast('🛑 Já são ' + after + ' min de ' + e.nome.toLowerCase() + ' hoje. Os músculos crescem no descanso: melhor parar por aqui.');
+    return;
+  }
+  if(la > lb){
+    toast(e.msgs[la - 1]);
+    if(la === 3) celebrate('stageX', ['🔥', '💪', '✨', '🏆']);
+  } else {
+    toast(MOTIV[Math.floor(Math.random() * MOTIV.length)]);
+  }
+}
+var mins = document.querySelectorAll('#mEx .mins button');
+for(var mi = 0; mi < mins.length; mi++){
+  (function(b){ b.onclick = function(){ close('mEx'); addEx(exGroup, parseInt(b.getAttribute('data-min'), 10)); }; })(mins[mi]);
+}
+$('exCancel').onclick = function(){ close('mEx'); };
+$('exSave').onclick = function(){
+  var v = Math.round(parseFloat(String($('exInput').value).replace(',', '.')));
+  if(!(v >= 5 && v <= 240)){ $('exErr').textContent = 'Digite entre 5 e 240 minutos.'; return; }
+  close('mEx');
+  addEx(exGroup, v);
+};
+$('btnUndoEx').onclick = function(){
+  var k = key();
+  if(ex[k] && ex[k].length){
+    var r = ex[k].pop();
+    if(!ex[k].length) delete ex[k];
+    persist(); renderAll();
+    toast('Removido: ' + exById(r.g).nome.toLowerCase() + ', ' + r.min + ' min');
+  }
+};
 
 /* ---------- janelas ---------- */
 function open(id){ $(id).classList.add('open'); }
@@ -661,6 +1145,7 @@ function openSettings(first){
   $('wakeInput').value = toHHMM(cfg.wake);
   $('sleepInput').value = toHHMM(cfg.sleep);
   $('intervalInput').value = String(cfg.interval);
+  $('themeInput').value = theme;
   $('weightErr').textContent = '';
   open('mWeight');
   setTimeout(function(){ $('weightInput').focus(); }, 50);
@@ -679,7 +1164,7 @@ $('wSave').onclick = function(){
   save('cfg', cfg);
   weightLocked = false;
   close('mWeight');
-  render();
+  renderAll();
   toast('Meta de hoje: ' + fmt(goal()) + ' ml, com um copo a cada ' + dur(cfg.interval * MS_MIN) + ' 💧');
 };
 
@@ -711,7 +1196,7 @@ $('copyPix').onclick = function(){
   } else { fallback(); }
 };
 
-['mWeight', 'mOther', 'mDonate'].forEach(function(id){
+['mWeight', 'mOther', 'mDonate', 'mEx'].forEach(function(id){
   $(id).addEventListener('click', function(e){
     if(e.target !== $(id)) return;
     if(id === 'mWeight' && weightLocked) return;
@@ -728,24 +1213,66 @@ $('btnUndo').onclick = function(){
   if(log[k] && log[k].length){
     var r = log[k].pop();
     if(!log[k].length) delete log[k];
-    persist(); render();
+    persist(); renderAll();
     toast('Removido: ' + fmt(r.ml) + ' ml');
   }
 };
+
+/* ---------- tema ---------- */
+var THEME_NAMES = {auto: 'automático', light: 'claro', dark: 'escuro'};
+function applyTheme(){
+  var r = document.documentElement;
+  if(theme === 'light' || theme === 'dark') r.setAttribute('data-theme', theme); else r.removeAttribute('data-theme');
+  var dark = theme === 'dark' || (theme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  $('metaTheme').setAttribute('content', dark ? '#08141d' : '#0b84d8');
+  $('btnTheme').textContent = theme === 'dark' ? '🌙' : (theme === 'light' ? '☀️' : '🌓');
+  $('themeInput').value = theme;
+}
+function setTheme(t){ theme = t; save('theme', t); applyTheme(); }
+$('btnTheme').onclick = function(){
+  var next = theme === 'auto' ? 'light' : (theme === 'light' ? 'dark' : 'auto');
+  setTheme(next);
+  toast('Tema ' + THEME_NAMES[next]);
+};
+$('themeInput').onchange = function(){ setTheme($('themeInput').value); };
+if(window.matchMedia){
+  try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ if(theme === 'auto') applyTheme(); }); }catch(e){}
+}
+
+/* ---------- abas ---------- */
+var TITLES = {agua: '💧 Água', ex: '💪 Exercício', corpo: '🧍 Meu corpo'};
+function showTab(t){
+  tab = t; save('tab', t);
+  ['agua', 'ex', 'corpo'].forEach(function(id){
+    $('tab-' + id).hidden = (id !== t);
+    $('nav-' + id).classList.toggle('on', id === t);
+    if(id === t) $('nav-' + id).setAttribute('aria-current', 'page'); else $('nav-' + id).removeAttribute('aria-current');
+  });
+  $('pageTitle').textContent = TITLES[t];
+  try{ window.scrollTo(0, 0); }catch(e){}
+  renderAll();
+}
+['agua', 'ex', 'corpo'].forEach(function(id){
+  $('nav-' + id).onclick = function(){ showTab(id); };
+});
 
 function setDate(){
   $('dateTxt').textContent = new Date().toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'long'});
 }
 document.addEventListener('visibilitychange', function(){
-  if(!document.hidden){ setDate(); render(); }
+  if(!document.hidden){ setDate(); renderAll(); }
 });
 
 /* ---------- início ---------- */
+$('stageW').innerHTML = bodySVG('w', 'water');
+$('stageX').innerHTML = bodySVG('x', 'muscle');
+$('stageC').innerHTML = bodySVG('c', 'both');
+applyTheme();
 setDate();
-requestAnimationFrame(function(){ requestAnimationFrame(render); });
-tick(false);
+showTab(tab);
+requestAnimationFrame(function(){ requestAnimationFrame(renderAll); });
 setInterval(function(){ tick(true); }, 30000);
-if(!weight) setTimeout(function(){ openSettings(true); }, 400);
+if(!weight && tab === 'agua') setTimeout(function(){ openSettings(true); }, 400);
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
