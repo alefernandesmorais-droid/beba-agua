@@ -22,16 +22,17 @@
   --bg:#f2f8fd; --card:#ffffff; --text:#0f2a3d; --muted:#5b7487;
   --accent:#0b84d8; --line:#d6e6f2; --water1:#4fc3f7; --water2:#0b84d8; --shape:#e3effa;
   --fx1:#ffb347; --fx2:#ff5a3c; --fxtext:#d9480f; --nav:rgba(255,255,255,.94);
+  --fd1:#8fdc6b; --fd2:#2fb344; --fdtext:#237a34;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#16303f; --accent:#4fb3f5;
-    --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94);
+    --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94); --fdtext:#8fe39b;
   }
 }
 :root[data-theme="dark"]{
   --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#16303f; --accent:#4fb3f5;
-  --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94);
+  --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94); --fdtext:#8fe39b;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none !important}
@@ -131,7 +132,7 @@ h1{font-size:1.3rem;margin:0}
 .week.ex .col.hit .b{background:linear-gradient(180deg,var(--fx1),var(--fx2))}
 .week span{font-size:.75rem;color:var(--muted);text-transform:uppercase}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center}
 .stat .v{font-weight:800;font-size:1rem;line-height:1.25}
 .stat .l{font-size:.7rem;color:var(--muted);margin-top:2px}
@@ -143,6 +144,38 @@ h1{font-size:1.3rem;margin:0}
 .chip.l2{background:rgba(255,138,61,.28);border-color:var(--fx2)}
 .chip.l3{background:rgba(255,90,60,.34);border-color:var(--fx2);font-weight:700}
 
+/* alimentação */
+.stage.plate{width:min(62vw,250px)}
+.pl{fill:var(--shape);stroke:var(--card);stroke-width:2;transition:fill .6s,fill-opacity .6s}
+.pl.lv1{fill:var(--fd1);fill-opacity:.55}
+.pl.lv2{fill:var(--fd1);fill-opacity:.95}
+.pl.lv3{fill:var(--fd2);fill-opacity:1}
+.ripple.fd{stroke:var(--fd2)}
+.float.fd{color:var(--fdtext)}
+.tile.on.fd{border-color:var(--fd2);background:rgba(47,179,68,.10)}
+.tile.on.fd small{color:var(--fdtext)}
+.list.fd li{border-left-color:var(--fd2)}
+.list.fd li b{color:var(--fdtext)}
+.week.fd .col.hit .b{background:linear-gradient(180deg,var(--fd1),var(--fd2))}
+.week.fd .col.part .b{background:var(--fd1);opacity:.6}
+.chip.f1{background:rgba(143,220,107,.22);border-color:var(--fd1)}
+.chip.f2{background:rgba(63,190,80,.26);border-color:var(--fd2)}
+.chip.f3{background:rgba(47,179,68,.34);border-color:var(--fd2);font-weight:700}
+/* sequência */
+.streak{display:flex;align-items:center;gap:12px}
+.streak .flame{font-size:2.2rem;line-height:1}
+.streak b{display:block;font-size:1.15rem}
+.streak .latest{font-size:.9rem;color:var(--muted)}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--line)}
+.dot.on{background:linear-gradient(180deg,var(--fx1),var(--fx2))}
+.dot.rest{background:#f5a524;opacity:.6}
+.dot.today{outline:2px solid var(--accent);outline-offset:2px}
+.rests{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.rests .btn{flex:none;padding:8px 12px;font-size:.85rem}
+/* dica entre abas */
+.cross{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--card);border:1px dashed var(--line);font-size:.9rem;line-height:1.45}
+.cross:empty{display:none}
 footer{margin-top:22px;text-align:center}
 .donate{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:14px;padding:12px 18px;font-size:.95rem;font-weight:600;cursor:pointer}
 .note{color:var(--muted);font-size:.75rem;line-height:1.5;margin:14px 6px 0}
@@ -206,6 +239,7 @@ footer{margin-top:22px;text-align:center}
       <div class="st-text" id="stText"></div>
     </div>
     <div class="pace" id="paceTxt"></div>
+    <div class="cross" id="crossW"></div>
 
     <div class="adds">
       <button class="add" type="button" data-ml="200">+200</button>
@@ -247,6 +281,7 @@ footer{margin-top:22px;text-align:center}
 
     <div class="tiles" id="exTiles"></div>
     <button class="link" id="btnUndoEx" type="button">↩ Desfazer último treino</button>
+    <div class="cross" id="crossX"></div>
 
     <section class="card">
       <div class="kicker">Seu corpo agora</div>
@@ -268,6 +303,39 @@ footer{margin-top:22px;text-align:center}
     <p class="note">As informações são de caráter geral e não substituem a orientação de um médico ou de um profissional de educação física. Se sentir dor forte, tontura ou mal-estar durante o exercício, pare e procure orientação. Os músculos se fortalecem no descanso, então respeite os intervalos entre os treinos.</p>
   </main>
 
+  <!-- ================= COMIDA ================= -->
+  <main id="tab-comida" hidden>
+    <div class="stage plate" id="stageF"></div>
+
+    <div class="numbers">
+      <div class="big"><span id="fdTotal">0</span><small> de 6 grupos hoje</small></div>
+      <div class="sub" id="fdGroupsTxt"></div>
+    </div>
+
+    <div class="tiles" id="fdTiles"></div>
+    <button class="link" id="btnUndoFd" type="button">↩ Desfazer último</button>
+    <div class="cross" id="crossF"></div>
+
+    <section class="card">
+      <div class="kicker">Seu corpo agora</div>
+      <h2 id="fdHeadline"></h2>
+      <p class="latest" id="fdLatest"></p>
+      <p class="hint" id="fdHint"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Benefícios de hoje</div>
+      <ul class="list fd" id="fdUnlocked"></ul>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Grupos por dia (últimos 7 dias)</div>
+      <div class="week fd" id="fdWeek"></div>
+    </section>
+
+    <p class="note">Aqui não contamos calorias nem pesos: o foco é a variedade. As informações são de caráter geral e não substituem a orientação de um médico ou nutricionista. Se você tem alergia, restrição alimentar, uma doença ou histórico de transtorno alimentar, siga o acompanhamento profissional. A recomendação de pelo menos 400 g de frutas e verduras por dia é da Organização Mundial da Saúde.</p>
+  </main>
+
   <!-- ================= CORPO ================= -->
   <main id="tab-corpo" hidden>
     <div class="stage both" id="stageC"></div>
@@ -276,7 +344,8 @@ footer{margin-top:22px;text-align:center}
     <div class="stats">
       <div class="stat"><div class="v" id="cWater">—</div><div class="l" id="cWaterSub">Água hoje</div></div>
       <div class="stat"><div class="v" id="cEx">0 min</div><div class="l" id="cExSub">Treino hoje</div></div>
-      <div class="stat"><div class="v" id="cWeek">0 de 7</div><div class="l">Dias com treino</div></div>
+      <div class="stat"><div class="v" id="cFood">0 de 6</div><div class="l" id="cFoodSub">grupos de comida</div></div>
+      <div class="stat"><div class="v" id="cStreak">0 dias</div><div class="l" id="cStreakSub">de sequência</div></div>
     </div>
 
     <section class="card">
@@ -286,14 +355,26 @@ footer{margin-top:22px;text-align:center}
     </section>
 
     <section class="card">
+      <div class="kicker">Sequência</div>
+      <div class="streak">
+        <span class="flame">🔥</span>
+        <div><b id="sTitle"></b><div class="latest" id="sText"></div></div>
+      </div>
+      <div class="dots" id="sDots"></div>
+      <div class="rests" id="sRests"></div>
+      <p class="hint">Um dia conta quando você bate a meta de água, treina pelo menos 15 minutos ou registra 3 grupos de comida. Um dia de folga mantém a sequência (até 2 por semana).</p>
+    </section>
+
+    <section class="card">
       <div class="kicker">Músculos da semana</div>
       <div class="chips" id="cChips"></div>
       <p class="hint" id="cHint"></p>
     </section>
 
     <section class="card">
-      <div class="kicker">Em breve</div>
-      <p class="latest">🍎 <b>Alimentação:</b> registre frutas, legumes, carnes e peixes e veja o que cada grupo faz pelo seu corpo. Quando chegar, ele também vai aparecer aqui.</p>
+      <div class="kicker">Alimentação da semana</div>
+      <div class="chips" id="cFoodChips"></div>
+      <p class="hint" id="cFoodHint"></p>
     </section>
   </main>
 
@@ -307,6 +388,7 @@ footer{margin-top:22px;text-align:center}
   <div class="nav-in">
     <button type="button" id="nav-agua" data-tab="agua"><span>💧</span>Água</button>
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
+    <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
     <button type="button" id="nav-corpo" data-tab="corpo"><span>🧍</span>Corpo</button>
   </div>
 </nav>
@@ -316,7 +398,7 @@ footer{margin-top:22px;text-align:center}
 <div class="overlay" id="mWeight">
   <div class="modal">
     <h3 id="setTitle">Ajustes</h3>
-    <p>Calculamos sua meta de água (cerca de 37 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme.</p>
+    <p>Calculamos sua meta de água (cerca de 37 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme. A meta é uma referência: se você não está com sede, não precisa forçar. Se tem alguma condição de saúde, siga a orientação do seu médico.</p>
     <label class="lbl" for="weightInput">Seu peso (kg)</label>
     <input id="weightInput" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Ex.: 80">
     <div class="two">
@@ -341,6 +423,13 @@ footer{margin-top:22px;text-align:center}
       <option value="light">Claro</option>
       <option value="dark">Escuro</option>
     </select>
+    <label class="lbl">Seus dados</label>
+    <div class="row" style="margin-top:0">
+      <button class="btn" id="btnExport" type="button">⬇️ Exportar</button>
+      <button class="btn" id="btnImport" type="button">⬆️ Importar</button>
+    </div>
+    <input type="file" id="fileImport" accept="application/json,.json" hidden>
+    <p class="hint">Tudo fica salvo só neste aparelho. Exporte de vez em quando para não perder seus dados se trocar de celular ou limpar o navegador.</p>
     <div class="err" id="weightErr"></div>
     <div class="row">
       <button class="btn" id="wCancel" type="button">Cancelar</button>
@@ -420,12 +509,12 @@ var MILESTONES = [
   {ml:750,  t:'🌡️ A água ajuda a regular a temperatura do corpo e a manter as articulações lubrificadas.'},
   {ml:1000, t:'⚡ 1 litro! Seu corpo está hidratado e com mais disposição — até uma leve desidratação pode causar cansaço.'},
   {ml:1250, t:'🌿 Seu intestino agradece: água ajuda na digestão e a evitar a prisão de ventre.'},
-  {ml:1500, t:'🫘 Seus rins agradecem: beber bastante água ajuda a filtrar o sangue e reduz o risco de pedras nos rins.'},
-  {ml:1750, t:'💪 Seus músculos ficam mais bem hidratados, o que ajuda no desempenho e a evitar cãibras.'},
-  {ml:2000, t:'✨ 2 litros! Você está chegando na meta. A pele tende a ficar mais hidratada e com melhor aparência.'},
+  {ml:1500, t:'🫘 Seus rins agradecem: beber água ao longo do dia ajuda a filtrar o sangue e a reduzir o risco de pedras nos rins.'},
+  {ml:1750, t:'💪 Seus músculos precisam de água para funcionar bem, principalmente em dias de treino.'},
+  {ml:2000, t:'✨ 2 litros! Você está chegando na meta. Uma boa hidratação faz parte de uma pele saudável, junto com alimentação e sono.'},
   {ml:2250, t:'❤️ Seu coração agradece: com boa hidratação, o sangue circula com menos esforço.'},
-  {ml:2500, t:'🍽️ Falta pouco! Água ajuda a diferenciar sede de fome e a controlar a vontade de beliscar.'},
-  {ml:2750, t:'😴 Corpo quase 100% hidratado: isso ajuda na recuperação e em uma noite de sono melhor.'},
+  {ml:2500, t:'🍽️ Falta pouco! Às vezes a sede é confundida com fome: um copo de água pode ajudar a perceber a diferença.'},
+  {ml:2750, t:'🌙 Quase na meta! Beba aos poucos e evite exagerar perto da hora de dormir.'},
   {ml:3000, t:'🏆 3 litros! Seu corpo está muito bem hidratado.'}
 ];
 var GOAL_MSG = '🎉 Meta batida! Seu corpo está hidratado: mais energia, rins bem cuidados e músculos agradecendo. Parabéns!';
@@ -479,6 +568,64 @@ var MOTIV = [
   'Cada treino de hoje é um favor para o seu eu do futuro. 🏆'
 ];
 function exById(id){ for(var i = 0; i < EX.length; i++) if(EX[i].id === id) return EX[i]; return null; }
+
+/* ---------- conteúdo: alimentação ----------
+   Sem calorias: só variedade. Cada porção registrada de um grupo libera uma mensagem (até 3 por grupo). */
+var FOOD = [
+  {id:'frutas', nome:'Frutas', emoji:'🍎', dica:'maçã, banana, laranja', msgs:[
+    '🍎 Primeira fruta do dia! Frutas trazem vitaminas, fibras e água para o seu corpo.',
+    '🍊 Segunda porção! A OMS recomenda pelo menos 400 g de frutas e verduras por dia (cerca de 5 porções), e você está no caminho.',
+    '🍓 Que capricho! Variar as frutas ao longo da semana traz mais variedade de vitaminas e fibras.'
+  ]},
+  {id:'legumes', nome:'Legumes e verduras', emoji:'🥦', dica:'brócolis, cenoura, alface', msgs:[
+    '🥦 Legumes e verduras no prato! São fonte de fibras, vitaminas e minerais e ajudam o intestino a funcionar bem.',
+    '🥕 Segunda porção! As fibras ajudam na digestão e deixam a refeição mais completa e saciante.',
+    '🥗 Prato colorido! Quanto mais variado o prato, mais variedade de nutrientes chega ao seu corpo.'
+  ]},
+  {id:'carnes', nome:'Carnes e ovos', emoji:'🥩', dica:'frango, carne, ovos', msgs:[
+    '🥩 Proteína no prato! Ela ajuda a construir e a manter os músculos.',
+    '🍳 Carnes e ovos também trazem ferro e vitamina B12, importantes para o sangue e a energia.',
+    '💪 Proteína ao longo do dia ajuda na recuperação depois dos treinos. Vale preferir cortes magros e variar as fontes.'
+  ]},
+  {id:'peixes', nome:'Peixes', emoji:'🐟', dica:'sardinha, salmão, atum', msgs:[
+    '🐟 Peixe no prato! É uma ótima fonte de proteína e de gorduras boas.',
+    '❤️ Peixes, principalmente os gordurosos como sardinha e salmão, têm ômega-3, que faz parte de uma alimentação boa para o coração.',
+    '🌊 Incluir peixe na rotina ao longo da semana é uma recomendação comum nos guias de alimentação saudável.'
+  ]},
+  {id:'graos', nome:'Feijões e grãos', emoji:'🫘', dica:'feijão, arroz, aveia', msgs:[
+    '🫘 Feijões e grãos dão energia e fibras. O clássico arroz com feijão é uma combinação muito nutritiva.',
+    '🌾 Grãos integrais e feijões trazem fibras, que ajudam na digestão e na saciedade.',
+    '⚡ Boa fonte de energia para o dia e para os treinos. Vale preferir as versões integrais quando puder.'
+  ]},
+  {id:'laticinios', nome:'Laticínios', emoji:'🥛', dica:'leite, iogurte, queijo', msgs:[
+    '🥛 Laticínios são fonte de cálcio, importante para ossos e dentes.',
+    '🦴 Cálcio e proteína juntos ajudam a manter ossos e músculos fortes.',
+    '✨ Boa porção do dia! Quem não consome laticínios pode buscar cálcio em outras fontes, como vegetais verde-escuros.'
+  ]}
+];
+var FOOD_MOTIV = [
+  'Boa escolha! Variar o prato é o segredo. 🌈',
+  'Seu corpo agradece cada refeição bem pensada. 🙌',
+  'Sem culpa e sem pressa: o que vale é a variedade ao longo da semana. 💚'
+];
+function foodById(id){ for(var i = 0; i < FOOD.length; i++) if(FOOD[i].id === id) return FOOD[i]; return null; }
+/* o prato: 6 fatias, uma por grupo */
+function plateSVG(){
+  var cx = 100, cy = 100, r = 88, n = FOOD.length;
+  var out = '<svg viewBox="0 0 200 200" role="img" aria-label="Prato com os grupos de alimentos">' +
+            '<circle cx="100" cy="100" r="96" fill="var(--card)" stroke="var(--line)" stroke-width="3"/>';
+  var txt = '';
+  FOOD.forEach(function(f, i){
+    var a0 = (i * 360 / n - 90) * Math.PI / 180, a1 = ((i + 1) * 360 / n - 90) * Math.PI / 180, am = (a0 + a1) / 2;
+    var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0), x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+    out += '<path class="pl pl-' + f.id + ' lv0" d="M' + cx + ' ' + cy + ' L' + x0.toFixed(1) + ' ' + y0.toFixed(1) +
+           ' A' + r + ' ' + r + ' 0 0 1 ' + x1.toFixed(1) + ' ' + y1.toFixed(1) + ' Z"/>';
+    f.px = +(cx + 56 * Math.cos(am)).toFixed(1); f.py = +(cy + 56 * Math.sin(am)).toFixed(1);
+    txt += '<text x="' + f.px + '" y="' + (f.py + 9) + '" font-size="28" text-anchor="middle">' + f.emoji + '</text>';
+  });
+  return out + txt + '<g id="fx-f"></g></svg>';
+}
+
 
 /* ---------- o corpo (desenho) ----------
    g = grupo muscular (null = silhueta); m = tem lado espelhado; rot = [graus, x, y] */
@@ -565,9 +712,12 @@ var weight = load('weight', null);
 var cfg = load('cfg', null) || {wake: 420, sleep: 1320, interval: 90};
 var log = load('log', {});
 var ex = load('ex', {});
+var fd = load('fd', {});
+var rest = load('rest', {});
+var TABS = ['agua', 'ex', 'comida', 'corpo'];
 var theme = load('theme', 'auto');
 var tab = load('tab', 'agua');
-if(['agua', 'ex', 'corpo'].indexOf(tab) < 0) tab = 'agua';
+if(TABS.indexOf(tab) < 0) tab = 'agua';
 /* registros antigos eram só números; agora cada um tem ml e horário */
 Object.keys(log).forEach(function(k){
   log[k] = (log[k] || []).map(function(e){ return (typeof e === 'number') ? {ml: e, t: null} : e; });
@@ -582,8 +732,12 @@ function persist(){
   var ck = key(cutoff);
   Object.keys(log).forEach(function(k){ if(k < ck) delete log[k]; });
   Object.keys(ex).forEach(function(k){ if(k < ck) delete ex[k]; });
+  Object.keys(fd).forEach(function(k){ if(k < ck) delete fd[k]; });
+  Object.keys(rest).forEach(function(k){ if(k < ck) delete rest[k]; });
   save('log', log);
   save('ex', ex);
+  save('fd', fd);
+  save('rest', rest);
 }
 
 /* ---------- água: ritmo e hidratação ----------
@@ -838,25 +992,219 @@ function renderEx(){
   $('exWeek').innerHTML = wk;
 }
 
+/* ---------- alimentação ---------- */
+function fdTotals(k){
+  var o = {};
+  (fd[k] || []).forEach(function(e){ o[e.g] = (o[e.g] || 0) + 1; });
+  return o;
+}
+function fdWeek(){
+  var o = {};
+  for(var i = 0; i < 7; i++){
+    var t = fdTotals(key(daysBack(i)));
+    Object.keys(t).forEach(function(g){ o[g] = (o[g] || 0) + t[g]; });
+  }
+  return o;
+}
+function lvFood(n){ return n >= 3 ? 3 : n; }
+function lvFoodWeek(n){ return n >= 14 ? 3 : (n >= 7 ? 2 : (n > 0 ? 1 : 0)); }
+
+function renderFood(){
+  var k = key(), tot = fdTotals(k), n = Object.keys(tot).length;
+  var st = $('stageF');
+  FOOD.forEach(function(f){
+    var el = st.querySelector('.pl-' + f.id);
+    if(el) el.setAttribute('class', 'pl pl-' + f.id + ' lv' + lvFood(tot[f.id] || 0));
+  });
+  $('fdTotal').textContent = n;
+  var eaten = FOOD.filter(function(f){ return tot[f.id]; });
+  $('fdGroupsTxt').textContent = eaten.length
+    ? eaten.map(function(f){ return f.nome + ' ×' + tot[f.id]; }).join(' · ')
+    : 'Nenhum alimento registrado hoje';
+
+  var tiles = $('fdTiles');
+  if(!tiles.children.length){
+    tiles.innerHTML = FOOD.map(function(f){
+      return '<button type="button" class="tile fd" data-g="' + f.id + '"><span class="em">' + f.emoji + '</span><span><b>' + f.nome + '</b><small></small></span></button>';
+    }).join('');
+    var btns = tiles.querySelectorAll('.tile');
+    for(var i = 0; i < btns.length; i++){
+      (function(b){ b.onclick = function(){ addFood(b.getAttribute('data-g')); }; })(btns[i]);
+    }
+  }
+  FOOD.forEach(function(f){
+    var b = tiles.querySelector('[data-g="' + f.id + '"]');
+    b.classList.toggle('on', !!tot[f.id]);
+    b.querySelector('small').textContent = tot[f.id] ? tot[f.id] + (tot[f.id] > 1 ? ' porções hoje' : ' porção hoje') : f.dica;
+  });
+
+  var list = fd[k] || [], last = list.length ? list[list.length - 1] : null;
+  $('fdHeadline').textContent = n === 0 ? 'Seu prato está vazio' : (n >= 4 ? 'Prato variado! 🌈' : 'Hoje: ' + n + ' de ' + FOOD.length + ' grupos');
+  if(last){
+    var lf = foodById(last.g);
+    $('fdLatest').textContent = lf.msgs[Math.max(0, lvFood(tot[last.g]) - 1)];
+  } else {
+    $('fdLatest').textContent = 'Toque em um grupo cada vez que comer uma porção. Sem contar calorias, só variedade. 🍽️';
+  }
+  var big = eaten.filter(function(f){ return tot[f.id] >= 6; });
+  $('fdHint').textContent = big.length ? '💡 Que tal variar? Cada grupo traz nutrientes diferentes.' : '';
+
+  var ul = $('fdUnlocked');
+  if(!eaten.length){
+    ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Nada ainda. Registre o que você comeu para ver o que cada grupo faz pelo seu corpo.</li>';
+  } else {
+    var items = [];
+    eaten.forEach(function(f){
+      for(var m = lvFood(tot[f.id]); m >= 1; m--) items.push('<li><b>' + f.nome + ' · ' + tot[f.id] + (tot[f.id] > 1 ? ' porções' : ' porção') + '</b>' + f.msgs[m - 1] + '</li>');
+    });
+    ul.innerHTML = items.join('');
+  }
+
+  var wk = '';
+  for(var j = 6; j >= 0; j--){
+    var dt = daysBack(j), c = Object.keys(fdTotals(key(dt))).length;
+    wk += '<div class="col ' + (c >= 3 ? 'hit' : (c > 0 ? 'part' : '')) + '"><div class="b" style="height:' + Math.max(4, c / FOOD.length * 80) + 'px" title="' + c + ' grupos"></div><span>' +
+          dt.toLocaleDateString('pt-BR', {weekday: 'narrow'}) + '</span></div>';
+  }
+  $('fdWeek').innerHTML = wk;
+}
+
+function foodEffects(g){
+  var stage = $('stageF'), f = foodById(g);
+  pulseStage(stage);
+  if(navigator.vibrate){ try{ navigator.vibrate(30); }catch(er){} }
+  floatLabel(stage, f.emoji + ' ' + f.nome, 'fd');
+  ripple('fx-f', f.px, f.py, 'fd');
+  if(!Element.prototype.animate) return;
+  var box = $('fx-f'), em = ['✨', '🌿', '💚'];
+  for(var n = 0; n < 3; n++){
+    (function(n){
+      var t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', f.px); t.setAttribute('y', f.py);
+      t.setAttribute('font-size', '14'); t.setAttribute('text-anchor', 'middle');
+      t.textContent = em[n];
+      box.appendChild(t);
+      var a = t.animate([
+        {transform: 'translate(0px,0px) scale(.5)', opacity: 0},
+        {opacity: 1, offset: 0.3},
+        {transform: 'translate(' + rand(-24, 24) + 'px,' + rand(-40, -22) + 'px) scale(1.2)', opacity: 0}
+      ], {duration: 900 + Math.random() * 300, delay: n * 120, easing: 'ease-out', fill: 'forwards'});
+      a.onfinish = function(){ t.remove(); };
+    })(n);
+  }
+}
+
+function addFood(g){
+  var k = key(), f = foodById(g), before = fdTotals(k)[g] || 0, nb = Object.keys(fdTotals(k)).length;
+  (fd[k] = fd[k] || []).push({g: g, t: Date.now()});
+  persist();
+  var after = before + 1, na = Object.keys(fdTotals(k)).length;
+  renderAll();
+  foodEffects(g);
+  if(nb < 4 && na >= 4){
+    celebrate('stageF', ['🌈', '🥦', '🍎', '✨']);
+    toast('🌈 Prato variado! 4 grupos de alimentos hoje: a variedade é a base de uma boa alimentação.');
+  } else if(after <= 3){
+    toast(f.msgs[after - 1]);
+  } else {
+    toast(FOOD_MOTIV[Math.floor(Math.random() * FOOD_MOTIV.length)]);
+  }
+}
+$('btnUndoFd').onclick = function(){
+  var k = key();
+  if(fd[k] && fd[k].length){
+    var r = fd[k].pop();
+    if(!fd[k].length) delete fd[k];
+    persist(); renderAll();
+    toast('Removido: ' + foodById(r.g).nome.toLowerCase());
+  }
+};
+
+/* ---------- sequência ---------- */
+function dayInfo(d){
+  var k = key(d);
+  var w = !!(weight && totalOf(k) >= goal());
+  var t = sumVals(exTotals(k)) >= 15;
+  var f = Object.keys(fdTotals(k)).length >= 3;
+  return {active: w || t || f, rest: !!rest[k]};
+}
+function streakFrom(i0){
+  var n = 0;
+  for(var i = i0; i < 400; i++){
+    var di = dayInfo(daysBack(i));
+    if(di.active) n++;
+    else if(!di.rest) break;
+  }
+  return n;
+}
+function streakCount(){ return dayInfo(daysBack(0)).active ? streakFrom(0) : streakFrom(1); }
+function restsUsed(){
+  var c = 0;
+  for(var i = 0; i < 7; i++) if(rest[key(daysBack(i))]) c++;
+  return c;
+}
+function useRest(offset){
+  var d = daysBack(offset), di = dayInfo(d);
+  if(di.active || di.rest) return;
+  if(restsUsed() >= 2){ toast('Você já usou as 2 folgas desta semana.'); return; }
+  rest[key(d)] = true;
+  persist(); renderAll();
+  toast(offset ? 'Ontem marcado como folga. Sua sequência continua! 💛' : 'Folga de hoje marcada. Descanse: sua sequência continua! 💛');
+}
+
+function renderStreak(){
+  var n = streakCount();
+  $('cStreak').textContent = n + (n === 1 ? ' dia' : ' dias');
+  $('sTitle').textContent = n > 0 ? n + (n === 1 ? ' dia seguido' : ' dias seguidos') : 'Sem sequência ainda';
+  $('sText').textContent = n === 0 ? 'Comece hoje: um passo já conta.'
+    : (n === 1 ? 'Todo hábito começa assim. Volte amanhã!'
+    : (n < 7 ? 'Seu corpo agradece a constância.' : 'Uma semana inteira cuidando de você! 🏆'));
+  var dots = '';
+  for(var i = 13; i >= 0; i--){
+    var di = dayInfo(daysBack(i)), d = daysBack(i);
+    dots += '<span class="dot' + (di.active ? ' on' : (di.rest ? ' rest' : '')) + (i === 0 ? ' today' : '') + '" title="' +
+            d.toLocaleDateString('pt-BR', {day: 'numeric', month: 'short'}) + (di.active ? ' · dia ativo' : (di.rest ? ' · folga' : '')) + '"></span>';
+  }
+  $('sDots').innerHTML = dots;
+
+  var t0 = dayInfo(daysBack(0)), t1 = dayInfo(daysBack(1)), canRest = restsUsed() < 2, btns = '';
+  if(canRest && !t0.active && !t0.rest && streakFrom(1) > 0) btns += '<button type="button" class="btn" data-o="0">☕ Usar folga hoje</button>';
+  if(canRest && !t1.active && !t1.rest && streakFrom(2) > 0) btns += '<button type="button" class="btn" data-o="1">☕ Ontem foi folga</button>';
+  var box = $('sRests');
+  box.innerHTML = btns;
+  var bs = box.querySelectorAll('button');
+  for(var j = 0; j < bs.length; j++){
+    (function(b){ b.onclick = function(){ useRest(parseInt(b.getAttribute('data-o'), 10)); }; })(bs[j]);
+  }
+}
+
 /* ---------- corpo (visão geral) ---------- */
 function renderCorpo(){
   var g = goal(), k = key(), t = totalOf(k), pct = g ? t / g : 0;
   var wkT = weekTotals(), today = exTotals(k), minToday = sumVals(today), nToday = Object.keys(today).length;
+  var ft = fdTotals(k), nf = Object.keys(ft).length, fw = fdWeek();
   setLevels('stageC', wkT, lvWeek);
 
   $('cWater').textContent = weight ? fmt(t) + ' ml' : '—';
   $('cWaterSub').textContent = weight ? Math.round(pct * 100) + '% da meta' : 'Informe seu peso';
   $('cEx').textContent = minToday + ' min';
   $('cExSub').textContent = nToday ? nToday + (nToday > 1 ? ' grupos' : ' grupo') + ' hoje' : 'Nenhum treino hoje';
-  var active = 0;
-  for(var i = 0; i < 7; i++) if(sumVals(exTotals(key(daysBack(i)))) > 0) active++;
-  $('cWeek').textContent = active + ' de 7';
+  $('cFood').textContent = nf + ' de ' + FOOD.length;
+  $('cFoodSub').textContent = 'grupos de comida';
 
-  var water = weight && t >= g, trained = minToday > 0, h, tx;
-  if(water && trained){ h = '🎉 Dia completo!'; tx = 'Corpo hidratado e em movimento: meta de água batida e treino feito. É assim que se constrói saúde, um dia de cada vez.'; }
-  else if(water){ h = '💧 Hidratação em dia'; tx = 'Você bateu a meta de água. Que tal mexer o corpo hoje, nem que seja um treino curto de 15 minutos?'; }
-  else if(trained){ h = '💪 Treino feito!'; tx = 'Não esqueça da água: o músculo precisa estar hidratado para se recuperar bem.' + (weight ? ' Faltam ' + fmt(Math.max(0, g - t)) + ' ml para a sua meta.' : ''); }
-  else { h = 'Seu corpo espera por você'; tx = 'Comece com um copo de água ou um treino curto. Os dois aparecem aqui no seu corpo.'; }
+  var water = !!(weight && t >= g), trained = minToday > 0, ate = nf >= 3;
+  var done = (water ? 1 : 0) + (trained ? 1 : 0) + (ate ? 1 : 0), miss = [];
+  if(!water) miss.push(weight ? 'beber água até a meta (faltam ' + fmt(Math.max(0, g - t)) + ' ml)' : 'informar seu peso e bater a meta de água');
+  if(!trained) miss.push('um treino curto, nem que seja de 15 minutos');
+  if(!ate) miss.push('variar o prato com 3 grupos de comida');
+  var h, tx;
+  if(done === 3){ h = '🎉 Dia completo!'; tx = 'Hidratado, em movimento e com o prato variado. É assim que se constrói saúde, um dia de cada vez.'; }
+  else if(done === 2){ h = '👏 Quase um dia completo'; tx = 'Falta só: ' + miss[0] + '.'; }
+  else if(done === 1){
+    h = water ? '💧 Hidratação em dia' : (trained ? '💪 Treino feito!' : '🍎 Prato variado!');
+    tx = 'Ótimo começo. Para completar o dia: ' + miss.join(' e ') + '.';
+  }
+  else { h = 'Seu corpo espera por você'; tx = 'Comece com um copo de água, um treino curto ou uma fruta. Tudo aparece aqui no seu corpo.'; }
   $('cHeadline').textContent = h;
   $('cText').textContent = tx;
 
@@ -870,9 +1218,33 @@ function renderCorpo(){
   else if(missing.length) hint = 'Ainda sem treino esta semana: ' + missing.map(function(e){ return e.nome.toLowerCase(); }).join(', ') + '. Equilibrar os grupos é bom para o corpo todo.';
   else hint = 'Você trabalhou todos os grupos nos últimos 7 dias. Corpo equilibrado! 🏆';
   $('cHint').textContent = hint;
+
+  $('cFoodChips').innerHTML = FOOD.map(function(f){
+    var m = fw[f.id] || 0;
+    return '<span class="chip f' + lvFoodWeek(m) + '">' + f.emoji + ' ' + f.nome + '<i>' + m + '×</i></span>';
+  }).join('');
+  var fmiss = FOOD.filter(function(f){ return !fw[f.id]; });
+  var fh;
+  if(fmiss.length === FOOD.length) fh = 'Nada registrado nos últimos 7 dias. Comece com uma fruta.';
+  else if(fmiss.length) fh = 'Ainda sem registro esta semana: ' + fmiss.map(function(f){ return f.nome.toLowerCase(); }).join(', ') + '. Variar faz bem.';
+  else fh = 'Você comeu de todos os grupos nos últimos 7 dias. Prato variado! 🌈';
+  $('cFoodHint').textContent = fh;
+
+  renderStreak();
 }
 
-function renderAll(){ renderWater(); renderEx(); renderCorpo(); }
+/* ---------- dicas entre as abas ---------- */
+function renderCross(){
+  var k = key(), g = goal(), t = totalOf(k), pct = weight ? Math.round(t / g * 100) : null;
+  var min = sumVals(exTotals(k)), nf = Object.keys(fdTotals(k)).length;
+  $('crossW').textContent = min > 0 ? '💪 Você treinou ' + min + ' min hoje. Reponha a água aos poucos, conforme a sede.' : '';
+  $('crossX').textContent = min > 0
+    ? '💧 Depois do treino, beba água aos poucos, conforme a sede.' + (pct !== null ? ' Você está em ' + pct + '% da meta de hoje.' : '')
+    : '';
+  $('crossF').textContent = (nf > 0 && pct !== null) ? '💧 E a água? Você está em ' + pct + '% da meta de hoje.' : '';
+}
+
+function renderAll(){ renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); }
 
 /* ---------- avisos ---------- */
 var toastTimer;
@@ -1218,6 +1590,86 @@ $('btnUndo').onclick = function(){
   }
 };
 
+/* ---------- backup ---------- */
+var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+function cleanLog(o){
+  var r = {};
+  Object.keys(o || {}).forEach(function(k){
+    if(!DATE_RE.test(k) || !Array.isArray(o[k])) return;
+    var a = o[k].map(function(e){
+      if(typeof e === 'number') e = {ml: e, t: null};
+      return (e && typeof e.ml === 'number' && e.ml > 0 && e.ml <= 5000) ? {ml: Math.round(e.ml), t: (typeof e.t === 'number' ? e.t : null)} : null;
+    }).filter(Boolean);
+    if(a.length) r[k] = a;
+  });
+  return r;
+}
+function cleanEx(o){
+  var r = {};
+  Object.keys(o || {}).forEach(function(k){
+    if(!DATE_RE.test(k) || !Array.isArray(o[k])) return;
+    var a = o[k].filter(function(e){ return e && exById(e.g) && typeof e.min === 'number' && e.min > 0 && e.min <= 600; })
+                .map(function(e){ return {g: e.g, min: Math.round(e.min), t: (typeof e.t === 'number' ? e.t : 0)}; });
+    if(a.length) r[k] = a;
+  });
+  return r;
+}
+function cleanFd(o){
+  var r = {};
+  Object.keys(o || {}).forEach(function(k){
+    if(!DATE_RE.test(k) || !Array.isArray(o[k])) return;
+    var a = o[k].filter(function(e){ return e && foodById(e.g); }).map(function(e){ return {g: e.g, t: (typeof e.t === 'number' ? e.t : 0)}; });
+    if(a.length) r[k] = a;
+  });
+  return r;
+}
+function cleanRest(o){
+  var r = {};
+  Object.keys(o || {}).forEach(function(k){ if(DATE_RE.test(k) && o[k]) r[k] = true; });
+  return r;
+}
+function exportData(){
+  var data = {app: 'beba-agua', versao: 4, exportado: new Date().toISOString(), weight: weight, cfg: cfg, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  try{
+    var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'beba-agua-backup-' + key() + '.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ try{ URL.revokeObjectURL(a.href); }catch(e){} a.remove(); }, 1500);
+    toast('Backup gerado. Guarde o arquivo em um lugar seguro. 💾');
+  }catch(e){
+    toast('Não consegui gerar o backup neste aparelho.');
+  }
+}
+function importData(file){
+  var fr = new FileReader();
+  fr.onload = function(){
+    var d;
+    try{ d = JSON.parse(fr.result); }catch(e){ d = null; }
+    if(!d || d.app !== 'beba-agua'){ toast('Esse arquivo não parece um backup do Beba Água.'); return; }
+    if(!window.confirm('Isso vai substituir os dados deste aparelho pelos do backup. Continuar?')) return;
+    weight = (typeof d.weight === 'number' && d.weight >= 20 && d.weight <= 300) ? d.weight : null;
+    var c = d.cfg;
+    if(c && typeof c.wake === 'number' && typeof c.sleep === 'number' && c.sleep - c.wake >= 360 && [60, 90, 120].indexOf(c.interval) >= 0){
+      cfg = {wake: c.wake, sleep: c.sleep, interval: c.interval};
+    }
+    log = cleanLog(d.log); ex = cleanEx(d.ex); fd = cleanFd(d.fd); rest = cleanRest(d.rest);
+    if(['auto', 'light', 'dark'].indexOf(d.theme) >= 0) theme = d.theme;
+    save('weight', weight); save('cfg', cfg); save('theme', theme);
+    persist(); applyTheme();
+    close('mWeight');
+    renderAll();
+    toast('Backup restaurado ✅');
+  };
+  fr.onerror = function(){ toast('Não consegui ler o arquivo.'); };
+  fr.readAsText(file);
+}
+$('btnExport').onclick = exportData;
+$('btnImport').onclick = function(){ $('fileImport').value = ''; $('fileImport').click(); };
+$('fileImport').onchange = function(){ var f = this.files && this.files[0]; if(f) importData(f); };
+
 /* ---------- tema ---------- */
 var THEME_NAMES = {auto: 'automático', light: 'claro', dark: 'escuro'};
 function applyTheme(){
@@ -1240,10 +1692,10 @@ if(window.matchMedia){
 }
 
 /* ---------- abas ---------- */
-var TITLES = {agua: '💧 Água', ex: '💪 Exercício', corpo: '🧍 Meu corpo'};
+var TITLES = {agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
 function showTab(t){
   tab = t; save('tab', t);
-  ['agua', 'ex', 'corpo'].forEach(function(id){
+  TABS.forEach(function(id){
     $('tab-' + id).hidden = (id !== t);
     $('nav-' + id).classList.toggle('on', id === t);
     if(id === t) $('nav-' + id).setAttribute('aria-current', 'page'); else $('nav-' + id).removeAttribute('aria-current');
@@ -1252,7 +1704,7 @@ function showTab(t){
   try{ window.scrollTo(0, 0); }catch(e){}
   renderAll();
 }
-['agua', 'ex', 'corpo'].forEach(function(id){
+TABS.forEach(function(id){
   $('nav-' + id).onclick = function(){ showTab(id); };
 });
 
@@ -1267,6 +1719,7 @@ document.addEventListener('visibilitychange', function(){
 $('stageW').innerHTML = bodySVG('w', 'water');
 $('stageX').innerHTML = bodySVG('x', 'muscle');
 $('stageC').innerHTML = bodySVG('c', 'both');
+$('stageF').innerHTML = plateSVG();
 applyTheme();
 setDate();
 showTab(tab);
