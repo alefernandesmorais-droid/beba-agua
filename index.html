@@ -267,6 +267,10 @@ footer{margin-top:22px;text-align:center}
 .hrow button,.hdel{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:6px 10px;font:inherit;font-size:.8rem;cursor:pointer;flex:none}
 .hdel{display:block;margin:0 12px 12px auto}
 .hdel.danger{color:#c62828;border-color:#c62828}
+#btnWeight{border-color:var(--accent);color:var(--accent);font-weight:700}
+.subs .sec{width:100%;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:8px}
+#greetTxt{font-weight:700;color:var(--text);font-size:.95rem}
+.modal select{width:100%;padding:12px;font-size:1rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
 </style>
 </head>
 <body data-tab="agua">
@@ -274,6 +278,7 @@ footer{margin-top:22px;text-align:center}
   <header>
     <div>
       <h1 id="pageTitle">💧 Água</h1>
+      <div class="sub" id="greetTxt"></div>
       <div class="sub" id="dateTxt"></div>
     </div>
     <div class="hbtns">
@@ -300,6 +305,11 @@ footer{margin-top:22px;text-align:center}
     </div>
     <div class="pace" id="paceTxt"></div>
     <div class="cross" id="crossW"></div>
+
+    <section class="card" id="notesWc" hidden>
+      <div class="kicker">Cuidados com a sua condição</div>
+      <ul class="list" id="notesW"></ul>
+    </section>
 
     <div class="drinkrow">
       <label class="lbl" for="drinkSel">O que você bebeu?</label>
@@ -332,13 +342,10 @@ footer{margin-top:22px;text-align:center}
       <div class="seg" data-seg></div>
       <div id="chW"></div>
       <p class="hint" id="chWSum"></p>
+      <button class="link" type="button" data-addday="log">➕ Esqueci de registrar (outro dia)</button>
       <button class="link" type="button" data-hist="log">🗂️ Ver e apagar registros</button>
     </section>
 
-    <section class="card" id="notesWc" hidden>
-      <div class="kicker">Cuidados com a sua condição</div>
-      <ul class="list" id="notesW"></ul>
-    </section>
 
     <p class="note">Os avisos aparecem enquanto o app estiver aberto ou em segundo plano. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico. Refrigerante, suco de caixinha e bebidas alcoólicas ficam registrados, mas não contam para a meta de água. A porcentagem de hidratação de cada bebida não tem um valor único validado: tratamos as bebidas como contam ou não contam.</p>
   </main>
@@ -355,6 +362,11 @@ footer{margin-top:22px;text-align:center}
     <div class="tiles" id="exTiles"></div>
     <button class="link" id="btnUndoEx" type="button">↩ Desfazer último treino</button>
     <div class="cross" id="crossX"></div>
+
+    <section class="card" id="notesXc" hidden>
+      <div class="kicker">Cuidados com a sua condição</div>
+      <ul class="list ex" id="notesX"></ul>
+    </section>
 
     <section class="card">
       <div class="kicker">Meta da semana</div>
@@ -380,13 +392,10 @@ footer{margin-top:22px;text-align:center}
       <div class="seg" data-seg></div>
       <div id="chX"></div>
       <p class="hint" id="chXSum"></p>
+      <button class="link" type="button" data-addday="ex">➕ Esqueci de registrar (outro dia)</button>
       <button class="link" type="button" data-hist="ex">🗂️ Ver e apagar registros</button>
     </section>
 
-    <section class="card" id="notesXc" hidden>
-      <div class="kicker">Cuidados com a sua condição</div>
-      <ul class="list ex" id="notesX"></ul>
-    </section>
 
     <p class="note">As informações são de caráter geral e não substituem a orientação de um médico ou de um profissional de educação física. Se sentir dor forte, tontura ou mal-estar durante o exercício, pare e procure orientação. Os músculos se fortalecem no descanso, então respeite os intervalos entre os treinos.</p>
   </main>
@@ -403,6 +412,11 @@ footer{margin-top:22px;text-align:center}
     <div class="tiles" id="fdTiles"></div>
     <button class="link" id="btnUndoFd" type="button">↩ Desfazer último</button>
     <div class="cross" id="crossF"></div>
+
+    <section class="card" id="notesFc" hidden>
+      <div class="kicker">Cuidados com a sua condição</div>
+      <ul class="list fd" id="notesF"></ul>
+    </section>
 
     <section class="card">
       <div class="kicker">Referência de porções</div>
@@ -427,13 +441,10 @@ footer{margin-top:22px;text-align:center}
       <div class="seg" data-seg></div>
       <div id="chF"></div>
       <p class="hint" id="chFSum"></p>
+      <button class="link" type="button" data-addday="fd">➕ Esqueci de registrar (outro dia)</button>
       <button class="link" type="button" data-hist="fd">🗂️ Ver e apagar registros</button>
     </section>
 
-    <section class="card" id="notesFc" hidden>
-      <div class="kicker">Cuidados com a sua condição</div>
-      <ul class="list fd" id="notesF"></ul>
-    </section>
 
     <p class="note">Aqui não contamos calorias nem pesos: o foco é a variedade. As informações são de caráter geral e não substituem a orientação de um médico ou nutricionista. Se você tem alergia, restrição alimentar, uma doença ou histórico de transtorno alimentar, siga o acompanhamento profissional. A recomendação de pelo menos 400 g de frutas e verduras por dia é da Organização Mundial da Saúde.</p>
   </main>
@@ -488,7 +499,7 @@ footer{margin-top:22px;text-align:center}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 6.</p>
   </footer>
 </div>
 
@@ -507,6 +518,8 @@ footer{margin-top:22px;text-align:center}
   <div class="modal">
     <h3 id="setTitle">Ajustes</h3>
     <p>Calculamos sua meta de água (cerca de 35 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme. A meta é uma referência: se você não está com sede, não precisa forçar. Se tem alguma condição de saúde, siga a orientação do seu médico.</p>
+    <label class="lbl" for="nameInput">Seu nome (opcional)</label>
+    <input id="nameInput" type="text" maxlength="20" autocomplete="given-name" placeholder="Como você quer ser chamado?">
     <label class="lbl" for="weightInput">Seu peso (kg)</label>
     <input id="weightInput" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Ex.: 80">
     <label class="lbl" for="ageInput">Sua idade (opcional)</label>
@@ -634,7 +647,49 @@ footer{margin-top:22px;text-align:center}
       <button type="button" data-h="fd">🍎 Comida</button>
     </div>
     <div id="histBody"></div>
+    <div class="row"><button class="btn" id="hAdd" type="button">➕ Adicionar em outro dia</button></div>
     <div class="row"><button class="btn" id="hClose" type="button">Fechar</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="mAdd">
+  <div class="modal">
+    <h3>Adicionar em outro dia</h3>
+    <p>Esqueceu de registrar? Escolha o dia e o que você fez. Para corrigir um registro errado, apague no histórico e adicione de novo.</p>
+    <div class="seg" id="addSeg">
+      <button type="button" data-h="log">💧 Água</button>
+      <button type="button" data-h="ex">💪 Exercício</button>
+      <button type="button" data-h="fd">🍎 Comida</button>
+    </div>
+    <label class="lbl" for="addDate">Dia</label>
+    <input id="addDate" type="date">
+    <div id="addWater">
+      <label class="lbl" for="addMl">Quanto você bebeu (ml)</label>
+      <input id="addMl" type="number" inputmode="numeric" min="10" max="5000" step="10" placeholder="Ex.: 1000">
+      <label class="lbl" for="addDrink">Bebida</label>
+      <select id="addDrink"></select>
+    </div>
+    <div id="addEx" hidden>
+      <label class="lbl" for="addExG">Grupo</label>
+      <select id="addExG"></select>
+      <label class="lbl" for="addExS">Exercício (opcional)</label>
+      <select id="addExS"></select>
+      <label class="lbl" for="addMin">Minutos</label>
+      <input id="addMin" type="number" inputmode="numeric" min="5" max="240" step="5" placeholder="Ex.: 30">
+    </div>
+    <div id="addFd" hidden>
+      <label class="lbl" for="addFdG">Grupo</label>
+      <select id="addFdG"></select>
+      <label class="lbl" for="addFdS">Tipo (opcional)</label>
+      <select id="addFdS"></select>
+      <label class="lbl" for="addQty">Quantas porções</label>
+      <input id="addQty" type="number" inputmode="numeric" min="1" max="10" step="1" value="1">
+    </div>
+    <div class="err" id="addErr"></div>
+    <div class="row">
+      <button class="btn" id="addCancel" type="button">Cancelar</button>
+      <button class="btn primary" id="addOk" type="button">Adicionar</button>
+    </div>
   </div>
 </div>
 
@@ -703,37 +758,62 @@ var COND = [
   {id:'obes', nome:'Obesidade'},
   {id:'gest', nome:'Gestante ou amamentando'}
 ];
-var DM_A = 'No calor ou com pouca água, a desidratação pode elevar a glicose. Prefira água às bebidas açucaradas.';
-var DM_F = 'O app não conta carboidratos nem calcula insulina. Siga o plano alimentar do seu médico ou nutricionista. Refrigerantes e sucos adoçados merecem atenção.';
 var NOTES = {
-  dm1: {a: DM_A, x: 'Se você usa insulina, combine com seu médico como se preparar para o exercício. Pare se sentir tremor, suor frio, tontura ou confusão.', f: DM_F},
-  dm2: {a: DM_A, x: 'A referência geral é 150 min de atividade moderada por semana, em pelo menos 3 dias. Se você usa insulina ou remédio que pode causar hipoglicemia, combine com seu médico como se preparar. Pare se sentir tremor, suor frio, tontura ou confusão.', f: DM_F},
-  pre: {a: 'Prefira água às bebidas açucaradas.', x: 'Atividade regular ajuda: a referência geral é 150 min por semana.', f: 'Frutas, verduras, leguminosas e grãos integrais ajudam; limite ultraprocessados e açúcares. Siga seu médico ou nutricionista.'},
-  has: {a: 'Se você usa diurético, a quantidade de água deve seguir a orientação do seu médico.', x: 'Pare e procure atendimento se sentir dor no peito, falta de ar ou tontura intensa.', f: 'Reduzir o sal ajuda: a OMS recomenda menos de 5 g de sal por dia. O app não conta sal.'},
-  drc: {a: 'A quantidade de líquidos pode precisar de limite e deve ser definida pelo seu médico ou nutricionista.', x: 'O exercício deve ser orientado pelo seu médico.', f: 'Sódio, potássio e fósforo podem precisar de controle conforme o estágio da doença. Siga seu nutricionista: as mensagens sobre frutas, legumes e feijões aqui são gerais.'},
-  ic:  {a: 'A quantidade de líquidos costuma ser limitada e deve ser definida pelo seu médico.', x: 'O exercício deve ser orientado pelo seu médico. Procure atendimento se tiver falta de ar, inchaço ou ganho de peso rápido.', f: 'Sal e líquidos devem seguir a orientação do seu médico.'},
-  dislip: {a: '', x: 'Procure avaliação se sentir dor no peito ou falta de ar aos esforços.', f: 'Peixes, frutas, verduras e leguminosas ajudam; limite gorduras saturadas e trans.'},
-  obes: {a: 'Prefira água às bebidas açucaradas.', x: 'Comece devagar e aumente aos poucos. Para perder peso, procure acompanhamento profissional.', f: 'Aqui o foco é variedade e hábito, não peso nem calorias.'},
-  gest: {a: 'Siga a orientação do seu pré-natal sobre líquidos.', x: 'Converse com o seu pré-natal sobre quais exercícios são seguros.', f: 'Siga as orientações do seu pré-natal sobre a alimentação.'}
+  dm1: {a: 'Nos dias quentes, beba água ao longo do dia, mesmo sem sede. Pouca água pode deixar o açúcar no sangue mais alto. Em vez de refrigerante, beba água, água com limão ou chá sem açúcar.',
+        x: 'Antes de treinar, meça sua glicemia se o seu médico orientou. Se sentir tremor, suor frio ou tontura, pare e faça o que seu médico ensinou para hipoglicemia. No calor, escolha horários mais frescos e leve água.',
+        f: 'O app não conta carboidratos nem calcula insulina. Siga o plano do seu médico ou nutricionista. Refrigerante e suco de caixinha têm muito açúcar.'},
+  dm2: {a: 'Nos dias quentes, beba água ao longo do dia, mesmo sem sede. Pouca água pode deixar o açúcar no sangue mais alto. Em vez de refrigerante, beba água, água com limão ou chá sem açúcar.',
+        x: 'A meta geral é 150 minutos de exercício por semana. Se você usa insulina ou remédio que pode baixar demais o açúcar, combine com seu médico o que fazer antes do treino. Se sentir tremor, suor frio ou tontura, pare.',
+        f: 'O app não conta carboidratos nem calcula insulina. Siga o plano do seu médico ou nutricionista. Refrigerante e suco de caixinha têm muito açúcar.'},
+  pre: {a: 'Beba água ao longo do dia. Em vez de refrigerante, beba água, água com limão ou chá sem açúcar.',
+        x: 'Mexer o corpo ajuda. A meta geral é 150 minutos de exercício por semana.',
+        f: 'Inclua frutas, verduras, feijão e grãos integrais. Reduza refrigerante, doces e ultraprocessados. Siga seu médico ou nutricionista.'},
+  has: {a: 'Beba água normalmente. Se você usa diurético, siga a orientação do seu médico.',
+        x: 'Caminhar 30 minutos na maioria dos dias ajuda. Se sentir dor no peito, falta de ar ou tontura forte, pare e procure atendimento.',
+        f: 'Reduza o sal: a OMS recomenda menos de 5 g por dia (uma colher de chá rasa). Tempere com ervas e limão.'},
+  drc: {a: 'A quantidade de água depende do seu caso. Siga o seu médico ou nutricionista.',
+        x: 'Exercício leve ou moderado pode ajudar, mas converse com sua equipe de saúde antes de começar.',
+        f: 'Evite excesso de sal e de alimentos industrializados. Siga o seu nutricionista sobre potássio e fósforo.'},
+  ic:  {a: 'Se o médico pediu para limitar líquidos, siga a quantidade indicada. Não aumente por conta própria.',
+        x: 'Caminhadas leves e com orientação podem ajudar. Evite esforço forte sem liberação do médico. Procure atendimento se tiver falta de ar, inchaço ou ganho rápido de peso.',
+        f: 'Reduza o sal e evite embutidos e conservas. Tempere com ervas.'},
+  dislip: {a: 'Beba água em vez de refrigerante.',
+        x: 'Caminhada rápida ou bicicleta por 30 minutos, na maioria dos dias, ajuda. Se sentir dor no peito ou falta de ar, pare e procure avaliação.',
+        f: 'Troque manteiga por azeite. Inclua aveia, feijão e frutas no dia a dia.'},
+  obes: {a: 'Beba água em vez de refrigerante e suco de caixinha.',
+        x: 'Comece com 10 minutos de caminhada por dia e aumente aos poucos. Todo movimento conta.',
+        f: 'Troque salgadinho por uma fruta. Coloque feijão e verduras no prato. Aqui o foco é variedade, não peso.'},
+  gest: {a: 'Beba água ao longo do dia e evite bebidas alcoólicas. Siga o seu pré-natal.',
+        x: 'Converse com o seu pré-natal sobre o exercício. Se não há complicações, caminhar costuma ser seguro.',
+        f: 'Inclua frutas, verduras, feijão e carnes magras. Evite carnes e ovos crus ou malpassados.'}
 };
 var SUBS_FOOD = {
-  frutas: [['citricas','Cítricas (laranja, limão, tangerina)'],['tropicais','Tropicais (banana, mamão, manga, abacaxi)'],['vermelhas','Vermelhas (morango, uva, amora)'],['outras','Outras (maçã, pera, melancia)']],
-  legumes: [['folhosos','Folhosos (couve, alface, rúcula)'],['crucif','Crucíferas (brócolis, couve-flor, repolho)'],['raizes','Raízes (cenoura, beterraba)'],['outros','Outros (tomate, abobrinha, chuchu)']],
-  carnes: [['aves','Aves (frango, peru)'],['vermelha','Carne vermelha (boi, porco)'],['ovos','Ovos'],['visceras','Vísceras (fígado, moela)']],
-  peixes: [['magros','Peixes magros (tilápia, merluza)'],['gordos','Peixes gordos (sardinha, salmão, atum)']],
-  graos: [['feijoes','Feijões e lentilhas'],['arroz','Arroz'],['paes','Pães e massas'],['tuberculos','Batata, mandioca, milho'],['integrais','Aveia e integrais']],
-  laticinios: [['leite','Leite'],['iogurte','Iogurte'],['queijos','Queijos']]
+  frutas: [['citricas','Cítricas (laranja, mexerica, limão, acerola)'],['tropicais','Tropicais (banana, mamão, manga, abacaxi, goiaba)'],['vermelhas','Clima temperado (maçã, pera, uva, morango, kiwi)'],['outras','Ricas em água (melancia, melão)']],
+  legumes: [['folhosos','Folhosos (alface, rúcula, couve, espinafre)'],['crucif','Crucíferas (brócolis, couve-flor, repolho)'],['raizes','Raízes (cenoura, beterraba, batata-doce)'],['outros','Legumes-fruto (tomate, abobrinha, pepino, berinjela)']],
+  carnes: [['aves','Aves (frango, peru)'],['vermelha','Carne bovina magra (patinho, coxão mole)'],['suina','Carne suína magra (lombo, pernil)'],['ovos','Ovos'],['visceras','Vísceras (fígado, coração)']],
+  peixes: [['magros','Peixes magros (tilápia, merluza, pescada)'],['gordos','Peixes gordos (sardinha, salmão, atum)'],['mar','Frutos do mar (camarão, lula, mexilhão)']],
+  graos: [['feijoes','Feijões (preto, carioca, branco, fradinho)'],['leguminosas','Outras leguminosas (lentilha, grão-de-bico, ervilha, soja)'],['arroz','Cereais (arroz, milho, aveia, quinoa)'],['paes','Pães e massas'],['tuberculos','Batata, mandioca, inhame'],['integrais','Integrais (aveia, arroz integral)']],
+  laticinios: [['leite','Leite'],['iogurte','Iogurte natural'],['queijos','Queijos (minas, ricota, cottage)']]
 };
 var SUBS_EX = {
-  peito: [['supino','Supino'],['flexao','Flexão de braço'],['crucifixo','Crucifixo']],
-  costas: [['remada','Remada'],['puxada','Puxada alta'],['unilateral','Remada unilateral']],
-  ombros: [['desenv','Desenvolvimento'],['lateral','Elevação lateral'],['frontal','Elevação frontal']],
-  bracos: [['biceps','Bíceps (rosca)'],['triceps','Tríceps']],
-  abdomen: [['prancha','Prancha'],['abdominal','Abdominal'],['pernas','Elevação de pernas']],
-  pernas: [['agacho','Agachamento'],['legpress','Leg press'],['afundo','Afundo'],['cadeira','Cadeira extensora ou mesa flexora']],
-  cardio: [['caminhada','Caminhada'],['corrida','Corrida'],['bike','Bicicleta'],['natacao','Natação'],['esteira','Esteira'],['funcional','Funcional ou circuito']]
+  peito: [['supino','Supino reto'],['supinoinc','Supino inclinado'],['flexao','Flexão de braço'],['crucifixo','Crucifixo'],['peck','Peck deck']],
+  costas: [['barrafixa','Barra fixa'],['puxada','Puxada alta'],['remada','Remada curvada'],['unilateral','Remada unilateral'],['hiper','Hiperextensão']],
+  ombros: [['desenv','Desenvolvimento'],['lateral','Elevação lateral'],['frontal','Elevação frontal'],['remadalta','Remada alta']],
+  bracos: [['biceps','Rosca direta','Bíceps'],['alternada','Rosca alternada','Bíceps'],['martelo','Rosca martelo','Bíceps'],['rosca21','Rosca 21','Bíceps'],
+           ['triceps','Tríceps na polia','Tríceps'],['testa','Tríceps testa','Tríceps'],['supfechado','Supino fechado','Tríceps'],['paralelas','Paralelas (mergulho)','Tríceps']],
+  abdomen: [['prancha','Prancha'],['abdominal','Abdominal (crunch)'],['pernas','Elevação de pernas'],['remador','Abdominal remador']],
+  pernas: [['agacho','Agachamento','Pernas'],['legpress','Leg press','Pernas'],['cadeira','Cadeira extensora','Pernas'],['flexora','Cadeira flexora','Pernas'],['afundo','Afundo (avanço)','Pernas'],
+           ['sumo','Agachamento sumô','Glúteos'],['hipthrust','Hip thrust','Glúteos'],['abdutora','Cadeira abdutora','Glúteos'],
+           ['panturrilhae','Panturrilha em pé','Panturrilha'],['panturrilhas','Panturrilha sentado','Panturrilha']],
+  cardio: [['caminhada','Caminhada leve (passeio)','Aeróbicos'],['caminhadarapida','Caminhada rápida','Aeróbicos'],['corrida','Corrida','Aeróbicos'],['bike','Bicicleta (passeio)','Aeróbicos'],['bikesubida','Bicicleta (subida ou intervalos)','Aeróbicos'],
+           ['natacao','Natação','Aeróbicos'],['esteira','Esteira','Aeróbicos'],['eliptico','Elíptico','Aeróbicos'],['remo','Remo (máquina)','Aeróbicos'],['corda','Pular corda','Aeróbicos'],['escada','Subir escadas','Aeróbicos'],
+           ['futebol','Futebol ou futsal','Esportes'],['volei','Vôlei ou vôlei de praia','Esportes'],['basquete','Basquete','Esportes'],['handebol','Handebol','Esportes'],['tenis','Tênis','Esportes'],['beach','Beach tennis','Esportes'],
+           ['mesa','Tênis de mesa','Esportes'],['badminton','Badminton','Esportes'],['lutas','Artes marciais ou boxe','Esportes'],['danca','Dança','Esportes'],['surfe','Surfe','Esportes'],['ginastica','Ginástica','Esportes'],['peteca','Peteca','Esportes']],
+  corpo: [['calistenia','Calistenia (peso do corpo)','Em casa e funcional'],['yoga','Yoga','Em casa e funcional'],['pilates','Pilates','Em casa e funcional'],['alongamento','Alongamento e mobilidade','Em casa e funcional'],
+          ['hiit','HIIT (intervalado)','Em casa e funcional'],['funcional','Funcional ou circuito','Em casa e funcional'],['polichinelo','Polichinelos','Em casa e funcional'],
+          ['passeio','Caminhar para passear','Dia a dia'],['jardim','Jardinagem','Dia a dia'],['faxinaleve','Faxina leve','Dia a dia'],['faxinapesada','Faxina pesada','Dia a dia'],['compras','Carregar compras','Dia a dia']]
 };
-function mkSubs(map, id){ return (map[id] || []).map(function(a){ return {id: a[0], nome: a[1]}; }); }
+function mkSubs(map, id){ return (map[id] || []).map(function(a){ return {id: a[0], nome: a[1], sec: a[2] || ''}; }); }
 function subShort(grp, sid){
   for(var i = 0; i < grp.subs.length; i++) if(grp.subs[i].id === sid) return grp.subs[i].nome.split(' (')[0];
   return '';
@@ -795,6 +875,11 @@ var EX = [
     '🏃 Coração acelerando! O exercício aeróbico fortalece o coração e melhora a disposição.',
     '🫁 Mais oxigênio circulando: o cardio melhora a capacidade respiratória e costuma melhorar o humor e o sono.',
     '🏆 Cardio completo! Atividade aeróbica regular faz bem ao coração e ajuda no controle do peso e da pressão. Não esqueça de beber água! 💧'
+  ]},
+  {id:'corpo', nome:'Corpo todo', emoji:'🧘', dica:'yoga, pilates, funcional', msgs:[
+    '🧘 Corpo em movimento! Atividades de corpo todo trabalham equilíbrio, flexibilidade e coordenação.',
+    '🤸 Bom ritmo! Alternar força, equilíbrio e alongamento deixa o corpo mais ágil.',
+    '🏆 Sessão completa! Movimento variado faz bem ao corpo e à mente. Lembre de descansar.'
   ]}
 ];
 var MOTIV = [
@@ -973,7 +1058,8 @@ function cleanProf(p){
   var cond = (p && Array.isArray(p.cond)) ? p.cond.filter(function(c, i, a){ return ids.indexOf(c) >= 0 && a.indexOf(c) === i; }) : [];
   var water = (p && typeof p.water === 'number' && p.water >= 500 && p.water <= 5000) ? Math.round(p.water) : null;
   var level = (p && p.level === 'inicio') ? 'inicio' : 'regular';
-  return {age: age, cond: cond, water: water, level: level, done: !!(p && p.done)};
+  var name = (p && typeof p.name === 'string') ? p.name.replace(/[<>]/g, '').trim().slice(0, 20) : '';
+  return {name: name, age: age, cond: cond, water: water, level: level, done: !!(p && p.done)};
 }
 
 function persist(){
@@ -1159,7 +1245,7 @@ function renderWater(){
                                              : (bl ? 'Você chegou ao valor informado. Não precisa passar dele.' : 'Meta atingida! 🎉'));
   var extra = (log[k] || []).filter(function(e){ return !counted(e); }).reduce(function(x, e){ return x + e.ml; }, 0);
   $('extraTxt').textContent = extra ? '+ ' + fmt(extra) + ' ml de bebidas que não contam para a meta' : '';
-  $('wLabel').textContent = weight ? (String(weight).replace('.', ',') + ' kg') : 'Ajustes';
+  $('wLabel').textContent = 'Ajustes';
   $('headline').textContent = bl ? (has ? 'Acompanhando a meta informada' : 'Registro de líquidos de hoje') : headline(used / (g || 1), t, g);
 
   var got = reachedItems(used, t);
@@ -1503,9 +1589,9 @@ function renderCorpo(){
     var m = wkT[e.id] || 0;
     return '<span class="chip l' + lvWeek(m) + '">' + e.emoji + ' ' + e.nome + '<i>' + m + ' min</i></span>';
   }).join('');
-  var missing = EX.filter(function(e){ return !wkT[e.id]; });
+  var missing = EX.filter(function(e){ return !wkT[e.id] && e.id !== 'corpo'; });
   var hint;
-  if(missing.length === EX.length) hint = 'Nenhum treino nos últimos 7 dias. Comece com 15 minutos de qualquer grupo.';
+  if(sumVals(wkT) === 0) hint = 'Nenhum treino nos últimos 7 dias. Comece com 15 minutos de qualquer grupo.';
   else if(missing.length) hint = 'Ainda sem treino esta semana: ' + missing.map(function(e){ return e.nome.toLowerCase(); }).join(', ') + '. Equilibrar os grupos é bom para o corpo todo.';
   else hint = 'Você trabalhou todos os grupos nos últimos 7 dias. Corpo equilibrado! 🏆';
   $('cHint').textContent = hint;
@@ -1535,7 +1621,7 @@ function renderCross(){
   $('crossF').textContent = (nf > 0 && pct !== null) ? '💧 E a água? Você está em ' + pct + '% da meta de hoje.' : '';
 }
 
-function renderAll(){ renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); }
+function renderAll(){ setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); }
 
 /* ---------- avisos ---------- */
 var toastTimer;
@@ -1775,7 +1861,12 @@ function openEx(g){
   $('exInput').value = ''; $('exErr').textContent = '';
   exSub = null;
   var box = $('exSubs');
-  box.innerHTML = e.subs.map(function(x){ return '<button type="button" data-s="' + x.id + '">' + x.nome + '</button>'; }).join('');
+  var hs = '', last = '';
+  e.subs.forEach(function(x){
+    if(x.sec && x.sec !== last){ hs += '<div class="sec">' + x.sec + '</div>'; last = x.sec; }
+    hs += '<button type="button" data-s="' + x.id + '">' + x.nome + '</button>';
+  });
+  box.innerHTML = hs;
   var bs = box.querySelectorAll('button');
   for(var i = 0; i < bs.length; i++){
     (function(b){
@@ -1855,6 +1946,7 @@ function openSettings(first){
   weightLocked = !!first && !prof.done;
   $('setTitle').textContent = weightLocked ? 'Vamos configurar' : 'Ajustes';
   $('wCancel').style.display = weightLocked ? 'none' : '';
+  $('nameInput').value = prof.name || '';
   $('weightInput').value = weight || '';
   $('ageInput').value = prof.age === null ? '' : prof.age;
   var bs = $('condBox').querySelectorAll('input');
@@ -1899,7 +1991,7 @@ $('wSave').onclick = function(){
   if(sl - w < 360){ err.textContent = 'Precisa haver pelo menos 6 horas entre acordar e dormir.'; return; }
   weight = v === null ? null : Math.round(v * 10) / 10;
   cfg = {wake: w, sleep: sl, interval: parseInt($('intervalInput').value, 10) || 90};
-  prof = {age: age, cond: cond, water: man, level: $('levelInput').value === 'inicio' ? 'inicio' : 'regular', done: true};
+  prof = {name: String($('nameInput').value).replace(/[<>]/g, '').trim().slice(0, 20), age: age, cond: cond, water: man, level: $('levelInput').value === 'inicio' ? 'inicio' : 'regular', done: true};
   save('weight', weight);
   save('cfg', cfg);
   save('prof', prof);
@@ -1937,7 +2029,7 @@ $('copyPix').onclick = function(){
   } else { fallback(); }
 };
 
-['mWeight', 'mOther', 'mDonate', 'mEx', 'mFd', 'mHist'].forEach(function(id){
+['mWeight', 'mOther', 'mDonate', 'mEx', 'mFd', 'mHist', 'mAdd'].forEach(function(id){
   $(id).addEventListener('click', function(e){
     if(e.target !== $(id)) return;
     if(id === 'mWeight' && weightLocked) return;
@@ -2097,7 +2189,13 @@ TABS.forEach(function(id){
   $('nav-' + id).onclick = function(){ showTab(id); };
 });
 
+function setGreet(){
+  var h = new Date().getHours();
+  var g = h >= 5 && h < 12 ? 'Bom dia' : (h >= 12 && h < 18 ? 'Boa tarde' : 'Boa noite');
+  $('greetTxt').textContent = g + (prof.name ? ', ' + prof.name : '') + '!';
+}
 function setDate(){
+  setGreet();
   $('dateTxt').textContent = new Date().toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'long'});
 }
 document.addEventListener('visibilitychange', function(){
@@ -2116,7 +2214,7 @@ function strengthDays(){
   var n = 0;
   for(var i = 0; i < 7; i++){
     var t = exTotals(key(daysBack(i)));
-    if(Object.keys(t).some(function(g){ return g !== 'cardio' && t[g] > 0; })) n++;
+    if(Object.keys(t).some(function(g){ return g !== 'cardio' && g !== 'corpo' && t[g] > 0; })) n++;
   }
   return n;
 }
@@ -2391,6 +2489,75 @@ $('clearOk').onclick = function(){
     persist(); renderAll();
     toast('Registros restaurados.');
   }});
+};
+
+/* ---------- adicionar em outro dia ---------- */
+var addKind = 'log';
+function fillSel(id, arr, first){
+  $(id).innerHTML = (first ? '<option value="">' + first + '</option>' : '') + arr.map(function(x){ return '<option value="' + x[0] + '">' + x[1] + '</option>'; }).join('');
+}
+function fillSubSel(selId, grp){
+  fillSel(selId, grp.subs.map(function(x){ return [x.id, (x.sec ? x.sec + ': ' : '') + x.nome]; }), 'Não sei / não detalhar');
+}
+function setAddKind(k){
+  addKind = k;
+  var bs = $('addSeg').querySelectorAll('button');
+  for(var i = 0; i < bs.length; i++) bs[i].classList.toggle('on', bs[i].getAttribute('data-h') === k);
+  $('addWater').hidden = k !== 'log'; $('addEx').hidden = k !== 'ex'; $('addFd').hidden = k !== 'fd';
+  $('addErr').textContent = '';
+}
+function openAdd(kind){
+  var y = daysBack(1);
+  $('addDate').min = key(daysBack(89)); $('addDate').max = key();
+  $('addDate').value = key(y);
+  $('addMl').value = ''; $('addMin').value = ''; $('addQty').value = '1';
+  fillSel('addDrink', DRINKS.map(function(d){ return [d.id, d.emoji + ' ' + d.nome + (d.c ? '' : ' (não conta)')]; }));
+  fillSel('addExG', EX.map(function(e){ return [e.id, e.emoji + ' ' + e.nome]; }));
+  fillSel('addFdG', FOOD.map(function(f){ return [f.id, f.emoji + ' ' + f.nome]; }));
+  fillSubSel('addExS', EX[0]); fillSubSel('addFdS', FOOD[0]);
+  setAddKind(kind || 'log');
+  open('mAdd');
+}
+$('addExG').onchange = function(){ fillSubSel('addExS', exById($('addExG').value)); };
+$('addFdG').onchange = function(){ fillSubSel('addFdS', foodById($('addFdG').value)); };
+(function(){
+  var bs = $('addSeg').querySelectorAll('button');
+  for(var i = 0; i < bs.length; i++){ (function(b){ b.onclick = function(){ setAddKind(b.getAttribute('data-h')); }; })(bs[i]); }
+  var ls = document.querySelectorAll('[data-addday]');
+  for(var j = 0; j < ls.length; j++){ (function(b){ b.onclick = function(){ openAdd(b.getAttribute('data-addday')); }; })(ls[j]); }
+})();
+$('hAdd').onclick = function(){ openAdd(histKind); };
+$('addCancel').onclick = function(){ close('mAdd'); };
+$('addOk').onclick = function(){
+  var err = $('addErr'), dk = String($('addDate').value);
+  if(!DATE_RE.test(dk) || dk > key() || dk < key(daysBack(89))){ err.textContent = 'Escolha um dia dos últimos 90 dias.'; return; }
+  var n, e, lab = new Date(dk + 'T12:00:00').toLocaleDateString('pt-BR', {day: 'numeric', month: 'short'});
+  if(addKind === 'log'){
+    n = Math.round(parseFloat(String($('addMl').value).replace(',', '.')));
+    if(!(n >= 10 && n <= 5000)){ err.textContent = 'Digite entre 10 e 5000 ml.'; return; }
+    e = {ml: n, t: null};
+    var d = $('addDrink').value; if(d && d !== 'agua' && drinkById(d)) e.d = d;
+    (log[dk] = log[dk] || []).push(e);
+  } else if(addKind === 'ex'){
+    n = Math.round(parseFloat(String($('addMin').value).replace(',', '.')));
+    if(!(n >= 5 && n <= 240)){ err.textContent = 'Digite entre 5 e 240 minutos.'; return; }
+    var g = exById($('addExG').value), sx = $('addExS').value;
+    e = {g: g.id, min: n, t: 0};
+    if(sx && subOk(g, sx)) e.s = sx;
+    (ex[dk] = ex[dk] || []).push(e);
+  } else {
+    n = Math.round(parseFloat(String($('addQty').value).replace(',', '.')));
+    if(!(n >= 1 && n <= 10)){ err.textContent = 'Digite de 1 a 10 porções.'; return; }
+    var f = foodById($('addFdG').value), sf = $('addFdS').value;
+    for(var i = 0; i < n; i++){
+      e = {g: f.id, t: 0};
+      if(sf && subOk(f, sf)) e.s = sf;
+      (fd[dk] = fd[dk] || []).push(e);
+    }
+  }
+  persist(); close('mAdd'); renderAll();
+  if($('mHist').classList.contains('open')){ histKind = addKind; histOpen = dk; renderHist(); }
+  toast('Registro adicionado em ' + lab + ' ✅');
 };
 
 /* ---------- início ---------- */
