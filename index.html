@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beba Água</title>
 <meta name="description" content="Água, exercício e o seu corpo em um só lugar.">
-<meta name="theme-color" content="#0b84d8" id="metaTheme">
+<meta name="theme-color" content="#0a6fb8" id="metaTheme">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -18,22 +18,45 @@
 (function(){ try{ var t = JSON.parse(localStorage.getItem('theme')); if(t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); }catch(e){} })();
 </script>
 <style>
+
 :root{
-  --bg:#f2f8fd; --card:#ffffff; --text:#0f2a3d; --muted:#5b7487;
-  --accent:#0b84d8; --line:#d6e6f2; --water1:#4fc3f7; --water2:#0b84d8; --shape:#e3effa;
-  --fx1:#ffb347; --fx2:#ff5a3c; --fxtext:#d9480f; --nav:rgba(255,255,255,.94);
-  --fd1:#8fdc6b; --fd2:#2fb344; --fdtext:#237a34;
+  --bg:#f3f7fb; --card:#ffffff; --text:#0f2a3d; --muted:#586f80; --line:#d9e5ef;
+  --accent:#0a6fb8; --water1:#4cc2f0; --water2:#0a6fb8; --shape:#e3edf6;
+  --fx1:#ffb347; --fx2:#f2610c; --fxtext:#c2410c; --nav:rgba(255,255,255,.94);
+  --fd1:#9be37a; --fd2:#2fa84a; --fdtext:#237a34;
+  --pu1:#b794f4; --pu2:#6d3fc0;
+  --c-agua:#0a6fb8; --c-ex:#c2410c; --c-food:#2e7d32; --c-corpo:#6d3fc0;
+  --bg-agua:#f1f7fc; --bg-ex:#fcf5ef; --bg-food:#f2f9f2; --bg-corpo:#f6f2fb;
+  --ln-agua:#d3e3f0; --ln-ex:#efdccc; --ln-food:#d3e8d3; --ln-corpo:#dfd5f0;
+  --cd-agua:#ffffff; --cd-ex:#ffffff; --cd-food:#ffffff; --cd-corpo:#ffffff;
+  --t1:var(--water1); --t2:var(--water2);
+  --shp-ex:#f1e6dc; --shp-food:#e3efe3; --shp-corpo:#e7e0f3;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#16303f; --accent:#4fb3f5;
-    --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94); --fdtext:#8fe39b;
+    --bg:#0a1620; --card:#10222f; --text:#e6f3fb; --muted:#93b0c2; --line:#1c3547; --shape:#17303f; --accent:#7fd1ff;
+    --fxtext:#ffb26b; --nav:rgba(16,34,47,.94); --fdtext:#8fe39b;
+    --c-agua:#7fd1ff; --c-ex:#ffb26b; --c-food:#8fe39b; --c-corpo:#c9a8ff;
+    --bg-agua:#08141d; --bg-ex:#150f0a; --bg-food:#09150d; --bg-corpo:#110c1b;
+    --ln-agua:#1c3547; --ln-ex:#3a2a1d; --ln-food:#1f3a27; --ln-corpo:#33274d;
+    --cd-agua:#0f2230; --cd-ex:#211710; --cd-food:#102016; --cd-corpo:#1b1428;
+    --shp-ex:#33261b; --shp-food:#1b3526; --shp-corpo:#2c2342;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#08141d; --card:#0f2230; --text:#e6f3fb; --muted:#8fb0c4; --line:#1c3547; --shape:#16303f; --accent:#4fb3f5;
-  --fxtext:#ff9a6b; --nav:rgba(15,34,48,.94); --fdtext:#8fe39b;
+  --bg:#0a1620; --card:#10222f; --text:#e6f3fb; --muted:#93b0c2; --line:#1c3547; --shape:#17303f; --accent:#7fd1ff;
+  --fxtext:#ffb26b; --nav:rgba(16,34,47,.94); --fdtext:#8fe39b;
+  --c-agua:#7fd1ff; --c-ex:#ffb26b; --c-food:#8fe39b; --c-corpo:#c9a8ff;
+  --bg-agua:#08141d; --bg-ex:#150f0a; --bg-food:#09150d; --bg-corpo:#110c1b;
+  --ln-agua:#1c3547; --ln-ex:#3a2a1d; --ln-food:#1f3a27; --ln-corpo:#33274d;
+  --cd-agua:#0f2230; --cd-ex:#211710; --cd-food:#102016; --cd-corpo:#1b1428;
+  --shp-ex:#33261b; --shp-food:#1b3526; --shp-corpo:#2c2342;
 }
+/* cada aba tem a sua cor */
+body[data-tab="agua"]{--bg:var(--bg-agua);--line:var(--ln-agua);--card:var(--cd-agua);--accent:var(--c-agua);--t1:var(--water1);--t2:var(--water2)}
+body[data-tab="ex"]{--bg:var(--bg-ex);--line:var(--ln-ex);--card:var(--cd-ex);--accent:var(--c-ex);--t1:var(--fx1);--t2:var(--fx2);--shape:var(--shp-ex)}
+body[data-tab="comida"]{--bg:var(--bg-food);--line:var(--ln-food);--card:var(--cd-food);--accent:var(--c-food);--t1:var(--fd1);--t2:var(--fd2);--shape:var(--shp-food)}
+body[data-tab="corpo"]{--bg:var(--bg-corpo);--line:var(--ln-corpo);--card:var(--cd-corpo);--accent:var(--c-corpo);--t1:var(--pu1);--t2:var(--pu2);--shape:var(--shp-corpo)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none !important}
 html,body{margin:0}
@@ -118,7 +141,7 @@ h1{font-size:1.3rem;margin:0}
 .latest{margin:0;line-height:1.45}
 .hint{margin:10px 0 0;font-size:.85rem;color:var(--muted);line-height:1.4}
 .list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.list li{line-height:1.4;font-size:.95rem;padding-left:10px;border-left:3px solid var(--water1)}
+.list li{line-height:1.4;font-size:.95rem;padding-left:10px;border-left:3px solid var(--t1)}
 .list.ex li{border-left-color:var(--fx2)}
 .list li b{display:block;font-size:.75rem;color:var(--accent);margin-bottom:2px}
 .list.ex li b{color:var(--fxtext)}
@@ -185,9 +208,12 @@ footer{margin-top:22px;text-align:center}
 .nav button{flex:1;background:none;border:0;color:var(--muted);padding:8px 4px 10px;font:inherit;font-size:.72rem;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .nav button span{font-size:1.35rem;line-height:1.2;filter:grayscale(.9);opacity:.7}
 .nav button.on{color:var(--accent)}
+.nav button{position:relative}
 .nav button.on span{filter:none;opacity:1}
+#nav-agua.on{color:var(--c-agua)} #nav-ex.on{color:var(--c-ex)} #nav-comida.on{color:var(--c-food)} #nav-corpo.on{color:var(--c-corpo)}
+.nav button.on::after{content:"";position:absolute;top:0;left:24%;right:24%;height:3px;border-radius:0 0 4px 4px;background:currentColor}
 
-.toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#0f2a3d;color:#fff;padding:12px 16px;border-radius:14px;max-width:min(92vw,420px);font-size:.9rem;line-height:1.4;opacity:0;pointer-events:none;transition:.3s;z-index:20}
+.toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#0f2a3d;color:#fff;padding:12px 16px;border-radius:14px;max-width:min(92vw,420px);font-size:.9rem;line-height:1.4;opacity:0;pointer-events:none;transition:.3s;z-index:40}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 :root[data-theme="dark"] .toast{background:#e6f3fb;color:#08141d}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .toast{background:#e6f3fb;color:#08141d} }
@@ -205,12 +231,45 @@ footer{margin-top:22px;text-align:center}
 .err{color:#d93025;font-size:.85rem;min-height:1.2em;margin-top:6px}
 .row{display:flex;gap:8px;margin-top:12px}
 .btn{flex:1;border:0;border-radius:12px;padding:12px;font-size:1rem;font-weight:700;cursor:pointer;background:var(--line);color:var(--text)}
-.btn.primary{background:linear-gradient(180deg,var(--water1),var(--water2));color:#fff}
+.btn.primary{background:linear-gradient(180deg,var(--t1),var(--t2));color:#fff}
+.btn.danger{background:#c62828;color:#fff}
 .btn.fx{background:linear-gradient(180deg,var(--fx1),var(--fx2));color:#fff}
 .pix{word-break:break-all;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;margin-bottom:4px}
+
+.status[data-s="nogoal"],.status[data-s="limit"]{border-left-color:#8a9aa6;background:rgba(128,140,150,.12)}
+.stat.s-w{border-top:3px solid var(--c-agua)} .stat.s-x{border-top:3px solid var(--c-ex)}
+.stat.s-f{border-top:3px solid var(--c-food)} .stat.s-s{border-top:3px solid var(--c-corpo)}
+.toast.has-act{pointer-events:auto}
+.toast-act{margin-left:10px;background:none;border:0;color:inherit;font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;padding:2px 4px}
+.drinkrow{margin-top:14px}
+.drinkrow select,.modal textarea{width:100%;padding:11px;font-size:1rem;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+.drinkrow .lbl{margin-top:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-bottom:8px}
+.seg button{border:0;background:none;color:var(--muted);font:inherit;font-size:.82rem;font-weight:700;padding:6px 14px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--card)}
+.chartsvg{width:100%;height:auto;display:block}
+.chartsvg text{font-family:inherit}
+.prog{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 2px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--t1),var(--t2));border-radius:99px;transition:width 1s ease}
+.conds{display:grid;gap:6px;margin:4px 0}
+.chk{display:flex;align-items:center;gap:10px;font-size:.92rem;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer}
+.chk input{width:20px;height:20px;flex:none;margin:0}
+.subs{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.subs button{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:99px;padding:8px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+.subs button.sel{background:var(--t2);border-color:transparent;color:#fff;font-weight:700}
+.subs.col{flex-direction:column;align-items:stretch}
+.subs.col button{border-radius:12px;text-align:left;padding:12px}
+.modal.wide{max-width:420px}
+.hday{border:1px solid var(--line);border-radius:14px;margin-top:8px;background:var(--bg)}
+.hday summary{padding:12px;cursor:pointer;font-weight:700;font-size:.92rem;display:flex;justify-content:space-between;gap:8px}
+.hday summary span{color:var(--muted);font-weight:600}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;border-top:1px solid var(--line);font-size:.88rem}
+.hrow button,.hdel{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:6px 10px;font:inherit;font-size:.8rem;cursor:pointer;flex:none}
+.hdel{display:block;margin:0 12px 12px auto}
+.hdel.danger{color:#c62828;border-color:#c62828}
 </style>
 </head>
-<body>
+<body data-tab="agua">
 <div class="app">
   <header>
     <div>
@@ -232,6 +291,7 @@ footer{margin-top:22px;text-align:center}
       <div class="sub" id="goalTxt"></div>
       <div class="bar"><i id="bar"></i></div>
       <div class="sub" id="left"></div>
+      <div class="sub" id="extraTxt"></div>
     </div>
 
     <div class="status" id="statusBox" data-s="setup" role="status" aria-live="polite">
@@ -241,6 +301,11 @@ footer{margin-top:22px;text-align:center}
     <div class="pace" id="paceTxt"></div>
     <div class="cross" id="crossW"></div>
 
+    <div class="drinkrow">
+      <label class="lbl" for="drinkSel">O que você bebeu?</label>
+      <select id="drinkSel"></select>
+      <p class="hint" id="drinkNote"></p>
+    </div>
     <div class="adds">
       <button class="add" type="button" data-ml="200">+200</button>
       <button class="add" type="button" data-ml="300">+300</button>
@@ -263,11 +328,19 @@ footer{margin-top:22px;text-align:center}
     </section>
 
     <section class="card">
-      <div class="kicker">Últimos 7 dias</div>
-      <div class="week" id="week"></div>
+      <div class="kicker" id="chWTitle">Água por dia</div>
+      <div class="seg" data-seg></div>
+      <div id="chW"></div>
+      <p class="hint" id="chWSum"></p>
+      <button class="link" type="button" data-hist="log">🗂️ Ver e apagar registros</button>
     </section>
 
-    <p class="note">Os avisos aparecem enquanto o app estiver aberto ou em segundo plano. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico.</p>
+    <section class="card" id="notesWc" hidden>
+      <div class="kicker">Cuidados com a sua condição</div>
+      <ul class="list" id="notesW"></ul>
+    </section>
+
+    <p class="note">Os avisos aparecem enquanto o app estiver aberto ou em segundo plano. As informações são de caráter geral e não substituem orientação médica. Se você tem problema nos rins, no coração ou outra condição, siga a quantidade de água indicada pelo seu médico. Refrigerante, suco de caixinha e bebidas alcoólicas ficam registrados, mas não contam para a meta de água. A porcentagem de hidratação de cada bebida não tem um valor único validado: tratamos as bebidas como contam ou não contam.</p>
   </main>
 
   <!-- ================= EXERCÍCIO ================= -->
@@ -284,6 +357,13 @@ footer{margin-top:22px;text-align:center}
     <div class="cross" id="crossX"></div>
 
     <section class="card">
+      <div class="kicker">Meta da semana</div>
+      <h2 id="exGoalH"></h2>
+      <div class="prog"><i id="exGoalBar"></i></div>
+      <p class="hint" id="exGoalTxt"></p>
+    </section>
+
+    <section class="card">
       <div class="kicker">Seu corpo agora</div>
       <h2 id="exHeadline"></h2>
       <p class="latest" id="exLatest"></p>
@@ -296,8 +376,16 @@ footer{margin-top:22px;text-align:center}
     </section>
 
     <section class="card">
-      <div class="kicker">Minutos nos últimos 7 dias</div>
-      <div class="week ex" id="exWeek"></div>
+      <div class="kicker">Minutos de exercício por dia</div>
+      <div class="seg" data-seg></div>
+      <div id="chX"></div>
+      <p class="hint" id="chXSum"></p>
+      <button class="link" type="button" data-hist="ex">🗂️ Ver e apagar registros</button>
+    </section>
+
+    <section class="card" id="notesXc" hidden>
+      <div class="kicker">Cuidados com a sua condição</div>
+      <ul class="list ex" id="notesX"></ul>
     </section>
 
     <p class="note">As informações são de caráter geral e não substituem a orientação de um médico ou de um profissional de educação física. Se sentir dor forte, tontura ou mal-estar durante o exercício, pare e procure orientação. Os músculos se fortalecem no descanso, então respeite os intervalos entre os treinos.</p>
@@ -317,6 +405,12 @@ footer{margin-top:22px;text-align:center}
     <div class="cross" id="crossF"></div>
 
     <section class="card">
+      <div class="kicker">Referência de porções</div>
+      <div class="chips" id="fdRef"></div>
+      <p class="hint" id="fdRefHint"></p>
+    </section>
+
+    <section class="card">
       <div class="kicker">Seu corpo agora</div>
       <h2 id="fdHeadline"></h2>
       <p class="latest" id="fdLatest"></p>
@@ -329,8 +423,16 @@ footer{margin-top:22px;text-align:center}
     </section>
 
     <section class="card">
-      <div class="kicker">Grupos por dia (últimos 7 dias)</div>
-      <div class="week fd" id="fdWeek"></div>
+      <div class="kicker">Grupos de alimentos por dia</div>
+      <div class="seg" data-seg></div>
+      <div id="chF"></div>
+      <p class="hint" id="chFSum"></p>
+      <button class="link" type="button" data-hist="fd">🗂️ Ver e apagar registros</button>
+    </section>
+
+    <section class="card" id="notesFc" hidden>
+      <div class="kicker">Cuidados com a sua condição</div>
+      <ul class="list fd" id="notesF"></ul>
     </section>
 
     <p class="note">Aqui não contamos calorias nem pesos: o foco é a variedade. As informações são de caráter geral e não substituem a orientação de um médico ou nutricionista. Se você tem alergia, restrição alimentar, uma doença ou histórico de transtorno alimentar, siga o acompanhamento profissional. A recomendação de pelo menos 400 g de frutas e verduras por dia é da Organização Mundial da Saúde.</p>
@@ -342,10 +444,10 @@ footer{margin-top:22px;text-align:center}
     <p class="legend">💧 Azul: água de hoje · 🔥 Laranja: músculos trabalhados nos últimos 7 dias</p>
 
     <div class="stats">
-      <div class="stat"><div class="v" id="cWater">—</div><div class="l" id="cWaterSub">Água hoje</div></div>
-      <div class="stat"><div class="v" id="cEx">0 min</div><div class="l" id="cExSub">Treino hoje</div></div>
-      <div class="stat"><div class="v" id="cFood">0 de 6</div><div class="l" id="cFoodSub">grupos de comida</div></div>
-      <div class="stat"><div class="v" id="cStreak">0 dias</div><div class="l" id="cStreakSub">de sequência</div></div>
+      <div class="stat s-w"><div class="v" id="cWater">—</div><div class="l" id="cWaterSub">Água hoje</div></div>
+      <div class="stat s-x"><div class="v" id="cEx">0 min</div><div class="l" id="cExSub">Treino hoje</div></div>
+      <div class="stat s-f"><div class="v" id="cFood">0 de 6</div><div class="l" id="cFoodSub">grupos de comida</div></div>
+      <div class="stat s-s"><div class="v" id="cStreak">0 dias</div><div class="l" id="cStreakSub">de sequência</div></div>
     </div>
 
     <section class="card">
@@ -363,6 +465,12 @@ footer{margin-top:22px;text-align:center}
       <div class="dots" id="sDots"></div>
       <div class="rests" id="sRests"></div>
       <p class="hint">Um dia conta quando você bate a meta de água, treina pelo menos 15 minutos ou registra 3 grupos de comida. Um dia de folga mantém a sequência (até 2 por semana).</p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Dias ativos por semana</div>
+      <div id="chC"></div>
+      <p class="hint" id="chCSum"></p>
     </section>
 
     <section class="card">
@@ -398,9 +506,11 @@ footer{margin-top:22px;text-align:center}
 <div class="overlay" id="mWeight">
   <div class="modal">
     <h3 id="setTitle">Ajustes</h3>
-    <p>Calculamos sua meta de água (cerca de 37 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme. A meta é uma referência: se você não está com sede, não precisa forçar. Se tem alguma condição de saúde, siga a orientação do seu médico.</p>
+    <p>Calculamos sua meta de água (cerca de 35 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme. A meta é uma referência: se você não está com sede, não precisa forçar. Se tem alguma condição de saúde, siga a orientação do seu médico.</p>
     <label class="lbl" for="weightInput">Seu peso (kg)</label>
     <input id="weightInput" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Ex.: 80">
+    <label class="lbl" for="ageInput">Sua idade (opcional)</label>
+    <input id="ageInput" type="number" inputmode="numeric" min="1" max="120" step="1" placeholder="Ex.: 35">
     <div class="two">
       <div>
         <label class="lbl" for="wakeInput">Acordo às</label>
@@ -417,6 +527,17 @@ footer{margin-top:22px;text-align:center}
       <option value="90">1 hora e 30 min</option>
       <option value="120">2 horas</option>
     </select>
+    <label class="lbl">Condições de saúde (marque só o que seu médico já confirmou)</label>
+    <div class="conds" id="condBox"></div>
+    <p class="hint">Isso só adapta as mensagens e os avisos do app. Não é diagnóstico e fica salvo apenas neste aparelho.</p>
+    <label class="lbl" for="manualInput">Meta de água indicada pelo seu médico (ml por dia, opcional)</label>
+    <input id="manualInput" type="number" inputmode="numeric" min="500" max="5000" step="50" placeholder="Ex.: 1500">
+    <p class="hint" id="blockHint"></p>
+    <label class="lbl" for="levelInput">Nível de atividade física</label>
+    <select id="levelInput">
+      <option value="inicio">Estou começando (meta menor)</option>
+      <option value="regular">Já me exercito com regularidade</option>
+    </select>
     <label class="lbl" for="themeInput">Tema</label>
     <select id="themeInput">
       <option value="auto">Automático (segue o celular)</option>
@@ -427,6 +548,10 @@ footer{margin-top:22px;text-align:center}
     <div class="row" style="margin-top:0">
       <button class="btn" id="btnExport" type="button">⬇️ Exportar</button>
       <button class="btn" id="btnImport" type="button">⬆️ Importar</button>
+    </div>
+    <div class="row">
+      <button class="btn" id="btnHist" type="button">🗂️ Histórico</button>
+      <button class="btn" id="btnClear" type="button">🗑️ Apagar tudo</button>
     </div>
     <input type="file" id="fileImport" accept="application/json,.json" hidden>
     <p class="hint">Tudo fica salvo só neste aparelho. Exporte de vez em quando para não perder seus dados se trocar de celular ou limpar o navegador.</p>
@@ -454,6 +579,9 @@ footer{margin-top:22px;text-align:center}
   <div class="modal">
     <h3 id="exModalTitle">Quanto tempo?</h3>
     <p id="exModalHint"></p>
+    <label class="lbl">Qual exercício? (opcional)</label>
+    <div class="subs" id="exSubs"></div>
+    <label class="lbl">Quanto tempo?</label>
     <div class="mins">
       <button type="button" data-min="15">15 min</button>
       <button type="button" data-min="30">30 min</button>
@@ -487,6 +615,53 @@ footer{margin-top:22px;text-align:center}
   </div>
 </div>
 
+<div class="overlay" id="mFd">
+  <div class="modal">
+    <h3 id="fdModalTitle">Qual tipo?</h3>
+    <p>Escolha o tipo (opcional). Cada toque registra uma porção.</p>
+    <div class="subs col" id="fdSubs"></div>
+    <div class="row"><button class="btn" id="fdCancel" type="button">Cancelar</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="mHist">
+  <div class="modal wide">
+    <h3>Histórico</h3>
+    <p>Toque em um dia para ver os registros. Você pode apagar um registro ou o dia inteiro, e desfazer logo depois.</p>
+    <div class="seg" id="histSeg">
+      <button type="button" data-h="log">💧 Água</button>
+      <button type="button" data-h="ex">💪 Exercício</button>
+      <button type="button" data-h="fd">🍎 Comida</button>
+    </div>
+    <div id="histBody"></div>
+    <div class="row"><button class="btn" id="hClose" type="button">Fechar</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="mConfirm">
+  <div class="modal">
+    <h3 id="cfTitle"></h3>
+    <p id="cfText"></p>
+    <div class="row">
+      <button class="btn" id="cfCancel" type="button">Cancelar</button>
+      <button class="btn danger" id="cfOk" type="button">Apagar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="mClear">
+  <div class="modal">
+    <h3>Apagar todos os registros?</h3>
+    <p>Isso apaga toda a água, exercício, comida e folgas registrados neste aparelho. Seu peso e seus ajustes continuam. Para confirmar, digite APAGAR.</p>
+    <input id="clearInput" type="text" autocomplete="off" autocapitalize="characters" placeholder="APAGAR">
+    <div class="err" id="clearErr"></div>
+    <div class="row">
+      <button class="btn" id="clearCancel" type="button">Cancelar</button>
+      <button class="btn danger" id="clearOk" type="button">Apagar tudo</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
 'use strict';
@@ -496,11 +671,74 @@ footer{margin-top:22px;text-align:center}
    link:   opcional, um link de doação (ex.: Apoia.se, Ko-fi, Mercado Pago). Deixe '' se não tiver. */
 var DONATE = { pixKey: 'SUA-CHAVE-PIX-AQUI', link: '' };
 
-var ML_PER_KG = 37.5;          // 80 kg -> 3000 ml
+var ML_PER_KG = 35;            // 80 kg -> 2800 ml (referência editável)
+var MAX_GOAL = 4000;           // teto da meta calculada pelo peso
 var MAX_PER_HOUR = 1000;       // acima disso em 60 min, o app avisa que é exagero
 var MAX_EX_MIN = 90;           // acima disso no mesmo grupo no dia, o app pede descanso
 var MS_MIN = 60000;
 var NS = 'http://www.w3.org/2000/svg';
+
+/* ---------- conteúdo: bebidas, condições e subcategorias ----------
+   Informação geral, sem dose, sem contagem de carboidrato. c = conta para a meta de água. */
+var DRINKS = [
+  {id:'agua',   nome:'Água', emoji:'💧', c:1, note:''},
+  {id:'coco',   nome:'Água de coco', emoji:'🥥', c:1, note:'Conta para a meta, mas tem carboidratos e açúcar natural: use com moderação, principalmente se você tem diabetes.'},
+  {id:'cha',    nome:'Chá ou café sem açúcar', emoji:'☕', c:1, note:'Conta para a meta. Evite adoçar e não exagere na cafeína.'},
+  {id:'leite',  nome:'Leite', emoji:'🥛', c:1, note:'Conta para a meta.'},
+  {id:'suco',   nome:'Suco natural', emoji:'🍊', c:1, sweet:1, note:'Conta para a meta, mas tem açúcar. Prefira a fruta inteira e use um copo pequeno.'},
+  {id:'iso',    nome:'Isotônico', emoji:'🏃', c:1, sweet:1, note:'Conta para a meta. Tem açúcar e sódio: só costuma fazer sentido em exercício intenso e longo.'},
+  {id:'refri',  nome:'Refrigerante ou suco de caixinha', emoji:'🥤', c:0, sweet:1, note:'Fica registrado, mas não conta para a meta de água. Tem muito açúcar.'},
+  {id:'alcool', nome:'Bebida alcoólica', emoji:'🍺', c:0, note:'Fica registrado, mas não conta para a meta de água.'}
+];
+function drinkById(id){ for(var i = 0; i < DRINKS.length; i++) if(DRINKS[i].id === id) return DRINKS[i]; return null; }
+
+var COND = [
+  {id:'dm1', nome:'Diabetes tipo 1'},
+  {id:'dm2', nome:'Diabetes tipo 2'},
+  {id:'pre', nome:'Pré-diabetes'},
+  {id:'has', nome:'Hipertensão (pressão alta)'},
+  {id:'drc', nome:'Doença renal crônica'},
+  {id:'ic',  nome:'Insuficiência cardíaca'},
+  {id:'dislip', nome:'Colesterol alto (dislipidemia)'},
+  {id:'obes', nome:'Obesidade'},
+  {id:'gest', nome:'Gestante ou amamentando'}
+];
+var DM_A = 'No calor ou com pouca água, a desidratação pode elevar a glicose. Prefira água às bebidas açucaradas.';
+var DM_F = 'O app não conta carboidratos nem calcula insulina. Siga o plano alimentar do seu médico ou nutricionista. Refrigerantes e sucos adoçados merecem atenção.';
+var NOTES = {
+  dm1: {a: DM_A, x: 'Se você usa insulina, combine com seu médico como se preparar para o exercício. Pare se sentir tremor, suor frio, tontura ou confusão.', f: DM_F},
+  dm2: {a: DM_A, x: 'A referência geral é 150 min de atividade moderada por semana, em pelo menos 3 dias. Se você usa insulina ou remédio que pode causar hipoglicemia, combine com seu médico como se preparar. Pare se sentir tremor, suor frio, tontura ou confusão.', f: DM_F},
+  pre: {a: 'Prefira água às bebidas açucaradas.', x: 'Atividade regular ajuda: a referência geral é 150 min por semana.', f: 'Frutas, verduras, leguminosas e grãos integrais ajudam; limite ultraprocessados e açúcares. Siga seu médico ou nutricionista.'},
+  has: {a: 'Se você usa diurético, a quantidade de água deve seguir a orientação do seu médico.', x: 'Pare e procure atendimento se sentir dor no peito, falta de ar ou tontura intensa.', f: 'Reduzir o sal ajuda: a OMS recomenda menos de 5 g de sal por dia. O app não conta sal.'},
+  drc: {a: 'A quantidade de líquidos pode precisar de limite e deve ser definida pelo seu médico ou nutricionista.', x: 'O exercício deve ser orientado pelo seu médico.', f: 'Sódio, potássio e fósforo podem precisar de controle conforme o estágio da doença. Siga seu nutricionista: as mensagens sobre frutas, legumes e feijões aqui são gerais.'},
+  ic:  {a: 'A quantidade de líquidos costuma ser limitada e deve ser definida pelo seu médico.', x: 'O exercício deve ser orientado pelo seu médico. Procure atendimento se tiver falta de ar, inchaço ou ganho de peso rápido.', f: 'Sal e líquidos devem seguir a orientação do seu médico.'},
+  dislip: {a: '', x: 'Procure avaliação se sentir dor no peito ou falta de ar aos esforços.', f: 'Peixes, frutas, verduras e leguminosas ajudam; limite gorduras saturadas e trans.'},
+  obes: {a: 'Prefira água às bebidas açucaradas.', x: 'Comece devagar e aumente aos poucos. Para perder peso, procure acompanhamento profissional.', f: 'Aqui o foco é variedade e hábito, não peso nem calorias.'},
+  gest: {a: 'Siga a orientação do seu pré-natal sobre líquidos.', x: 'Converse com o seu pré-natal sobre quais exercícios são seguros.', f: 'Siga as orientações do seu pré-natal sobre a alimentação.'}
+};
+var SUBS_FOOD = {
+  frutas: [['citricas','Cítricas (laranja, limão, tangerina)'],['tropicais','Tropicais (banana, mamão, manga, abacaxi)'],['vermelhas','Vermelhas (morango, uva, amora)'],['outras','Outras (maçã, pera, melancia)']],
+  legumes: [['folhosos','Folhosos (couve, alface, rúcula)'],['crucif','Crucíferas (brócolis, couve-flor, repolho)'],['raizes','Raízes (cenoura, beterraba)'],['outros','Outros (tomate, abobrinha, chuchu)']],
+  carnes: [['aves','Aves (frango, peru)'],['vermelha','Carne vermelha (boi, porco)'],['ovos','Ovos'],['visceras','Vísceras (fígado, moela)']],
+  peixes: [['magros','Peixes magros (tilápia, merluza)'],['gordos','Peixes gordos (sardinha, salmão, atum)']],
+  graos: [['feijoes','Feijões e lentilhas'],['arroz','Arroz'],['paes','Pães e massas'],['tuberculos','Batata, mandioca, milho'],['integrais','Aveia e integrais']],
+  laticinios: [['leite','Leite'],['iogurte','Iogurte'],['queijos','Queijos']]
+};
+var SUBS_EX = {
+  peito: [['supino','Supino'],['flexao','Flexão de braço'],['crucifixo','Crucifixo']],
+  costas: [['remada','Remada'],['puxada','Puxada alta'],['unilateral','Remada unilateral']],
+  ombros: [['desenv','Desenvolvimento'],['lateral','Elevação lateral'],['frontal','Elevação frontal']],
+  bracos: [['biceps','Bíceps (rosca)'],['triceps','Tríceps']],
+  abdomen: [['prancha','Prancha'],['abdominal','Abdominal'],['pernas','Elevação de pernas']],
+  pernas: [['agacho','Agachamento'],['legpress','Leg press'],['afundo','Afundo'],['cadeira','Cadeira extensora ou mesa flexora']],
+  cardio: [['caminhada','Caminhada'],['corrida','Corrida'],['bike','Bicicleta'],['natacao','Natação'],['esteira','Esteira'],['funcional','Funcional ou circuito']]
+};
+function mkSubs(map, id){ return (map[id] || []).map(function(a){ return {id: a[0], nome: a[1]}; }); }
+function subShort(grp, sid){
+  for(var i = 0; i < grp.subs.length; i++) if(grp.subs[i].id === sid) return grp.subs[i].nome.split(' (')[0];
+  return '';
+}
+function subOk(grp, sid){ for(var i = 0; i < grp.subs.length; i++) if(grp.subs[i].id === sid) return true; return false; }
 
 /* ---------- conteúdo: água ---------- */
 var MILESTONES = [
@@ -568,6 +806,7 @@ var MOTIV = [
   'Cada treino de hoje é um favor para o seu eu do futuro. 🏆'
 ];
 function exById(id){ for(var i = 0; i < EX.length; i++) if(EX[i].id === id) return EX[i]; return null; }
+EX.forEach(function(e){ e.subs = mkSubs(SUBS_EX, e.id); });
 
 /* ---------- conteúdo: alimentação ----------
    Sem calorias: só variedade. Cada porção registrada de um grupo libera uma mensagem (até 3 por grupo). */
@@ -609,6 +848,7 @@ var FOOD_MOTIV = [
   'Sem culpa e sem pressa: o que vale é a variedade ao longo da semana. 💚'
 ];
 function foodById(id){ for(var i = 0; i < FOOD.length; i++) if(FOOD[i].id === id) return FOOD[i]; return null; }
+FOOD.forEach(function(f){ f.subs = mkSubs(SUBS_FOOD, f.id); });
 /* o prato: 6 fatias, uma por grupo */
 function plateSVG(){
   var cx = 100, cy = 100, r = 88, n = FOOD.length;
@@ -714,6 +954,10 @@ var log = load('log', {});
 var ex = load('ex', {});
 var fd = load('fd', {});
 var rest = load('rest', {});
+var prof = load('prof', null);
+if(!prof || typeof prof !== 'object') prof = {age: null, cond: [], water: null, level: 'regular', done: !!weight};
+prof = cleanProf(prof);
+var range = load('range', 7); if(range !== 30) range = 7;
 var TABS = ['agua', 'ex', 'comida', 'corpo'];
 var theme = load('theme', 'auto');
 var tab = load('tab', 'agua');
@@ -723,9 +967,14 @@ Object.keys(log).forEach(function(k){
   log[k] = (log[k] || []).map(function(e){ return (typeof e === 'number') ? {ml: e, t: null} : e; });
 });
 
-function sum(a){ return (a || []).reduce(function(x, e){ return x + e.ml; }, 0); }
-function totalOf(k){ return sum(log[k]); }
-function goal(){ return weight ? Math.max(1000, Math.round(weight * ML_PER_KG / 50) * 50) : 2000; }
+function cleanProf(p){
+  var ids = COND.map(function(c){ return c.id; });
+  var age = (p && typeof p.age === 'number' && p.age >= 1 && p.age <= 120) ? Math.round(p.age) : null;
+  var cond = (p && Array.isArray(p.cond)) ? p.cond.filter(function(c, i, a){ return ids.indexOf(c) >= 0 && a.indexOf(c) === i; }) : [];
+  var water = (p && typeof p.water === 'number' && p.water >= 500 && p.water <= 5000) ? Math.round(p.water) : null;
+  var level = (p && p.level === 'inicio') ? 'inicio' : 'regular';
+  return {age: age, cond: cond, water: water, level: level, done: !!(p && p.done)};
+}
 
 function persist(){
   var cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90);
@@ -740,17 +989,42 @@ function persist(){
   save('rest', rest);
 }
 
+/* ---------- água: perfil, meta e bebidas ---------- */
+function drinkOf(e){ return drinkById(e.d || 'agua') || DRINKS[0]; }
+function counted(e){ return !!drinkOf(e).c; }
+function sum(a){ return (a || []).reduce(function(x, e){ return x + (counted(e) ? e.ml : 0); }, 0); }
+function totalOf(k){ return sum(log[k]); }
+function hasCond(c){ return prof.cond.indexOf(c) >= 0; }
+/* quando o app NÃO calcula a meta de água sozinho */
+function blockReasonFor(age, cond){
+  if(cond.indexOf('drc') >= 0 || cond.indexOf('ic') >= 0) return 'Com doença renal crônica ou insuficiência cardíaca, a quantidade de líquidos pode precisar de limite e deve ser definida pelo seu médico ou nutricionista. Por isso o app não calcula a meta.';
+  if(cond.indexOf('gest') >= 0) return 'Na gestação e na amamentação, siga a orientação do seu pré-natal. Por isso o app não calcula a meta de água.';
+  if(age !== null && age < 18) return 'Para crianças e adolescentes, a meta de água deve ser definida por pediatra ou nutricionista. Por isso o app não calcula.';
+  if(age !== null && age >= 65) return 'Acima dos 65 anos a necessidade de água varia muito e a sede costuma diminuir. Por isso o app não calcula uma meta automática.';
+  return '';
+}
+function blockReason(){ return blockReasonFor(prof.age, prof.cond); }
+function blocked(){ return blockReason() !== ''; }
+function hasGoal(){ return blocked() ? !!prof.water : !!(prof.water || weight); }
+function goal(){
+  if(prof.water) return prof.water;
+  if(!blocked() && weight) return Math.max(1000, Math.min(MAX_GOAL, Math.round(weight * ML_PER_KG / 50) * 50));
+  return 0;
+}
+
 /* ---------- água: ritmo e hidratação ----------
    A meta é dividida entre a hora de acordar e a de dormir. Cada copo "cobre" um tempo
    proporcional ao volume (um copo padrão cobre o intervalo escolhido). Beber muito de uma vez
    não estica a cobertura além de 2 intervalos: o resto não conta para os benefícios. */
 function analyze(k){
+  var all = (log[k] || []).filter(counted);
+  if(!hasGoal() || blocked()) return {cov: null, used: sum(all)};
   var awakeMin = Math.max(60, cfg.sleep - cfg.wake);
   var perDrink = goal() * cfg.interval / awakeMin;
   var rate = perDrink / (cfg.interval * MS_MIN);
   var maxAhead = 2 * cfg.interval * MS_MIN;
   var cov = null, used = 0;
-  var list = (log[k] || []).filter(function(e){ return e.t; }).sort(function(a, b){ return a.t - b.t; });
+  var list = all.filter(function(e){ return e.t; }).sort(function(a, b){ return a.t - b.t; });
   list.forEach(function(e){
     var base = (cov !== null && cov > e.t) ? cov : e.t;
     var room = Math.max(0, e.t + maxAhead - base);
@@ -758,20 +1032,24 @@ function analyze(k){
     used += d * rate;
     cov = base + d;
   });
-  (log[k] || []).forEach(function(e){ if(!e.t) used += e.ml; });
+  all.forEach(function(e){ if(!e.t) used += e.ml; });
   return {cov: cov, used: used};
 }
 function lastDrink(k){
-  var l = (log[k] || []).filter(function(e){ return e.t; });
+  var l = (log[k] || []).filter(function(e){ return e.t && counted(e); });
   return l.length ? l[l.length - 1].t : null;
 }
 
 function getStatus(){
-  if(!weight) return {s: 'setup'};
   var now = Date.now(), k = key(), g = goal(), t = totalOf(k);
+  if(blocked()){
+    if(!hasGoal()) return {s: 'nogoal'};
+    return t > g ? {s: 'over', kind: 'limit', total: t} : {s: 'limit'};
+  }
+  if(!hasGoal()) return {s: 'setup'};
   var wakeTs = at(cfg.wake), sleepTs = at(cfg.sleep);
   var hour = 0;
-  (log[k] || []).forEach(function(e){ if(e.t && e.t >= now - 60 * MS_MIN && e.t <= now) hour += e.ml; });
+  (log[k] || []).forEach(function(e){ if(e.t && counted(e) && e.t >= now - 60 * MS_MIN && e.t <= now) hour += e.ml; });
   if(hour > MAX_PER_HOUR) return {s: 'over', kind: 'hour', hour: hour};
   if(t >= g * 1.5) return {s: 'over', kind: 'day', total: t};
   if(now < wakeTs || now > sleepTs) return {s: 'rest'};
@@ -788,6 +1066,12 @@ function renderStatus(st){
   switch(st.s){
     case 'setup':
       title = 'Vamos configurar'; text = 'Informe seu peso e seus horários para ativar a meta e os avisos.'; break;
+    case 'nogoal':
+      title = '📋 Meta definida pelo seu médico';
+      text = blockReason() + ' Se o seu médico indicou uma quantidade, informe nos Ajustes. Você pode registrar o que bebeu mesmo assim.'; break;
+    case 'limit':
+      title = '📋 Acompanhando a meta informada';
+      text = 'Meta informada: ' + fmt(goal()) + ' ml por dia. Hoje: ' + fmt(totalOf(key())) + ' ml. No seu caso o app não envia lembretes para beber.'; break;
     case 'ok':
       title = '💧 Hidratado';
       text = 'Próximo copo às ' + hhmm(st.until) + ' (em ' + dur(st.until - now) + ').'; break;
@@ -803,6 +1087,9 @@ function renderStatus(st){
       if(st.kind === 'hour'){
         title = '🛑 Calma, você está exagerando';
         text = 'Você bebeu ' + fmt(st.hour) + ' ml na última hora. Beber muito de uma vez não hidrata mais e, em excesso, pode fazer mal. Espere um pouco antes do próximo copo.';
+      } else if(st.kind === 'limit'){
+        title = '🛑 Você passou da meta informada';
+        text = 'Hoje você registrou ' + fmt(st.total) + ' ml, acima dos ' + fmt(goal()) + ' ml que você informou. Siga a orientação do seu médico.';
       } else {
         title = '🛑 Você passou bem da meta';
         text = 'Hoje você já bebeu ' + fmt(st.total) + ' ml, bem acima da meta de ' + fmt(goal()) + ' ml. Pode parar por aqui.';
@@ -818,7 +1105,7 @@ function renderStatus(st){
 
 function renderPace(){
   var el = $('paceTxt');
-  if(!weight){ el.textContent = ''; return; }
+  if(!hasGoal() || blocked()){ el.textContent = ''; return; }
   var now = Date.now(), w = at(cfg.wake), s = at(cfg.sleep);
   if(now < w || now > s){ el.textContent = ''; return; }
   var g = goal(), t = totalOf(key());
@@ -830,13 +1117,14 @@ function renderPace(){
 }
 
 function reachedItems(used, t){
+  if(blocked()) return [];
   var arr = MILESTONES.filter(function(x){ return x.ml <= used; });
-  if(weight && t >= goal()) arr.push({ml: goal(), t: GOAL_MSG, goal: true});
+  if(hasGoal() && t >= goal()) arr.push({ml: goal(), t: GOAL_MSG, goal: true});
   return arr.sort(function(a, b){ return a.ml - b.ml || (a.goal ? 1 : 0) - (b.goal ? 1 : 0); });
 }
 
 function headline(pct, t, g){
-  if(!weight) return 'Vamos começar? Informe seu peso.';
+  if(!hasGoal()) return 'Vamos começar? Informe seu peso.';
   if(t >= g) return 'Meta batida! Corpo hidratado 🎉';
   if(t === 0) return 'Seu corpo está pedindo água';
   if(pct < 1/3) return 'Seu corpo começou a se hidratar';
@@ -851,45 +1139,47 @@ function setWater(pct){
   });
 }
 
+function renderDrinkNote(){
+  var d = drinkById($('drinkSel').value) || DRINKS[0];
+  $('drinkNote').textContent = d.note || '';
+}
+
 var lastState = null;
 
 function renderWater(){
-  var g = goal(), k = key(), t = totalOf(k), a = analyze(k), used = Math.min(a.used, t);
-  var pct = g ? t / g : 0;
+  var g = goal(), k = key(), t = totalOf(k), has = hasGoal(), bl = blocked();
+  var a = analyze(k), used = Math.min(a.used, t);
+  var pct = (has && g) ? t / g : 0;
   setWater(pct);
   $('total').textContent = fmt(t);
-  $('goalTxt').textContent = weight ? ('de ' + fmt(g) + ' ml · ' + Math.round(pct * 100) + '%') : 'Informe seu peso para calcular a meta';
+  $('goalTxt').textContent = has ? ((bl ? 'meta informada: ' : 'de ') + fmt(g) + ' ml · ' + Math.round(pct * 100) + '%')
+                                 : (bl ? 'Sem meta automática no seu caso' : 'Informe seu peso para calcular a meta');
   $('bar').style.width = (Math.min(pct, 1) * 100) + '%';
-  $('left').textContent = !weight ? '' : (t < g ? 'Faltam ' + fmt(g - t) + ' ml' : 'Meta atingida! 🎉');
+  $('left').textContent = !has ? '' : (t < g ? (bl ? 'Restam ' + fmt(g - t) + ' ml até o valor informado' : 'Faltam ' + fmt(g - t) + ' ml')
+                                             : (bl ? 'Você chegou ao valor informado. Não precisa passar dele.' : 'Meta atingida! 🎉'));
+  var extra = (log[k] || []).filter(function(e){ return !counted(e); }).reduce(function(x, e){ return x + e.ml; }, 0);
+  $('extraTxt').textContent = extra ? '+ ' + fmt(extra) + ' ml de bebidas que não contam para a meta' : '';
   $('wLabel').textContent = weight ? (String(weight).replace('.', ',') + ' kg') : 'Ajustes';
-  $('headline').textContent = headline(used / g, t, g);
+  $('headline').textContent = bl ? (has ? 'Acompanhando a meta informada' : 'Registro de líquidos de hoje') : headline(used / (g || 1), t, g);
 
   var got = reachedItems(used, t);
-  $('latest').textContent = got.length ? got[got.length - 1].t : 'Beba o primeiro copo e veja o que acontece no seu corpo. 💧';
+  $('latest').textContent = bl ? 'O app não calcula a quantidade ideal de água para o seu caso. Siga a orientação do seu médico.'
+                               : (got.length ? got[got.length - 1].t : 'Beba o primeiro copo e veja o que acontece no seu corpo. 💧');
   var lost = t - used;
-  $('usedHint').textContent = (weight && lost >= 150)
+  $('usedHint').textContent = (!bl && has && lost >= 150)
     ? '💡 Cerca de ' + fmt(Math.round(lost / 50) * 50) + ' ml foram bebidos rápido demais e não contam para os benefícios. O corpo aproveita melhor a água bebida aos poucos, ao longo do dia.'
     : '';
 
   var ul = $('unlocked');
-  if(!got.length){
+  if(bl){
+    ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Para a sua segurança, não mostramos metas nem benefícios por quantidade neste caso. Use esta aba para registrar o que bebeu.</li>';
+  } else if(!got.length){
     ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Nada ainda. Beba aos poucos ao longo do dia para desbloquear os benefícios.</li>';
   } else {
     ul.innerHTML = got.slice().reverse().map(function(x){
       return '<li><b>' + fmt(x.ml) + ' ml</b>' + x.t + '</li>';
     }).join('');
   }
-
-  var wk = '';
-  for(var i = 6; i >= 0; i--){
-    var d = daysBack(i);
-    var tot = totalOf(key(d));
-    var h = Math.max(4, Math.min(tot / g, 1.2) / 1.2 * 80);
-    var cls = tot >= g ? 'hit' : (tot > 0 ? 'part' : '');
-    wk += '<div class="col ' + cls + '"><div class="b" style="height:' + h + 'px" title="' + fmt(tot) + ' ml"></div><span>' +
-          d.toLocaleDateString('pt-BR', {weekday: 'narrow'}) + '</span></div>';
-  }
-  $('week').innerHTML = wk;
 
   updateNotifyBtn();
   tick(false);
@@ -981,15 +1271,6 @@ function renderEx(){
     ul.innerHTML = items.join('');
   }
 
-  var wk = '', max = 60, mins = [];
-  for(var d = 6; d >= 0; d--){ var m = sumVals(exTotals(key(daysBack(d)))); mins.push(m); if(m > max) max = m; }
-  for(var j = 6; j >= 0; j--){
-    var dt = daysBack(j), mm = mins[6 - j];
-    var hh = Math.max(4, mm / max * 80);
-    wk += '<div class="col ' + (mm >= 30 ? 'hit' : (mm > 0 ? 'part' : '')) + '"><div class="b" style="height:' + hh + 'px" title="' + mm + ' min"></div><span>' +
-          dt.toLocaleDateString('pt-BR', {weekday: 'narrow'}) + '</span></div>';
-  }
-  $('exWeek').innerHTML = wk;
 }
 
 /* ---------- alimentação ---------- */
@@ -1029,7 +1310,7 @@ function renderFood(){
     }).join('');
     var btns = tiles.querySelectorAll('.tile');
     for(var i = 0; i < btns.length; i++){
-      (function(b){ b.onclick = function(){ addFood(b.getAttribute('data-g')); }; })(btns[i]);
+      (function(b){ b.onclick = function(){ openFood(b.getAttribute('data-g')); }; })(btns[i]);
     }
   }
   FOOD.forEach(function(f){
@@ -1060,13 +1341,6 @@ function renderFood(){
     ul.innerHTML = items.join('');
   }
 
-  var wk = '';
-  for(var j = 6; j >= 0; j--){
-    var dt = daysBack(j), c = Object.keys(fdTotals(key(dt))).length;
-    wk += '<div class="col ' + (c >= 3 ? 'hit' : (c > 0 ? 'part' : '')) + '"><div class="b" style="height:' + Math.max(4, c / FOOD.length * 80) + 'px" title="' + c + ' grupos"></div><span>' +
-          dt.toLocaleDateString('pt-BR', {weekday: 'narrow'}) + '</span></div>';
-  }
-  $('fdWeek').innerHTML = wk;
 }
 
 function foodEffects(g){
@@ -1094,9 +1368,23 @@ function foodEffects(g){
   }
 }
 
-function addFood(g){
+function openFood(g){
+  var f = foodById(g);
+  $('fdModalTitle').textContent = f.emoji + ' ' + f.nome + ': qual tipo?';
+  var box = $('fdSubs');
+  box.innerHTML = '<button type="button" data-s="">Só o grupo (sem detalhar)</button>' +
+    f.subs.map(function(x){ return '<button type="button" data-s="' + x.id + '">' + x.nome + '</button>'; }).join('');
+  var bs = box.querySelectorAll('button');
+  for(var i = 0; i < bs.length; i++){
+    (function(b){ b.onclick = function(){ close('mFd'); addFood(g, b.getAttribute('data-s') || null); }; })(bs[i]);
+  }
+  open('mFd');
+}
+function addFood(g, sub){
   var k = key(), f = foodById(g), before = fdTotals(k)[g] || 0, nb = Object.keys(fdTotals(k)).length;
-  (fd[k] = fd[k] || []).push({g: g, t: Date.now()});
+  var entry = {g: g, t: Date.now()};
+  if(sub && subOk(f, sub)) entry.s = sub;
+  (fd[k] = fd[k] || []).push(entry);
   persist();
   var after = before + 1, na = Object.keys(fdTotals(k)).length;
   renderAll();
@@ -1123,7 +1411,7 @@ $('btnUndoFd').onclick = function(){
 /* ---------- sequência ---------- */
 function dayInfo(d){
   var k = key(d);
-  var w = !!(weight && totalOf(k) >= goal());
+  var w = !!(hasGoal() && !blocked() && totalOf(k) >= goal());
   var t = sumVals(exTotals(k)) >= 15;
   var f = Object.keys(fdTotals(k)).length >= 3;
   return {active: w || t || f, rest: !!rest[k]};
@@ -1185,26 +1473,29 @@ function renderCorpo(){
   var ft = fdTotals(k), nf = Object.keys(ft).length, fw = fdWeek();
   setLevels('stageC', wkT, lvWeek);
 
-  $('cWater').textContent = weight ? fmt(t) + ' ml' : '—';
-  $('cWaterSub').textContent = weight ? Math.round(pct * 100) + '% da meta' : 'Informe seu peso';
+  var hg = hasGoal(), bl = blocked();
+  $('cWater').textContent = (hg || bl) ? fmt(t) + ' ml' : '—';
+  $('cWaterSub').textContent = hg ? Math.round(pct * 100) + (bl ? '% da meta informada' : '% da meta') : (bl ? 'registrados hoje' : 'Informe seu peso');
   $('cEx').textContent = minToday + ' min';
   $('cExSub').textContent = nToday ? nToday + (nToday > 1 ? ' grupos' : ' grupo') + ' hoje' : 'Nenhum treino hoje';
   $('cFood').textContent = nf + ' de ' + FOOD.length;
   $('cFoodSub').textContent = 'grupos de comida';
 
-  var water = !!(weight && t >= g), trained = minToday > 0, ate = nf >= 3;
-  var done = (water ? 1 : 0) + (trained ? 1 : 0) + (ate ? 1 : 0), miss = [];
-  if(!water) miss.push(weight ? 'beber água até a meta (faltam ' + fmt(Math.max(0, g - t)) + ' ml)' : 'informar seu peso e bater a meta de água');
-  if(!trained) miss.push('um treino curto, nem que seja de 15 minutos');
-  if(!ate) miss.push('variar o prato com 3 grupos de comida');
+  var water = !!(hg && !bl && t >= g), trained = minToday > 0, ate = nf >= 3;
+  var items = [];
+  if(!bl) items.push({ok: water, miss: hg ? 'beber água até a meta (faltam ' + fmt(Math.max(0, g - t)) + ' ml)' : 'informar seu peso e bater a meta de água'});
+  items.push({ok: trained, miss: 'um treino curto, nem que seja de 15 minutos'});
+  items.push({ok: ate, miss: 'variar o prato com 3 grupos de comida'});
+  var done = items.filter(function(x){ return x.ok; }).length, tot = items.length;
+  var miss = items.filter(function(x){ return !x.ok; }).map(function(x){ return x.miss; });
   var h, tx;
-  if(done === 3){ h = '🎉 Dia completo!'; tx = 'Hidratado, em movimento e com o prato variado. É assim que se constrói saúde, um dia de cada vez.'; }
-  else if(done === 2){ h = '👏 Quase um dia completo'; tx = 'Falta só: ' + miss[0] + '.'; }
-  else if(done === 1){
+  if(done === tot){ h = '🎉 Dia completo!'; tx = bl ? 'Em movimento e com o prato variado. É assim que se constrói saúde, um dia de cada vez.' : 'Hidratado, em movimento e com o prato variado. É assim que se constrói saúde, um dia de cada vez.'; }
+  else if(done === tot - 1){ h = '👏 Quase um dia completo'; tx = 'Falta só: ' + miss[0] + '.'; }
+  else if(done >= 1){
     h = water ? '💧 Hidratação em dia' : (trained ? '💪 Treino feito!' : '🍎 Prato variado!');
     tx = 'Ótimo começo. Para completar o dia: ' + miss.join(' e ') + '.';
   }
-  else { h = 'Seu corpo espera por você'; tx = 'Comece com um copo de água, um treino curto ou uma fruta. Tudo aparece aqui no seu corpo.'; }
+  else { h = 'Seu corpo espera por você'; tx = bl ? 'Comece com um treino curto ou uma fruta. Tudo aparece aqui no seu corpo.' : 'Comece com um copo de água, um treino curto ou uma fruta. Tudo aparece aqui no seu corpo.'; }
   $('cHeadline').textContent = h;
   $('cText').textContent = tx;
 
@@ -1235,25 +1526,33 @@ function renderCorpo(){
 
 /* ---------- dicas entre as abas ---------- */
 function renderCross(){
-  var k = key(), g = goal(), t = totalOf(k), pct = weight ? Math.round(t / g * 100) : null;
+  var k = key(), g = goal(), t = totalOf(k), bl = blocked(), pct = (hasGoal() && !bl && g) ? Math.round(t / g * 100) : null;
   var min = sumVals(exTotals(k)), nf = Object.keys(fdTotals(k)).length;
-  $('crossW').textContent = min > 0 ? '💪 Você treinou ' + min + ' min hoje. Reponha a água aos poucos, conforme a sede.' : '';
-  $('crossX').textContent = min > 0
+  $('crossW').textContent = (min > 0 && !bl) ? '💪 Você treinou ' + min + ' min hoje. Reponha a água aos poucos, conforme a sede.' : '';
+  $('crossX').textContent = (min > 0 && !bl)
     ? '💧 Depois do treino, beba água aos poucos, conforme a sede.' + (pct !== null ? ' Você está em ' + pct + '% da meta de hoje.' : '')
     : '';
   $('crossF').textContent = (nf > 0 && pct !== null) ? '💧 E a água? Você está em ' + pct + '% da meta de hoje.' : '';
 }
 
-function renderAll(){ renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); }
+function renderAll(){ renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); }
 
 /* ---------- avisos ---------- */
 var toastTimer;
-function toast(msg){
+function toast(msg, act){
   var el = $('toast');
   el.textContent = msg;
+  el.classList.remove('has-act');
+  if(act){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'toast-act'; b.textContent = act.label;
+    b.onclick = function(){ el.classList.remove('show'); act.fn(); };
+    el.appendChild(b);
+    el.classList.add('has-act');
+  }
   el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 5000);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, act ? 9000 : 5000);
 }
 function beep(){
   try{
@@ -1289,7 +1588,7 @@ function alertUser(title, body){
 }
 function updateNotifyBtn(){
   var b = $('btnNotify');
-  b.style.display = (weight && ('Notification' in window) && Notification.permission === 'default') ? '' : 'none';
+  b.style.display = (hasGoal() && !blocked() && ('Notification' in window) && Notification.permission === 'default') ? '' : 'none';
 }
 $('btnNotify').onclick = function(){
   if(!('Notification' in window)) return;
@@ -1428,45 +1727,72 @@ function celebrate(stageId, em){
 
 /* ---------- registrar água ---------- */
 function add(ml){
-  if(!weight){ openSettings(true); return; }
-  var k = key(), g = goal(), tb = totalOf(k), ub = analyze(k).used;
-  (log[k] = log[k] || []).push({ml: ml, t: Date.now()});
+  var dk = drinkById($('drinkSel').value) || DRINKS[0];
+  if(!hasGoal() && !blocked()){ openSettings(!prof.done); return; }
+  var k = key(), g = goal(), tb = totalOf(k), ub = analyze(k).used, bl = blocked();
+  var entry = {ml: ml, t: Date.now()};
+  if(dk.id !== 'agua') entry.d = dk.id;
+  (log[k] = log[k] || []).push(entry);
   persist();
+  $('drinkSel').value = 'agua'; renderDrinkNote();
   var ta = totalOf(k), ua = analyze(k).used;
   renderAll();
+  if(!dk.c){
+    toast('Registrado: ' + fmt(ml) + ' ml de ' + dk.nome.toLowerCase() + '. Essa bebida não conta para a meta de água.' + (dk.sweet ? ' Tem muito açúcar: prefira água.' : ''));
+    return;
+  }
   waterEffects(ml);
+  var sw = dk.sweet ? ' Essa bebida tem açúcar: prefira água sempre que puder.' : '';
   var st = getStatus();
   if(st.s === 'over'){
     buzz();
     if(!document.hidden) beep();
     toast(st.kind === 'hour'
       ? '🛑 Calma! Você bebeu ' + fmt(st.hour) + ' ml na última hora. Espere um pouco antes do próximo copo.'
-      : '🛑 Você já passou bem da meta de hoje. Pode parar por aqui.');
+      : (st.kind === 'limit' ? '🛑 Você passou da meta que informou (' + fmt(g) + ' ml). Siga a orientação do seu médico.' : '🛑 Você já passou bem da meta de hoje. Pode parar por aqui.'));
+    return;
+  }
+  if(bl){
+    toast((hasGoal() && tb < g && ta >= g) ? 'Você chegou à meta que informou. Não precisa passar dela.' : '+' + fmt(ml) + ' ml registrados.' + sw);
     return;
   }
   if(tb < g && ta >= g){
     celebrate('stageW', ['💙', '✨', '💧', '🎉']);
-    toast(GOAL_MSG);
+    toast(GOAL_MSG + sw);
     return;
   }
   var fresh = MILESTONES.filter(function(x){ return x.ml > ub && x.ml <= ua; });
-  toast(fresh.length ? fresh[fresh.length - 1].t : '+' + fmt(ml) + ' ml registrados 💧');
+  toast((fresh.length ? fresh[fresh.length - 1].t : '+' + fmt(ml) + ' ml registrados 💧') + sw);
 }
 
 /* ---------- registrar exercício ---------- */
-var exGroup = null;
+var exGroup = null, exSub = null;
 function openEx(g){
   exGroup = g;
   var e = exById(g);
   $('exModalTitle').textContent = e.emoji + ' ' + e.nome + ': quanto tempo?';
   $('exModalHint').textContent = 'Ex.: ' + e.dica + '. 30 min ou mais já desbloqueia mais benefícios.';
   $('exInput').value = ''; $('exErr').textContent = '';
+  exSub = null;
+  var box = $('exSubs');
+  box.innerHTML = e.subs.map(function(x){ return '<button type="button" data-s="' + x.id + '">' + x.nome + '</button>'; }).join('');
+  var bs = box.querySelectorAll('button');
+  for(var i = 0; i < bs.length; i++){
+    (function(b){
+      b.onclick = function(){
+        exSub = (exSub === b.getAttribute('data-s')) ? null : b.getAttribute('data-s');
+        for(var j = 0; j < bs.length; j++) bs[j].classList.toggle('sel', bs[j].getAttribute('data-s') === exSub);
+      };
+    })(bs[i]);
+  }
   open('mEx');
 }
-function addEx(g, min){
+function addEx(g, min, sub){
   var k = key(), e = exById(g);
   var before = exTotals(k)[g] || 0, lb = lvDay(before);
-  (ex[k] = ex[k] || []).push({g: g, min: min, t: Date.now()});
+  var entry = {g: g, min: min, t: Date.now()};
+  if(sub && subOk(e, sub)) entry.s = sub;
+  (ex[k] = ex[k] || []).push(entry);
   persist();
   var after = before + min, la = lvDay(after);
   renderAll();
@@ -1485,14 +1811,14 @@ function addEx(g, min){
 }
 var mins = document.querySelectorAll('#mEx .mins button');
 for(var mi = 0; mi < mins.length; mi++){
-  (function(b){ b.onclick = function(){ close('mEx'); addEx(exGroup, parseInt(b.getAttribute('data-min'), 10)); }; })(mins[mi]);
+  (function(b){ b.onclick = function(){ close('mEx'); addEx(exGroup, parseInt(b.getAttribute('data-min'), 10), exSub); }; })(mins[mi]);
 }
 $('exCancel').onclick = function(){ close('mEx'); };
 $('exSave').onclick = function(){
   var v = Math.round(parseFloat(String($('exInput').value).replace(',', '.')));
   if(!(v >= 5 && v <= 240)){ $('exErr').textContent = 'Digite entre 5 e 240 minutos.'; return; }
   close('mEx');
-  addEx(exGroup, v);
+  addEx(exGroup, v, exSub);
 };
 $('btnUndoEx').onclick = function(){
   var k = key();
@@ -1509,39 +1835,82 @@ function open(id){ $(id).classList.add('open'); }
 function close(id){ $(id).classList.remove('open'); }
 var weightLocked = false;
 
+function checkedConds(){
+  var out = [], bs = $('condBox').querySelectorAll('input');
+  for(var i = 0; i < bs.length; i++) if(bs[i].checked) out.push(bs[i].value);
+  return out;
+}
+function formAge(){
+  var v = String($('ageInput').value).trim();
+  if(v === '') return null;
+  var n = parseInt(v, 10);
+  return isNaN(n) ? null : n;
+}
+function updateBlockHint(){
+  var r = blockReasonFor(formAge(), checkedConds());
+  $('blockHint').textContent = r ? '⚠️ ' + r + ' Se o seu médico indicou uma quantidade, informe no campo acima; o peso fica opcional.'
+                                 : 'Sem uma meta indicada pelo médico, usamos cerca de 35 ml por kg, com limite de 4 litros.';
+}
 function openSettings(first){
-  weightLocked = !!first && !weight;
+  weightLocked = !!first && !prof.done;
   $('setTitle').textContent = weightLocked ? 'Vamos configurar' : 'Ajustes';
   $('wCancel').style.display = weightLocked ? 'none' : '';
   $('weightInput').value = weight || '';
+  $('ageInput').value = prof.age === null ? '' : prof.age;
+  var bs = $('condBox').querySelectorAll('input');
+  for(var i = 0; i < bs.length; i++) bs[i].checked = prof.cond.indexOf(bs[i].value) >= 0;
+  $('manualInput').value = prof.water || '';
+  $('levelInput').value = prof.level;
   $('wakeInput').value = toHHMM(cfg.wake);
   $('sleepInput').value = toHHMM(cfg.sleep);
   $('intervalInput').value = String(cfg.interval);
   $('themeInput').value = theme;
   $('weightErr').textContent = '';
+  updateBlockHint();
   open('mWeight');
   setTimeout(function(){ $('weightInput').focus(); }, 50);
 }
 $('btnWeight').onclick = function(){ openSettings(false); };
 $('wCancel').onclick = function(){ close('mWeight'); };
+$('ageInput').oninput = updateBlockHint;
 $('wSave').onclick = function(){
-  var v = parseFloat(String($('weightInput').value).replace(',', '.'));
-  if(!(v >= 20 && v <= 300)){ $('weightErr').textContent = 'Digite um peso entre 20 e 300 kg.'; return; }
-  var w = toMin($('wakeInput').value), s = toMin($('sleepInput').value);
-  if(isNaN(w) || isNaN(s)){ $('weightErr').textContent = 'Informe os horários de acordar e dormir.'; return; }
-  if(s - w < 360){ $('weightErr').textContent = 'Precisa haver pelo menos 6 horas entre acordar e dormir.'; return; }
-  weight = Math.round(v * 10) / 10;
-  cfg = {wake: w, sleep: s, interval: parseInt($('intervalInput').value, 10) || 90};
+  var err = $('weightErr');
+  var ageS = String($('ageInput').value).trim(), age = null;
+  if(ageS !== ''){
+    age = parseInt(ageS, 10);
+    if(!(age >= 1 && age <= 120)){ err.textContent = 'Digite uma idade entre 1 e 120 anos.'; return; }
+  }
+  var cond = checkedConds();
+  var mS = String($('manualInput').value).trim(), man = null;
+  if(mS !== ''){
+    man = Math.round(parseFloat(mS.replace(',', '.')));
+    if(!(man >= 500 && man <= 5000)){ err.textContent = 'A meta indicada deve ficar entre 500 e 5000 ml.'; return; }
+  }
+  var bl = blockReasonFor(age, cond) !== '';
+  var wS = String($('weightInput').value).trim(), v = null;
+  if(wS !== ''){
+    v = parseFloat(wS.replace(',', '.'));
+    if(!(v >= 20 && v <= 300)){ err.textContent = 'Digite um peso entre 20 e 300 kg.'; return; }
+  } else if(!bl && !man){
+    err.textContent = 'Digite seu peso (entre 20 e 300 kg) ou a meta de água indicada pelo seu médico.'; return;
+  }
+  var w = toMin($('wakeInput').value), sl = toMin($('sleepInput').value);
+  if(isNaN(w) || isNaN(sl)){ err.textContent = 'Informe os horários de acordar e dormir.'; return; }
+  if(sl - w < 360){ err.textContent = 'Precisa haver pelo menos 6 horas entre acordar e dormir.'; return; }
+  weight = v === null ? null : Math.round(v * 10) / 10;
+  cfg = {wake: w, sleep: sl, interval: parseInt($('intervalInput').value, 10) || 90};
+  prof = {age: age, cond: cond, water: man, level: $('levelInput').value === 'inicio' ? 'inicio' : 'regular', done: true};
   save('weight', weight);
   save('cfg', cfg);
+  save('prof', prof);
   weightLocked = false;
   close('mWeight');
   renderAll();
-  toast('Meta de hoje: ' + fmt(goal()) + ' ml, com um copo a cada ' + dur(cfg.interval * MS_MIN) + ' 💧');
+  toast(blocked() ? 'Ajustes salvos. No seu caso o app não calcula a meta de água.' : 'Meta de hoje: ' + fmt(goal()) + ' ml, com um copo a cada ' + dur(cfg.interval * MS_MIN) + ' 💧');
 };
 
 $('btnOther').onclick = function(){
-  if(!weight){ openSettings(true); return; }
+  if(!hasGoal() && !blocked()){ openSettings(!prof.done); return; }
   $('otherInput').value = ''; $('otherErr').textContent = '';
   open('mOther');
   setTimeout(function(){ $('otherInput').focus(); }, 50);
@@ -1568,7 +1937,7 @@ $('copyPix').onclick = function(){
   } else { fallback(); }
 };
 
-['mWeight', 'mOther', 'mDonate', 'mEx'].forEach(function(id){
+['mWeight', 'mOther', 'mDonate', 'mEx', 'mFd', 'mHist'].forEach(function(id){
   $(id).addEventListener('click', function(e){
     if(e.target !== $(id)) return;
     if(id === 'mWeight' && weightLocked) return;
@@ -1598,7 +1967,10 @@ function cleanLog(o){
     if(!DATE_RE.test(k) || !Array.isArray(o[k])) return;
     var a = o[k].map(function(e){
       if(typeof e === 'number') e = {ml: e, t: null};
-      return (e && typeof e.ml === 'number' && e.ml > 0 && e.ml <= 5000) ? {ml: Math.round(e.ml), t: (typeof e.t === 'number' ? e.t : null)} : null;
+      if(!(e && typeof e.ml === 'number' && e.ml > 0 && e.ml <= 5000)) return null;
+      var r1 = {ml: Math.round(e.ml), t: (typeof e.t === 'number' ? e.t : null)};
+      if(e.d && e.d !== 'agua' && drinkById(e.d)) r1.d = e.d;
+      return r1;
     }).filter(Boolean);
     if(a.length) r[k] = a;
   });
@@ -1609,7 +1981,11 @@ function cleanEx(o){
   Object.keys(o || {}).forEach(function(k){
     if(!DATE_RE.test(k) || !Array.isArray(o[k])) return;
     var a = o[k].filter(function(e){ return e && exById(e.g) && typeof e.min === 'number' && e.min > 0 && e.min <= 600; })
-                .map(function(e){ return {g: e.g, min: Math.round(e.min), t: (typeof e.t === 'number' ? e.t : 0)}; });
+                .map(function(e){
+                  var r1 = {g: e.g, min: Math.round(e.min), t: (typeof e.t === 'number' ? e.t : 0)};
+                  if(e.s && subOk(exById(e.g), e.s)) r1.s = e.s;
+                  return r1;
+                });
     if(a.length) r[k] = a;
   });
   return r;
@@ -1618,7 +1994,12 @@ function cleanFd(o){
   var r = {};
   Object.keys(o || {}).forEach(function(k){
     if(!DATE_RE.test(k) || !Array.isArray(o[k])) return;
-    var a = o[k].filter(function(e){ return e && foodById(e.g); }).map(function(e){ return {g: e.g, t: (typeof e.t === 'number' ? e.t : 0)}; });
+    var a = o[k].filter(function(e){ return e && foodById(e.g); })
+                .map(function(e){
+                  var r1 = {g: e.g, t: (typeof e.t === 'number' ? e.t : 0)};
+                  if(e.s && subOk(foodById(e.g), e.s)) r1.s = e.s;
+                  return r1;
+                });
     if(a.length) r[k] = a;
   });
   return r;
@@ -1629,7 +2010,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'beba-agua', versao: 4, exportado: new Date().toISOString(), weight: weight, cfg: cfg, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'beba-agua', versao: 5, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -1655,9 +2036,11 @@ function importData(file){
     if(c && typeof c.wake === 'number' && typeof c.sleep === 'number' && c.sleep - c.wake >= 360 && [60, 90, 120].indexOf(c.interval) >= 0){
       cfg = {wake: c.wake, sleep: c.sleep, interval: c.interval};
     }
+    prof = cleanProf(d.prof || {age: null, cond: [], water: null, level: 'regular', done: !!weight});
+    prof.done = true;
     log = cleanLog(d.log); ex = cleanEx(d.ex); fd = cleanFd(d.fd); rest = cleanRest(d.rest);
     if(['auto', 'light', 'dark'].indexOf(d.theme) >= 0) theme = d.theme;
-    save('weight', weight); save('cfg', cfg); save('theme', theme);
+    save('weight', weight); save('cfg', cfg); save('prof', prof); save('theme', theme);
     persist(); applyTheme();
     close('mWeight');
     renderAll();
@@ -1672,11 +2055,15 @@ $('fileImport').onchange = function(){ var f = this.files && this.files[0]; if(f
 
 /* ---------- tema ---------- */
 var THEME_NAMES = {auto: 'automático', light: 'claro', dark: 'escuro'};
+var META = {agua: ['#0a6fb8', '#08141d'], ex: ['#c2410c', '#150f0a'], comida: ['#2e7d32', '#09150d'], corpo: ['#6d3fc0', '#110c1b']};
+function setMeta(){
+  var dark = theme === 'dark' || (theme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  $('metaTheme').setAttribute('content', (META[tab] || META.agua)[dark ? 1 : 0]);
+}
 function applyTheme(){
   var r = document.documentElement;
   if(theme === 'light' || theme === 'dark') r.setAttribute('data-theme', theme); else r.removeAttribute('data-theme');
-  var dark = theme === 'dark' || (theme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  $('metaTheme').setAttribute('content', dark ? '#08141d' : '#0b84d8');
+  setMeta();
   $('btnTheme').textContent = theme === 'dark' ? '🌙' : (theme === 'light' ? '☀️' : '🌓');
   $('themeInput').value = theme;
 }
@@ -1695,6 +2082,8 @@ if(window.matchMedia){
 var TITLES = {agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
 function showTab(t){
   tab = t; save('tab', t);
+  document.body.setAttribute('data-tab', t);
+  setMeta();
   TABS.forEach(function(id){
     $('tab-' + id).hidden = (id !== t);
     $('nav-' + id).classList.toggle('on', id === t);
@@ -1715,17 +2104,322 @@ document.addEventListener('visibilitychange', function(){
   if(!document.hidden){ setDate(); renderAll(); }
 });
 
+/* ---------- metas de exercício e de comida ---------- */
+function exBlockText(){
+  if(prof.age !== null && prof.age < 18) return 'Para crianças e adolescentes, a meta de atividade deve ser definida por pediatra ou educador físico. O app não define meta.';
+  if(hasCond('ic') || hasCond('drc')) return 'No seu caso, o exercício deve ser orientado pelo seu médico. O app não define meta; você pode registrar seus treinos.';
+  if(hasCond('gest')) return 'Na gestação, converse com o seu pré-natal sobre quais exercícios são seguros. O app não define meta.';
+  return '';
+}
+function exGoal(){ return exBlockText() ? 0 : (prof.level === 'inicio' ? 75 : 150); }
+function strengthDays(){
+  var n = 0;
+  for(var i = 0; i < 7; i++){
+    var t = exTotals(key(daysBack(i)));
+    if(Object.keys(t).some(function(g){ return g !== 'cardio' && t[g] > 0; })) n++;
+  }
+  return n;
+}
+function renderExGoal(){
+  var w = sumVals(weekTotals()), g = exGoal();
+  if(!g){
+    $('exGoalH').textContent = 'Sem meta automática';
+    $('exGoalBar').style.width = '0%';
+    $('exGoalTxt').textContent = exBlockText();
+    return;
+  }
+  $('exGoalH').textContent = w + ' de ' + g + ' min nos últimos 7 dias';
+  $('exGoalBar').style.width = (Math.min(1, w / g) * 100) + '%';
+  var t = prof.level === 'inicio'
+    ? 'Meta para quem está começando: vá aos poucos e aumente com o tempo. '
+    : 'Referência da OMS para adultos: 150 min por semana de atividade moderada. ';
+  t += 'Todo movimento conta. Força (musculação): ' + strengthDays() + ' dia(s) esta semana; a referência é 2.';
+  if(prof.age !== null && prof.age >= 65) t += ' Inclua também exercícios de equilíbrio e peça uma avaliação profissional.';
+  $('exGoalTxt').textContent = t;
+}
+
+var FOOD_REF = {
+  frutas: {n: 3, txt: '3'}, legumes: {n: 3, txt: '3 a 4'}, carnes: {n: 1, txt: '1 a 2'},
+  peixes: {w: 2}, graos: {}, laticinios: {n: 3, txt: '3'}
+};
+function renderFoodRef(){
+  var box = $('fdRef'), hint = $('fdRefHint');
+  if(prof.age !== null && prof.age < 18){
+    box.innerHTML = '';
+    hint.textContent = 'Para crianças e adolescentes, as porções devem ser definidas por pediatra ou nutricionista.';
+    return;
+  }
+  if(prof.cond.length){
+    box.innerHTML = '';
+    hint.textContent = 'Como você marcou uma condição de saúde, o app não sugere número de porções. Siga o plano do seu médico ou nutricionista. O registro continua servindo para acompanhar a variedade.';
+    return;
+  }
+  var tot = fdTotals(key()), wk = fdWeek();
+  box.innerHTML = FOOD.map(function(f){
+    var r = FOOD_REF[f.id] || {}, txt, ok;
+    if(r.w){ txt = 'semana: ' + (wk[f.id] || 0) + ' de ' + r.w; ok = (wk[f.id] || 0) >= r.w; }
+    else if(r.txt){ txt = (tot[f.id] || 0) + ' de ' + r.txt + ' hoje'; ok = (tot[f.id] || 0) >= r.n; }
+    else { txt = 'varie e prefira integrais'; ok = false; }
+    return '<span class="chip' + (ok ? ' f2' : '') + '">' + f.emoji + ' ' + f.nome + '<i>' + txt + '</i></span>';
+  }).join('');
+  hint.textContent = 'Referência de variedade para adultos, sem calorias, adaptada da Pirâmide Alimentar (Philippi, 2013). O Guia Alimentar do Ministério da Saúde (2014) não fixa número de porções: ele recomenda priorizar alimentos in natura. Não é uma obrigação; o importante é variar.';
+}
+
+/* ---------- cuidados por condição ---------- */
+function renderNotes(){
+  var map = {W: 'a', X: 'x', F: 'f'};
+  Object.keys(map).forEach(function(K){
+    var f = map[K], items = [];
+    prof.cond.forEach(function(id){
+      var c = null;
+      COND.forEach(function(x){ if(x.id === id) c = x; });
+      var tx = NOTES[id] && NOTES[id][f];
+      if(c && tx) items.push('<li><b>' + c.nome + '</b>' + tx + '</li>');
+    });
+    $('notes' + K + 'c').hidden = !items.length;
+    $('notes' + K).innerHTML = items.length
+      ? items.join('') + '<li class="empty" style="border-left-color:transparent">Informação geral, baseada em orientações de sociedades médicas (SBD, SBH, SBC, SBN) e da OMS. Não substitui o seu médico.</li>'
+      : '';
+  });
+}
+
+/* ---------- gráficos ---------- */
+function esc(x){ return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+function shortDay(d){ return d.toLocaleDateString('pt-BR', {weekday: 'short'}).replace('.', ''); }
+function series(fn, n, off){
+  var arr = [];
+  for(var i = n - 1 + off; i >= off; i--){ var d = daysBack(i); arr.push({d: d, v: fn(key(d))}); }
+  return arr;
+}
+function avg(arr){ return arr.length ? arr.reduce(function(a, p){ return a + p.v; }, 0) / arr.length : 0; }
+function anyV(arr){ return arr.some(function(p){ return p.v > 0; }); }
+function lf(v){ return (v / 1000).toFixed(1).replace('.', ','); }
+function barChart(arr, o){
+  var W = 320, H = 160, L = 8, R = 8, T = 24, B = 26, n = arr.length;
+  var max = 0;
+  arr.forEach(function(p){ if(p.v > max) max = p.v; });
+  if(o.goal && o.goal > max) max = o.goal;
+  max = Math.max(max * 1.12, o.min || 1);
+  var bw = (W - L - R) / n, w = Math.max(3, bw * (n > 10 ? 0.66 : 0.6));
+  var base = H - B, ph = base - T;
+  var out = '<svg class="chartsvg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(o.aria) + '">';
+  out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + base + '" y2="' + base + '" stroke="var(--line)" stroke-width="1.5"/>';
+  if(o.goal){
+    var gy = (base - o.goal / max * ph).toFixed(1);
+    out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + gy + '" y2="' + gy + '" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>';
+    out += '<text x="' + (W - R) + '" y="' + (gy - 4) + '" text-anchor="end" font-size="10" fill="var(--muted)">' + esc(o.goalLabel) + '</text>';
+  }
+  arr.forEach(function(p, i){
+    var x = L + i * bw + (bw - w) / 2, cx = (x + w / 2).toFixed(1);
+    var tip = p.tip || (p.d.toLocaleDateString('pt-BR', {day: 'numeric', month: 'short'}) + ': ' + o.tipf(p.v));
+    if(p.v > 0){
+      var h = Math.max(3, p.v / max * ph), full = !o.goal || p.v >= o.goal;
+      out += '<rect x="' + x.toFixed(1) + '" y="' + (base - h).toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="' + o.color + '" opacity="' + (full ? 1 : 0.55) + '"><title>' + esc(tip) + '</title></rect>';
+      if(n <= 7) out += '<text x="' + cx + '" y="' + (base - h - 4).toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="700" fill="var(--text)">' + esc(o.lab(p.v)) + '</text>';
+    } else {
+      out += '<circle cx="' + cx + '" cy="' + (base - 3) + '" r="2" fill="var(--muted)" opacity=".45"><title>' + esc(tip) + '</title></circle>';
+    }
+    var lab = p.lab !== undefined ? p.lab : (n <= 7 ? shortDay(p.d) : (((n - 1 - i) % 5 === 0) ? String(p.d.getDate()) : ''));
+    if(lab) out += '<text x="' + cx + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="var(--muted)">' + esc(lab) + '</text>';
+  });
+  return out + '</svg>';
+}
+
+function renderCharts(){
+  var n = range, bl = blocked(), g = hasGoal() ? goal() : 0, nm = n === 7 ? 'semana' : 'mês';
+  var btns = document.querySelectorAll('[data-seg] button');
+  for(var q = 0; q < btns.length; q++){
+    var on = parseInt(btns[q].getAttribute('data-r'), 10) === range;
+    btns[q].classList.toggle('on', on);
+    btns[q].setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
+  /* água */
+  var cur = series(totalOf, n, 0), prev = series(totalOf, n, n);
+  var days = cur.filter(function(p){ return p.v > 0; }).length;
+  var sw = 'Média de ' + lf(avg(cur)) + ' L por dia · ' + days + ' de ' + n + ' dias com registro';
+  if(g && !bl) sw += ' · meta batida em ' + cur.filter(function(p){ return p.v >= g; }).length + ' dia(s)';
+  sw += '.';
+  if(anyV(prev)) sw += ' Período anterior: média de ' + lf(avg(prev)) + ' L por dia.';
+  $('chW').innerHTML = barChart(cur, {color: 'var(--water2)', goal: g, goalLabel: bl ? 'meta informada' : 'meta', aria: 'Gráfico de barras da água por dia. ' + sw,
+    lab: lf, tipf: function(v){ return fmt(v) + ' ml'; }});
+  $('chWSum').textContent = sw;
+
+  /* exercício */
+  var tm = function(k){ return sumVals(exTotals(k)); };
+  cur = series(tm, n, 0); prev = series(tm, n, n);
+  var tot = cur.reduce(function(a, p){ return a + p.v; }, 0);
+  var sx = 'Total de ' + fmt(tot) + ' min · ' + cur.filter(function(p){ return p.v > 0; }).length + ' de ' + n + ' dias com treino.';
+  if(anyV(prev)) sx += ' Período anterior: ' + fmt(prev.reduce(function(a, p){ return a + p.v; }, 0)) + ' min.';
+  $('chX').innerHTML = barChart(cur, {color: 'var(--fx2)', aria: 'Gráfico de barras dos minutos de exercício por dia. ' + sx,
+    lab: String, tipf: function(v){ return v + ' min'; }});
+  $('chXSum').textContent = sx;
+
+  /* comida */
+  var gc = function(k){ return Object.keys(fdTotals(k)).length; };
+  cur = series(gc, n, 0); prev = series(gc, n, n);
+  var sf = 'Média de ' + avg(cur).toFixed(1).replace('.', ',') + ' grupos por dia · ' + cur.filter(function(p){ return p.v >= 3; }).length + ' dia(s) com 3 grupos ou mais.';
+  if(anyV(prev)) sf += ' Período anterior: média de ' + avg(prev).toFixed(1).replace('.', ',') + '.';
+  $('chF').innerHTML = barChart(cur, {color: 'var(--fd2)', goal: 3, goalLabel: '3 grupos', min: FOOD.length, aria: 'Gráfico de barras dos grupos de alimentos por dia. ' + sf,
+    lab: String, tipf: function(v){ return v + (v === 1 ? ' grupo' : ' grupos'); }});
+  $('chFSum').textContent = sf;
+
+  /* corpo: dias ativos nas últimas 4 semanas */
+  var labs = ['há 3 sem.', 'há 2 sem.', 'há 1 sem.', 'últimos 7 dias'], wk = [], tc = 0;
+  for(var b = 3; b >= 0; b--){
+    var c = 0;
+    for(var i = 0; i < 7; i++) if(dayInfo(daysBack(b * 7 + i)).active) c++;
+    tc += c;
+    wk.push({d: new Date(), v: c, lab: labs[3 - b], tip: labs[3 - b] + ': ' + c + ' dia(s) ativo(s)'});
+  }
+  var sc = tc + ' dias ativos nas últimas 4 semanas. Um dia ativo é aquele em que você bateu a meta de água, treinou 15 min ou registrou 3 grupos de comida.';
+  $('chC').innerHTML = barChart(wk, {color: 'var(--c-corpo)', min: 7, aria: 'Gráfico de barras dos dias ativos por semana. ' + sc, lab: String, tipf: String});
+  $('chCSum').textContent = sc;
+}
+
+/* ---------- histórico, apagar e desfazer ---------- */
+var histKind = 'log', histOpen = null;
+function store(kind){ return kind === 'log' ? log : (kind === 'ex' ? ex : fd); }
+function dayLabel(k){ return new Date(k + 'T12:00:00').toLocaleDateString('pt-BR', {weekday: 'short', day: 'numeric', month: 'short'}); }
+function entryText(kind, e){
+  var tm = e.t ? hhmm(e.t) + ' · ' : '';
+  if(kind === 'log'){ var d = drinkOf(e); return tm + fmt(e.ml) + ' ml · ' + d.nome + (d.c ? '' : ' (não conta)'); }
+  if(kind === 'ex'){ var g = exById(e.g); return tm + g.emoji + ' ' + g.nome + (e.s ? ' · ' + subShort(g, e.s) : '') + ' · ' + e.min + ' min'; }
+  var f = foodById(e.g);
+  return tm + f.emoji + ' ' + f.nome + (e.s ? ' · ' + subShort(f, e.s) : '');
+}
+function daySummary(kind, k){
+  if(kind === 'log') return fmt(totalOf(k)) + ' ml';
+  if(kind === 'ex') return sumVals(exTotals(k)) + ' min';
+  var n = store('fd')[k].length;
+  return n + (n === 1 ? ' porção' : ' porções');
+}
+function renderHist(){
+  var bs = $('histSeg').querySelectorAll('button');
+  for(var i = 0; i < bs.length; i++) bs[i].classList.toggle('on', bs[i].getAttribute('data-h') === histKind);
+  var st = store(histKind);
+  var keys = Object.keys(st).filter(function(k){ return st[k] && st[k].length; }).sort().reverse();
+  if(!keys.length){ $('histBody').innerHTML = '<p class="empty">Nenhum registro guardado.</p>'; return; }
+  $('histBody').innerHTML = keys.map(function(k){
+    var rows = st[k].map(function(e, j){
+      return '<div class="hrow"><span>' + entryText(histKind, e) + '</span><button type="button" data-de="' + j + '" data-k="' + k + '">Apagar</button></div>';
+    }).join('');
+    return '<details class="hday"' + ((k === key() || k === histOpen) ? ' open' : '') + '><summary>' + dayLabel(k) + '<span>' + daySummary(histKind, k) + '</span></summary>' +
+           rows + '<button type="button" class="hdel danger" data-dd="' + k + '">Apagar o dia inteiro</button></details>';
+  }).join('');
+}
+function openHist(kind){
+  histKind = kind || 'log'; histOpen = null;
+  renderHist();
+  open('mHist');
+}
+function deleteEntry(kind, k, idx){
+  var st = store(kind);
+  if(!st[k] || !st[k][idx]) return;
+  var e = st[k].splice(idx, 1)[0];
+  if(!st[k].length) delete st[k];
+  histOpen = k;
+  persist(); renderAll(); renderHist();
+  toast('Registro apagado.', {label: 'Desfazer', fn: function(){
+    var s2 = store(kind);
+    var a = (s2[k] = s2[k] || []);
+    a.splice(Math.min(idx, a.length), 0, e);
+    persist(); renderAll(); renderHist();
+    toast('Registro de volta.');
+  }});
+}
+function deleteDay(kind, k){
+  var st = store(kind);
+  if(!st[k]) return;
+  var all = st[k];
+  delete st[k];
+  persist(); renderAll(); renderHist();
+  toast('Dia apagado.', {label: 'Desfazer', fn: function(){
+    store(kind)[k] = all;
+    persist(); renderAll(); renderHist();
+    toast('Dia de volta.');
+  }});
+}
+var confirmFn = null;
+function confirmBox(title, text, okLabel, fn){
+  $('cfTitle').textContent = title;
+  $('cfText').textContent = text;
+  $('cfOk').textContent = okLabel || 'Apagar';
+  confirmFn = fn;
+  open('mConfirm');
+}
+$('cfCancel').onclick = function(){ confirmFn = null; close('mConfirm'); };
+$('cfOk').onclick = function(){ var f = confirmFn; confirmFn = null; close('mConfirm'); if(f) f(); };
+$('histBody').onclick = function(ev){
+  var t = ev.target;
+  if(!t || !t.getAttribute) return;
+  var de = t.getAttribute('data-de'), dd = t.getAttribute('data-dd'), k = t.getAttribute('data-k');
+  if(de !== null){
+    deleteEntry(histKind, k, parseInt(de, 10));
+  } else if(dd !== null){
+    var n = (store(histKind)[dd] || []).length;
+    confirmBox('Apagar o dia ' + dayLabel(dd) + '?', 'Serão apagados ' + n + (n === 1 ? ' registro' : ' registros') + ' deste dia. Você poderá desfazer logo depois.', 'Apagar', function(){ deleteDay(histKind, dd); });
+  }
+};
+(function(){
+  var hb = $('histSeg').querySelectorAll('button');
+  for(var i = 0; i < hb.length; i++){
+    (function(b){ b.onclick = function(){ histKind = b.getAttribute('data-h'); histOpen = null; renderHist(); }; })(hb[i]);
+  }
+  var links = document.querySelectorAll('[data-hist]');
+  for(var j = 0; j < links.length; j++){
+    (function(b){ b.onclick = function(){ openHist(b.getAttribute('data-hist')); }; })(links[j]);
+  }
+})();
+$('hClose').onclick = function(){ close('mHist'); };
+$('btnHist').onclick = function(){ close('mWeight'); openHist('log'); };
+
+$('btnClear').onclick = function(){
+  close('mWeight');
+  $('clearInput').value = ''; $('clearErr').textContent = '';
+  open('mClear');
+};
+$('clearCancel').onclick = function(){ close('mClear'); };
+$('clearOk').onclick = function(){
+  if(String($('clearInput').value).trim().toUpperCase() !== 'APAGAR'){ $('clearErr').textContent = 'Digite APAGAR para confirmar.'; return; }
+  var snap = JSON.stringify({log: log, ex: ex, fd: fd, rest: rest});
+  log = {}; ex = {}; fd = {}; rest = {};
+  persist(); close('mClear'); renderAll();
+  toast('Todos os registros foram apagados.', {label: 'Desfazer', fn: function(){
+    var o = JSON.parse(snap);
+    log = o.log; ex = o.ex; fd = o.fd; rest = o.rest;
+    persist(); renderAll();
+    toast('Registros restaurados.');
+  }});
+};
+
 /* ---------- início ---------- */
 $('stageW').innerHTML = bodySVG('w', 'water');
 $('stageX').innerHTML = bodySVG('x', 'muscle');
 $('stageC').innerHTML = bodySVG('c', 'both');
 $('stageF').innerHTML = plateSVG();
+$('drinkSel').innerHTML = DRINKS.map(function(d){ return '<option value="' + d.id + '">' + d.emoji + ' ' + d.nome + (d.c ? '' : ' (não conta)') + '</option>'; }).join('');
+$('drinkSel').onchange = renderDrinkNote;
+renderDrinkNote();
+$('condBox').innerHTML = COND.map(function(c){ return '<label class="chk"><input type="checkbox" value="' + c.id + '"> ' + c.nome + '</label>'; }).join('');
+(function(){
+  var ins = $('condBox').querySelectorAll('input');
+  for(var i = 0; i < ins.length; i++) ins[i].onchange = updateBlockHint;
+  var segs = document.querySelectorAll('[data-seg]');
+  for(var j = 0; j < segs.length; j++){
+    segs[j].innerHTML = '<button type="button" data-r="7">7 dias</button><button type="button" data-r="30">30 dias</button>';
+    var bs = segs[j].querySelectorAll('button');
+    for(var q = 0; q < bs.length; q++){
+      (function(b){ b.onclick = function(){ range = parseInt(b.getAttribute('data-r'), 10); save('range', range); renderCharts(); }; })(bs[q]);
+    }
+  }
+})();
 applyTheme();
 setDate();
 showTab(tab);
 requestAnimationFrame(function(){ requestAnimationFrame(renderAll); });
 setInterval(function(){ tick(true); }, 30000);
-if(!weight && tab === 'agua') setTimeout(function(){ openSettings(true); }, 400);
+if(!prof.done && tab === 'agua') setTimeout(function(){ openSettings(true); }, 400);
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
