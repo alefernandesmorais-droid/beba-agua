@@ -31,7 +31,6 @@
   --cd-agua:#ffffff; --cd-ex:#ffffff; --cd-food:#ffffff; --cd-corpo:#ffffff;
   --t1:var(--water1); --t2:var(--water2);
   --shp-ex:#f1e6dc; --shp-food:#e3efe3; --shp-corpo:#e7e0f3;
-  --mc-body:#FBEFE0; --mc-line:#2A3542; --mc-cheek:#F7A1A8;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -42,7 +41,6 @@
     --ln-agua:#1c3547; --ln-ex:#3a2a1d; --ln-food:#1f3a27; --ln-corpo:#33274d;
     --cd-agua:#0f2230; --cd-ex:#211710; --cd-food:#102016; --cd-corpo:#1b1428;
     --shp-ex:#33261b; --shp-food:#1b3526; --shp-corpo:#2c2342;
-    --mc-body:#3A4A5C; --mc-line:#C6D4E2; --mc-cheek:#C9787F;
   }
 }
 :root[data-theme="dark"]{
@@ -53,7 +51,6 @@
   --ln-agua:#1c3547; --ln-ex:#3a2a1d; --ln-food:#1f3a27; --ln-corpo:#33274d;
   --cd-agua:#0f2230; --cd-ex:#211710; --cd-food:#102016; --cd-corpo:#1b1428;
   --shp-ex:#33261b; --shp-food:#1b3526; --shp-corpo:#2c2342;
-  --mc-body:#3A4A5C; --mc-line:#C6D4E2; --mc-cheek:#C9787F;
 }
 /* cada aba tem a sua cor */
 body[data-tab="agua"]{--bg:var(--bg-agua);--line:var(--ln-agua);--card:var(--cd-agua);--accent:var(--c-agua);--t1:var(--water1);--t2:var(--water2)}
@@ -274,60 +271,6 @@ footer{margin-top:22px;text-align:center}
 .subs .sec{width:100%;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:8px}
 #greetTxt{font-weight:700;color:var(--text);font-size:.95rem}
 .modal select{width:100%;padding:12px;font-size:1rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
-
-/* ===== Bolota (mascote) ===== */
-.mascote{display:block;width:100%;height:auto;overflow:visible}
-.mascote .sombra{fill:#000;opacity:.12}
-.mascote .cabeca,.mascote .orelha,.mascote .pescoco,.mascote .mao,.mascote .pe,.mascote .tronco-forma{fill:var(--mc-body);stroke:var(--mc-line);stroke-width:4;stroke-linejoin:round}
-.mascote .tronco-contorno{fill:none;stroke:var(--mc-line);stroke-width:4;pointer-events:none}
-.mascote .ctr{fill:none;stroke:var(--mc-line);stroke-width:26;stroke-linecap:round}
-.mascote .fil{fill:none;stroke:var(--mc-body);stroke-width:20;stroke-linecap:round}
-.mascote .ml{fill:none;stroke:transparent;stroke-width:20;stroke-linecap:round;transition:stroke .8s,stroke-opacity .8s}
-.mascote .ml.lv1{stroke:var(--fx1);stroke-opacity:.7}
-.mascote .ml.lv2{stroke:var(--fx1);stroke-opacity:1}
-.mascote .ml.lv3{stroke:var(--fx2);stroke-opacity:1}
-.mascote .ml.flash{animation:limbpump .9s ease-out}
-@keyframes limbpump{0%{stroke-width:20}35%{stroke-width:27}100%{stroke-width:20}}
-.both .ml.lv1,.both .ml.lv2,.both .ml.lv3{stroke:var(--fx2)}
-.mascote .braco-esq{transform-box:view-box;transform-origin:64px 124px}
-.mascote .braco-dir{transform-box:view-box;transform-origin:136px 124px}
-.mascote .agua{fill:url(#none)}
-.mascote .olho{fill:var(--mc-line)}
-.mascote .brilho{fill:#fff;opacity:.85}
-.mascote .bochecha{fill:var(--mc-cheek);opacity:.55}
-.mascote .boca,.mascote .olho-linha,.mascote .olho-feliz,.mascote .gota-suor,.mascote .zzz{fill:none;stroke:var(--mc-line);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
-.mascote .boca-cheia,.mascote .boca-aberta{fill:var(--mc-line)}
-.mascote .lingua{fill:var(--mc-cheek)}
-.mascote .expr{display:none}
-.mascote[data-face="feliz"] .expr--feliz,.mascote[data-face="sede"] .expr--sede,.mascote[data-face="comemorando"] .expr--comemorando,.mascote[data-face="cansado"] .expr--cansado{display:inline}
-.mascote .acc{display:none}
-.mascote[data-head="bone"] .acc-bone,.mascote[data-head="fone"] .acc-fone,.mascote[data-head="coroa"] .acc-coroa,
-.mascote[data-tenis="1"] .acc-tenis,.mascote[data-medalha="1"] .acc-medalha,.mascote[data-mochila="1"] .acc-mochila,.mascote[data-oculos="1"] .acc-oculos{display:inline}
-@keyframes respirar{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.018)}}
-.mascote .tronco{transform-box:fill-box;transform-origin:center bottom;animation:respirar 4.5s ease-in-out infinite}
-@keyframes piscar{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
-.mascote .olho,.mascote .olho-linha,.mascote .olho-feliz{transform-box:fill-box;transform-origin:center;animation:piscar 5.5s infinite}
-@keyframes pular{0%{transform:translateY(0) scaleY(1)}18%{transform:translateY(0) scaleY(.93)}42%{transform:translateY(-16px) scaleY(1.05)}66%{transform:translateY(0) scaleY(.97)}82%{transform:translateY(-5px) scaleY(1.01)}100%{transform:translateY(0) scaleY(1)}}
-.mascote.pulando .corpo{transform-box:fill-box;transform-origin:center bottom;animation:pular .9s cubic-bezier(.3,.7,.4,1)}
-@keyframes balancar{0%,100%{transform:rotate(0)}25%{transform:rotate(-2.5deg)}75%{transform:rotate(2.5deg)}}
-.mascote.bebendo .corpo{transform-box:fill-box;transform-origin:center bottom;animation:balancar .62s ease-in-out 2}
-@keyframes flexE{0%{transform:rotate(0)}35%{transform:rotate(52deg)}60%{transform:rotate(56deg)}100%{transform:rotate(0)}}
-@keyframes flexD{0%{transform:rotate(0)}35%{transform:rotate(-52deg)}60%{transform:rotate(-56deg)}100%{transform:rotate(0)}}
-.mascote .braco-esq.flexionando{animation:flexE .8s cubic-bezier(.4,0,.3,1)}
-.mascote .braco-dir.flexionando{animation:flexD .8s cubic-bezier(.4,0,.3,1)}
-/* prato */
-.pl.lv0{stroke:var(--muted);stroke-opacity:.55;stroke-dasharray:5 4}
-.pf{display:none}
-svg[data-v="0"] .pf0,svg[data-v="1"] .pf1,svg[data-v="2"] .pf2,svg[data-v="3"] .pf3{display:inline}
-.pcentro{fill:var(--mc-body);stroke:var(--mc-line);stroke-width:3}
-.pcentro-t{fill:none;stroke:var(--mc-line);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.pcentro-o{fill:var(--mc-line)}
-.accline{font-size:.8rem;color:var(--muted);margin-top:8px;line-height:1.5}
-@media (prefers-reduced-motion: reduce){
-  .mascote,.mascote *{animation:none !important}
-  .wave{animation:none !important}
-  .water{transition:none}
-}
 </style>
 </head>
 <body data-tab="agua">
@@ -532,8 +475,7 @@ svg[data-v="0"] .pf0,svg[data-v="1"] .pf1,svg[data-v="2"] .pf2,svg[data-v="3"] .
       </div>
       <div class="dots" id="sDots"></div>
       <div class="rests" id="sRests"></div>
-      <p class="accline" id="accHint"></p>
-    <p class="hint">Um dia conta quando você bate a meta de água, treina pelo menos 15 minutos ou registra 3 grupos de comida. Um dia de folga mantém a sequência (até 2 por semana).</p>
+      <p class="hint">Um dia conta quando você bate a meta de água, treina pelo menos 15 minutos ou registra 3 grupos de comida. Um dia de folga mantém a sequência (até 2 por semana).</p>
     </section>
 
     <section class="card">
@@ -557,7 +499,7 @@ svg[data-v="0"] .pf0,svg[data-v="1"] .pf1,svg[data-v="2"] .pf2,svg[data-v="3"] .
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 7.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 6.</p>
   </footer>
 </div>
 
@@ -609,7 +551,6 @@ svg[data-v="0"] .pf0,svg[data-v="1"] .pf1,svg[data-v="2"] .pf2,svg[data-v="3"] .
       <option value="inicio">Estou começando (meta menor)</option>
       <option value="regular">Já me exercito com regularidade</option>
     </select>
-    <label class="chk" style="margin-top:12px"><input type="checkbox" id="accInput"> Mostrar os acessórios do boneco (ganhos com a sequência de dias)</label>
     <label class="lbl" for="themeInput">Tema</label>
     <select id="themeInput">
       <option value="auto">Automático (segue o celular)</option>
@@ -993,10 +934,10 @@ var FOOD_MOTIV = [
 ];
 function foodById(id){ for(var i = 0; i < FOOD.length; i++) if(FOOD[i].id === id) return FOOD[i]; return null; }
 FOOD.forEach(function(f){ f.subs = mkSubs(SUBS_FOOD, f.id); });
-/* o prato: 6 fatias, uma por grupo, com um rostinho no centro que muda com a variedade do dia */
+/* o prato: 6 fatias, uma por grupo */
 function plateSVG(){
   var cx = 100, cy = 100, r = 88, n = FOOD.length;
-  var out = '<svg viewBox="0 0 200 200" data-v="0" role="img" aria-label="Prato com os grupos de alimentos">' +
+  var out = '<svg viewBox="0 0 200 200" role="img" aria-label="Prato com os grupos de alimentos">' +
             '<circle cx="100" cy="100" r="96" fill="var(--card)" stroke="var(--line)" stroke-width="3"/>';
   var txt = '';
   FOOD.forEach(function(f, i){
@@ -1004,83 +945,70 @@ function plateSVG(){
     var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0), x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
     out += '<path class="pl pl-' + f.id + ' lv0" d="M' + cx + ' ' + cy + ' L' + x0.toFixed(1) + ' ' + y0.toFixed(1) +
            ' A' + r + ' ' + r + ' 0 0 1 ' + x1.toFixed(1) + ' ' + y1.toFixed(1) + ' Z"/>';
-    f.px = +(cx + 58 * Math.cos(am)).toFixed(1); f.py = +(cy + 58 * Math.sin(am)).toFixed(1);
-    txt += '<text x="' + f.px + '" y="' + (f.py + 9) + '" font-size="26" text-anchor="middle">' + f.emoji + '</text>';
+    f.px = +(cx + 56 * Math.cos(am)).toFixed(1); f.py = +(cy + 56 * Math.sin(am)).toFixed(1);
+    txt += '<text x="' + f.px + '" y="' + (f.py + 9) + '" font-size="28" text-anchor="middle">' + f.emoji + '</text>';
   });
-  var face = '<circle class="pcentro" cx="100" cy="100" r="22"/>' +
-    '<g class="pf pf0"><path class="pcentro-t" d="M89 97 Q93 100 97 97 M103 97 Q107 100 111 97"/><path class="pcentro-t" d="M93 109 H107"/><path class="pcentro-t" d="M116 84 h5 l-5 6 h5"/></g>' +
-    '<g class="pf pf1"><circle class="pcentro-o" cx="92" cy="96" r="2.8"/><circle class="pcentro-o" cx="108" cy="96" r="2.8"/><path class="pcentro-t" d="M93 108 H107"/></g>' +
-    '<g class="pf pf2"><circle class="pcentro-o" cx="92" cy="96" r="2.8"/><circle class="pcentro-o" cx="108" cy="96" r="2.8"/><path class="pcentro-t" d="M91 105 Q100 115 109 105"/></g>' +
-    '<g class="pf pf3"><path class="pcentro-t" d="M88 98 Q92 91 96 98 M104 98 Q108 91 112 98"/><path class="pcentro-o" d="M89 104 Q100 120 111 104 Z"/></g>';
-  return out + txt + face + '<g id="fx-f"></g></svg>';
+  return out + txt + '<g id="fx-f"></g></svg>';
 }
 
-/* ---------- o mascote Bolota ----------
-   Corpo redondo e neutro. A água enche o tronco; os músculos acendem nos braços, pernas e tronco. */
+
+/* ---------- o corpo (desenho) ----------
+   g = grupo muscular (null = silhueta); m = tem lado espelhado; rot = [graus, x, y] */
+var ITEMS = [
+  {g:null,      s:'<circle cx="100" cy="36" r="22"/>'},
+  {g:null,      s:'<rect x="93" y="54" width="14" height="18" rx="6"/>'},
+  {g:null,      s:'<path d="M60 84 Q100 70 140 84 Q134 146 127 202 L73 202 Q66 146 60 84 Z"/>'},
+  {g:null,      s:'<rect x="71" y="190" width="58" height="26" rx="13"/>'},
+  {g:null,      s:'<rect x="66" y="378" width="30" height="12" rx="6"/>', m:true},
+  {g:'costas',  s:'<rect x="68" y="118" width="11" height="60" rx="5.5"/>', m:true},
+  {g:'peito',   s:'<rect x="66" y="84" width="33" height="42" rx="16"/>', m:true},
+  {g:'abdomen', s:'<rect x="82" y="128" width="36" height="66" rx="12"/>'},
+  {g:'ombros',  s:'<ellipse cx="57" cy="90" rx="15" ry="14"/>', m:true},
+  {g:'bracos',  s:'<rect x="40" y="98" width="19" height="56" rx="9.5"/>', rot:[9, 49, 98], m:true},
+  {g:'bracos',  s:'<rect x="41" y="152" width="17" height="58" rx="8.5"/>', rot:[9, 49, 98], m:true},
+  {g:'pernas',  s:'<rect x="68" y="200" width="30" height="98" rx="15"/>', m:true},
+  {g:'pernas',  s:'<rect x="71" y="296" width="23" height="84" rx="11.5"/>', m:true},
+  {g:'cardio',  s:'<path d="M112 120 C98 109 97 97 105 94 C109 92.5 112 95 112 98 C112 95 115 92.5 119 94 C127 97 126 109 112 120 Z"/>'}
+];
+function addAttr(s, attr){ return s.replace(/^<(\w+)/, '<$1 ' + attr); }
+/* com wrappers <g> (para desenhar) */
+function layer(it, cls){
+  var s = cls ? addAttr(it.s, 'class="' + cls + '"') : it.s;
+  if(it.rot) s = '<g transform="rotate(' + it.rot.join(' ') + ')">' + s + '</g>';
+  return it.m ? s + '<g transform="translate(200 0) scale(-1 1)">' + s + '</g>' : s;
+}
+/* só com atributo transform (clipPath não aceita <g>) */
+function clipShape(it){
+  var tf = it.rot ? 'rotate(' + it.rot.join(' ') + ')' : '';
+  var a = tf ? addAttr(it.s, 'transform="' + tf + '"') : it.s;
+  if(!it.m) return a;
+  return a + addAttr(it.s, 'transform="translate(200 0) scale(-1 1)' + (tf ? ' ' + tf : '') + '"');
+}
 var WAVE = 'M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z';
-var ARM_E = 'M64 124 C50 152 44 176 42 200 C41 212 40 220 40 226';
-var ARM_D = 'M136 124 C150 152 156 176 158 200 C159 212 160 220 160 226';
-var LEG_E = 'M82 230 C80 268 78 300 78 330 C78 348 78 358 78 364';
-var LEG_D = 'M118 230 C120 268 122 300 122 330 C122 348 122 358 122 364';
-var TRONCO = 'M100 100 C128 100 142 114 142 142 L142 208 C142 232 128 242 100 242 C72 242 58 232 58 208 L58 142 C58 114 72 100 100 100 Z';
-var FACE_SVG =
-  '<g class="rosto" aria-hidden="true"><ellipse class="bochecha" cx="72" cy="74" rx="8" ry="5"/><ellipse class="bochecha" cx="128" cy="74" rx="8" ry="5"/>' +
-  '<g class="expr expr--feliz"><circle class="olho" cx="86" cy="62" r="5.5"/><circle class="olho" cx="114" cy="62" r="5.5"/><circle class="brilho" cx="87.6" cy="60" r="1.7"/><circle class="brilho" cx="115.6" cy="60" r="1.7"/><path class="boca" d="M90 78 Q100 86 110 78"/></g>' +
-  '<g class="expr expr--sede"><path class="olho-linha" d="M80 61 Q86 56 92 61"/><path class="olho-linha" d="M108 61 Q114 56 120 61"/><ellipse class="boca-aberta" cx="100" cy="83" rx="6" ry="7"/><path class="lingua" d="M95 86 Q100 91 105 86"/><path class="gota-suor" d="M133 50 q4 6 0 9 q-4 -3 0 -9"/></g>' +
-  '<g class="expr expr--comemorando"><path class="olho-feliz" d="M80 64 Q86 53 92 64"/><path class="olho-feliz" d="M108 64 Q114 53 120 64"/><path class="boca-cheia" d="M88 76 Q100 93 112 76 Z"/><path class="lingua" d="M94 84 Q100 92 106 84 Z"/></g>' +
-  '<g class="expr expr--cansado"><path class="olho-linha" d="M80 63 Q86 67 92 63"/><path class="olho-linha" d="M108 63 Q114 67 120 63"/><path class="boca" d="M92 84 Q100 80 108 84"/><path class="zzz" d="M138 44 h7 l-7 8 h7"/></g></g>';
-var ACC_HEAD =
-  '<g class="acc acc-bone" transform="translate(0 -9)"><path d="M67 46 A34 34 0 0 1 133 46 L133 50 L67 50 Z" fill="#C2410C" stroke="var(--mc-line)" stroke-width="3" stroke-linejoin="round"/><path d="M62 50 H142 Q148 50 148 54 Q148 58 142 58 H62 Q56 58 56 54 Q56 50 62 50 Z" fill="#9A3209" stroke="var(--mc-line)" stroke-width="3"/></g>' +
-  '<g class="acc acc-fone"><path d="M64 60 A36 36 0 0 1 136 60" fill="none" stroke="var(--mc-line)" stroke-width="6" stroke-linecap="round"/><rect x="57" y="56" width="12" height="22" rx="6" fill="#6741D9" stroke="var(--mc-line)" stroke-width="3"/><rect x="131" y="56" width="12" height="22" rx="6" fill="#6741D9" stroke="var(--mc-line)" stroke-width="3"/></g>' +
-  '<g class="acc acc-coroa"><path d="M72 38 L74 14 L88 28 L100 8 L112 28 L126 14 L128 38 Z" fill="#F5B301" stroke="var(--mc-line)" stroke-width="3" stroke-linejoin="round"/></g>' +
-  '<g class="acc acc-oculos"><circle cx="86" cy="62" r="11" fill="#2A3542" stroke="var(--mc-line)" stroke-width="3"/><circle cx="114" cy="62" r="11" fill="#2A3542" stroke="var(--mc-line)" stroke-width="3"/><path d="M97 62 H103" stroke="var(--mc-line)" stroke-width="3"/></g>';
-var ACC_BODY =
-  '<g class="acc acc-medalha"><path d="M90 104 L100 128 L110 104 Z" fill="#E24B4B" stroke="var(--mc-line)" stroke-width="2.5" stroke-linejoin="round"/><circle cx="100" cy="136" r="9" fill="#F5B301" stroke="var(--mc-line)" stroke-width="3"/></g>';
-var ACC_FEET =
-  '<g class="acc acc-tenis"><ellipse cx="72" cy="371" rx="21" ry="11" fill="#F04E37" stroke="var(--mc-line)" stroke-width="3"/><ellipse cx="128" cy="371" rx="21" ry="11" fill="#F04E37" stroke="var(--mc-line)" stroke-width="3"/><path d="M54 376 H90 M110 376 H146" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>';
-var ACC_BACK = '<g class="acc acc-mochila"><rect x="48" y="112" width="104" height="104" rx="24" fill="#277A38" stroke="var(--mc-line)" stroke-width="4"/></g>';
-var ACC_STRAP = '<g class="acc acc-mochila"><path d="M78 108 V168 M122 108 V168" stroke="#1B5A28" stroke-width="7" stroke-linecap="round"/></g>';
 
 function bodySVG(p, mode){
-  var water = mode !== 'muscle', mus = mode !== 'water';
-  var s = '<svg class="mascote" viewBox="0 0 200 400" data-face="feliz" role="img" aria-label="Bolota, o mascote do app">';
-  s += '<defs><path id="ft-' + p + '" d="' + TRONCO + '"/><clipPath id="cl-' + p + '"><use href="#ft-' + p + '"/></clipPath>' +
-       '<linearGradient id="wg-' + p + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient></defs>';
-  s += '<ellipse class="sombra" cx="100" cy="388" rx="58" ry="7"/><g class="corpo">';
-  /* pernas e pés */
-  [['perna-esq', LEG_E], ['perna-dir', LEG_D]].forEach(function(l){
-    s += '<g class="perna ' + l[0] + '"><path class="ctr" d="' + l[1] + '"/><path class="fil" d="' + l[1] + '"/>' + (mus ? '<path class="ml m-pernas" d="' + l[1] + '"/>' : '') + '</g>';
-  });
-  s += '<ellipse class="pe" cx="72" cy="370" rx="18" ry="9"/><ellipse class="pe" cx="128" cy="370" rx="18" ry="9"/>' + ACC_FEET;
-  /* mochila atrás */
-  s += ACC_BACK;
-  /* braços */
-  [['braco-esq', ARM_E, 40], ['braco-dir', ARM_D, 160]].forEach(function(a){
-    s += '<g class="braco ' + a[0] + '"><path class="ctr" d="' + a[1] + '"/><path class="fil" d="' + a[1] + '"/>' + (mus ? '<path class="ml m-bracos" d="' + a[1] + '"/>' : '') +
-         '<circle class="mao" cx="' + a[2] + '" cy="228" r="12"/></g>';
-  });
-  /* tronco com água */
-  s += '<g class="tronco"><use class="tronco-forma" href="#ft-' + p + '"/>';
-  if(water){
-    s += '<g clip-path="url(#cl-' + p + ')"><g class="water" id="water-' + p + '" style="transform:translateY(160px)">' +
-         '<rect x="52" y="104" width="96" height="150" fill="url(#wg-' + p + ')"/>' +
-         '<g transform="translate(0 100)"><g class="wave b" opacity=".55"><path fill="var(--water1)" d="' + WAVE + '"/></g>' +
-         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g></g></g>';
+  var plain = ITEMS.map(function(it){ return layer(it, ''); }).join('');
+  var clip = ITEMS.map(clipShape).join('');
+  var mus = ITEMS.filter(function(it){ return it.g; }).map(function(it){ return layer(it, 'm m-' + it.g); }).join('');
+  var s = '<svg viewBox="0 0 200 400" role="img" aria-label="Corpo humano">';
+  s += '<defs><clipPath id="cp-' + p + '">' + clip + '</clipPath>' +
+       '<linearGradient id="wg-' + p + '" x1="0" y1="0" x2="0" y2="1">' +
+       '<stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient></defs>';
+  s += '<g fill="var(--shape)">' + plain + '</g>';
+  if(mode !== 'muscle'){
+    s += '<g clip-path="url(#cp-' + p + ')"><g class="water" id="water-' + p + '" style="transform:translateY(410px)">' +
+         '<rect x="-100" y="2" width="500" height="420" fill="url(#wg-' + p + ')"/>' +
+         '<g class="wave b" opacity=".55"><path fill="var(--water1)" d="' + WAVE + '"/></g>' +
+         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g></g>';
   }
-  s += '<use class="tronco-contorno" href="#ft-' + p + '"/></g>';
-  /* músculos do tronco */
-  if(mus){
-    s += '<g class="mus">' +
-      '<path class="m m-costas" d="M60 152 h9 v52 h-9 z"/><path class="m m-costas" d="M131 152 h9 v52 h-9 z"/>' +
-      '<ellipse class="m m-peito" cx="84" cy="140" rx="15" ry="13"/><ellipse class="m m-peito" cx="116" cy="140" rx="15" ry="13"/>' +
-      '<rect class="m m-abdomen" x="82" y="168" width="36" height="52" rx="16"/>' +
-      '<circle class="m m-ombros" cx="63" cy="118" r="11"/><circle class="m m-ombros" cx="137" cy="118" r="11"/>' +
-      '<g transform="translate(0 34)"><path class="m m-cardio" d="M112 120 C98 109 97 97 105 94 C109 92.5 112 95 112 98 C112 95 115 92.5 119 94 C127 97 126 109 112 120 Z"/></g></g>';
-  }
-  s += ACC_STRAP + ACC_BODY;
-  /* cabeça */
-  s += '<rect class="pescoco" x="90" y="88" width="20" height="20" rx="9"/><circle class="orelha" cx="68" cy="66" r="7"/><circle class="orelha" cx="132" cy="66" r="7"/><circle class="cabeca" cx="100" cy="64" r="34"/>';
-  s += FACE_SVG + ACC_HEAD + '</g><g id="fx-' + p + '"></g></svg>';
+  /* no modo água o contorno é só da silhueta, braços e pernas (sem os músculos do tronco) */
+  var outline = mode === 'water'
+    ? ITEMS.filter(function(it){ return !it.g || it.g === 'bracos' || it.g === 'pernas'; }).map(function(it){ return layer(it, ''); }).join('')
+    : plain;
+  s += '<g fill="none" stroke="var(--water2)" stroke-opacity=".35" stroke-width="2">' + outline + '</g>';
+  if(mode !== 'water') s += '<path class="absline" d="M100 132 V190 M86 152 H114 M86 172 H114"/>';
+  if(mode !== 'water') s += '<g class="mus">' + mus + '</g>';
+  s += '<g id="fx-' + p + '"></g></svg>';
   return s;
 }
 
@@ -1130,9 +1058,8 @@ function cleanProf(p){
   var cond = (p && Array.isArray(p.cond)) ? p.cond.filter(function(c, i, a){ return ids.indexOf(c) >= 0 && a.indexOf(c) === i; }) : [];
   var water = (p && typeof p.water === 'number' && p.water >= 500 && p.water <= 5000) ? Math.round(p.water) : null;
   var level = (p && p.level === 'inicio') ? 'inicio' : 'regular';
-  var acc = !(p && p.acc === false);
   var name = (p && typeof p.name === 'string') ? p.name.replace(/[<>]/g, '').trim().slice(0, 20) : '';
-  return {acc: acc, name: name, age: age, cond: cond, water: water, level: level, done: !!(p && p.done)};
+  return {name: name, age: age, cond: cond, water: water, level: level, done: !!(p && p.done)};
 }
 
 function persist(){
@@ -1294,17 +1221,8 @@ function headline(pct, t, g){
 function setWater(pct){
   ['w', 'c'].forEach(function(p){
     var el = $('water-' + p);
-    if(el) el.style.transform = 'translateY(' + ((1 - Math.min(pct, 1)) * 160) + 'px)';
+    if(el) el.style.transform = 'translateY(' + (410 - Math.min(pct, 1) * 400) + 'px)';
   });
-}
-function setFace(stageId, f){
-  var m = $(stageId).querySelector('.mascote');
-  if(m) m.setAttribute('data-face', f);
-}
-function anim(el, cls, ms){
-  if(!el) return;
-  el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls);
-  setTimeout(function(){ el.classList.remove(cls); }, ms);
 }
 
 function renderDrinkNote(){
@@ -1319,8 +1237,6 @@ function renderWater(){
   var a = analyze(k), used = Math.min(a.used, t);
   var pct = (has && g) ? t / g : 0;
   setWater(pct);
-  var stw = getStatus();
-  setFace('stageW', stw.s === 'over' ? 'cansado' : ((has && !bl && g && pct >= 1) ? 'comemorando' : ((has && !bl && g && pct < 0.3) ? 'sede' : 'feliz')));
   $('total').textContent = fmt(t);
   $('goalTxt').textContent = has ? ((bl ? 'meta informada: ' : 'de ') + fmt(g) + ' ml · ' + Math.round(pct * 100) + '%')
                                  : (bl ? 'Sem meta automática no seu caso' : 'Informe seu peso para calcular a meta');
@@ -1389,7 +1305,6 @@ function setLevels(stageId, totals, fn){
 function renderEx(){
   var k = key(), tot = exTotals(k), all = sumVals(tot);
   setLevels('stageX', tot, lvDay);
-  setFace('stageX', EX.some(function(e){ return tot[e.id] > MAX_EX_MIN; }) ? 'cansado' : (EX.some(function(e){ return lvDay(tot[e.id] || 0) >= 3; }) ? 'comemorando' : 'feliz'));
   $('exTotal').textContent = fmt(all);
   var trained = EX.filter(function(e){ return tot[e.id]; });
   $('exGroupsTxt').textContent = trained.length
@@ -1468,7 +1383,6 @@ function renderFood(){
     var el = st.querySelector('.pl-' + f.id);
     if(el) el.setAttribute('class', 'pl pl-' + f.id + ' lv' + lvFood(tot[f.id] || 0));
   });
-  $('stageF').querySelector('svg').setAttribute('data-v', n >= 5 ? 3 : (n >= 3 ? 2 : (n >= 1 ? 1 : 0)));
   $('fdTotal').textContent = n;
   var eaten = FOOD.filter(function(f){ return tot[f.id]; });
   $('fdGroupsTxt').textContent = eaten.length
@@ -1612,32 +1526,8 @@ function useRest(offset){
   toast(offset ? 'Ontem marcado como folga. Sua sequência continua! 💛' : 'Folga de hoje marcada. Descanse: sua sequência continua! 💛');
 }
 
-var ACC = [
-  {d: 3, k: 'bone', nome: 'boné', e: '🧢'}, {d: 7, k: 'tenis', nome: 'tênis', e: '👟'}, {d: 14, k: 'medalha', nome: 'medalha', e: '🏅'},
-  {d: 21, k: 'fone', nome: 'fone de ouvido', e: '🎧'}, {d: 30, k: 'mochila', nome: 'mochila', e: '🎒'},
-  {d: 50, k: 'oculos', nome: 'óculos de sol', e: '🕶️'}, {d: 100, k: 'coroa', nome: 'coroa', e: '👑'}
-];
-function setAccessories(n){
-  var on = prof.acc ? n : 0;
-  var head = on >= 100 ? 'coroa' : (on >= 21 ? 'fone' : (on >= 3 ? 'bone' : ''));
-  ['stageW', 'stageX', 'stageC'].forEach(function(id){
-    var m = $(id).querySelector('.mascote');
-    if(!m) return;
-    m.setAttribute('data-head', head);
-    ['tenis', 'medalha', 'mochila', 'oculos'].forEach(function(k){
-      var d = 0; ACC.forEach(function(a){ if(a.k === k) d = a.d; });
-      m.setAttribute('data-' + k, on >= d ? '1' : '0');
-    });
-  });
-  var next = null;
-  ACC.forEach(function(a){ if(!next && n < a.d) next = a; });
-  $('accHint').textContent = ACC.map(function(a){ return a.e + ' ' + a.d; }).join(' · ') + ' dias seguidos. ' +
-    (next ? 'Próximo: ' + next.e + ' ' + next.nome + ' com ' + next.d + ' dias.' : 'Você desbloqueou todos! 👑') +
-    (prof.acc ? '' : ' (Acessórios escondidos nos Ajustes.)');
-}
 function renderStreak(){
   var n = streakCount();
-  setAccessories(n);
   $('cStreak').textContent = n + (n === 1 ? ' dia' : ' dias');
   $('sTitle').textContent = n > 0 ? n + (n === 1 ? ' dia seguido' : ' dias seguidos') : 'Sem sequência ainda';
   $('sText').textContent = n === 0 ? 'Comece hoje: um passo já conta.'
@@ -1692,7 +1582,6 @@ function renderCorpo(){
     tx = 'Ótimo começo. Para completar o dia: ' + miss.join(' e ') + '.';
   }
   else { h = 'Seu corpo espera por você'; tx = bl ? 'Comece com um treino curto ou uma fruta. Tudo aparece aqui no seu corpo.' : 'Comece com um copo de água, um treino curto ou uma fruta. Tudo aparece aqui no seu corpo.'; }
-  setFace('stageC', done === tot ? 'comemorando' : 'feliz');
   $('cHeadline').textContent = h;
   $('cText').textContent = tx;
 
@@ -1837,7 +1726,6 @@ function ripple(boxId, cx, cy, cls){
 function waterEffects(ml){
   var stage = $('stageW');
   pulseStage(stage);
-  anim(stage.querySelector('.mascote'), 'bebendo', 1400);
   if(navigator.vibrate){ try{ navigator.vibrate(25); }catch(e){} }
   floatLabel(stage, '+' + fmt(ml) + ' ml');
 
@@ -1852,7 +1740,7 @@ function waterEffects(ml){
       c.setAttribute('cy', -20);
       c.setAttribute('r', 3 + Math.random() * 3);
       box.appendChild(c);
-      var dist = rand(112, 126);
+      var dist = rand(54, 66);
       var a = c.animate([
         {transform: 'translateY(0px)', opacity: 0},
         {transform: 'translateY(' + (dist * 0.15) + 'px)', opacity: 1, offset: 0.15},
@@ -1861,24 +1749,21 @@ function waterEffects(ml){
       ], {duration: 800 + Math.random() * 300, delay: i * 90, easing: 'ease-in', fill: 'forwards'});
       a.onfinish = function(){
         c.remove();
-        if(i === n - 1) ripple('fx-w', 100, 108);
+        if(i === n - 1) ripple('fx-w', 100, 44);
       };
     })(i);
   }
 }
 
 var FX_POS = {
-  bracos:[[42,176],[158,176]], peito:[[100,140]], costas:[[64,178],[136,178]], ombros:[[63,118],[137,118]],
-  abdomen:[[100,194]], pernas:[[80,300],[120,300]], cardio:[[112,150]], corpo:[[100,170]]
+  bracos:[[36,128],[164,128]], peito:[[100,104]], costas:[[73,148],[127,148]], ombros:[[57,90],[143,90]],
+  abdomen:[[100,162]], pernas:[[83,250],[117,250]], cardio:[[112,104]]
 };
 function muscleEffects(g, lv){
   var stage = $('stageX'), e = exById(g);
   pulseStage(stage);
   if(navigator.vibrate){ try{ navigator.vibrate(40); }catch(er){} }
   floatLabel(stage, e.emoji + ' ' + e.nome, 'fx');
-  var mc = stage.querySelector('.mascote');
-  if(g === 'bracos'){ stage.querySelectorAll('.braco').forEach(function(b){ anim(b, 'flexionando', 900); }); }
-  if(lv >= 3 || g === 'corpo') anim(mc, 'pulando', 1000);
   var els = stage.querySelectorAll('.m-' + g);
   for(var i = 0; i < els.length; i++){
     els[i].classList.remove('flash'); void els[i].getBoundingClientRect();
@@ -1959,7 +1844,6 @@ function add(ml){
   }
   if(tb < g && ta >= g){
     celebrate('stageW', ['💙', '✨', '💧', '🎉']);
-    anim($('stageW').querySelector('.mascote'), 'pulando', 1000);
     toast(GOAL_MSG + sw);
     return;
   }
@@ -2069,7 +1953,6 @@ function openSettings(first){
   for(var i = 0; i < bs.length; i++) bs[i].checked = prof.cond.indexOf(bs[i].value) >= 0;
   $('manualInput').value = prof.water || '';
   $('levelInput').value = prof.level;
-  $('accInput').checked = !!prof.acc;
   $('wakeInput').value = toHHMM(cfg.wake);
   $('sleepInput').value = toHHMM(cfg.sleep);
   $('intervalInput').value = String(cfg.interval);
@@ -2108,7 +1991,7 @@ $('wSave').onclick = function(){
   if(sl - w < 360){ err.textContent = 'Precisa haver pelo menos 6 horas entre acordar e dormir.'; return; }
   weight = v === null ? null : Math.round(v * 10) / 10;
   cfg = {wake: w, sleep: sl, interval: parseInt($('intervalInput').value, 10) || 90};
-  prof = {acc: $('accInput').checked, name: String($('nameInput').value).replace(/[<>]/g, '').trim().slice(0, 20), age: age, cond: cond, water: man, level: $('levelInput').value === 'inicio' ? 'inicio' : 'regular', done: true};
+  prof = {name: String($('nameInput').value).replace(/[<>]/g, '').trim().slice(0, 20), age: age, cond: cond, water: man, level: $('levelInput').value === 'inicio' ? 'inicio' : 'regular', done: true};
   save('weight', weight);
   save('cfg', cfg);
   save('prof', prof);
