@@ -302,7 +302,23 @@ footer{margin-top:22px;text-align:center}
 }
 body[data-tab="agua"]{--bg2:var(--bg2-agua)} body[data-tab="ex"]{--bg2:var(--bg2-ex)}
 body[data-tab="comida"]{--bg2:var(--bg2-food)} body[data-tab="corpo"]{--bg2:var(--bg2-corpo)}
-body{background:var(--bg);background-image:linear-gradient(180deg,var(--bg) 0%,var(--bg2,var(--bg)) 100%);background-attachment:fixed}
+body{background:var(--bg);--blob:24%}
+body[data-tab="inicio"]{--blob:11%}
+body::before{content:"";position:fixed;inset:-30%;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(circle at 24% 20%,color-mix(in srgb,var(--accent) var(--blob),transparent),transparent 46%),
+    radial-gradient(circle at 80% 76%,color-mix(in srgb,var(--t1) var(--blob),transparent),transparent 50%),
+    radial-gradient(circle at 72% 14%,color-mix(in srgb,var(--t2) calc(var(--blob) * .5),transparent),transparent 40%),
+    linear-gradient(180deg,var(--bg) 0%,var(--bg2,var(--bg)) 100%);
+  animation:drift 28s ease-in-out infinite alternate;will-change:transform}
+@keyframes drift{0%{transform:translate3d(-4%,-3%,0) scale(1.04)}100%{transform:translate3d(4%,3%,0) rotate(5deg) scale(1.08)}}
+body.paused::before{animation-play-state:paused}
+body.calm::before{animation:none;will-change:auto}
+@media (prefers-reduced-motion: reduce){body::before{animation:none}}
+.sets3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vrow{margin:0 0 12px}.vrow .vt{display:flex;justify-content:space-between;gap:8px;font-size:.88rem}
+.vrow .vt b{font-weight:700}.vrow .vb{height:8px;border-radius:99px;background:var(--line);margin-top:5px;overflow:hidden}
+.vrow .vb i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--fx1),var(--fx2))}
 .app{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 header{align-items:flex-start}
 .hl{display:flex;flex-direction:column;min-width:0}
@@ -551,6 +567,12 @@ button.fab:active{transform:scale(.94)}
       <ul class="list ex" id="exUnlocked"></ul>
     </section>
 
+    <section class="card" id="volCard" hidden>
+      <div class="kicker">Carga da semana</div>
+      <div id="volList"></div>
+      <p class="hint">Volume = séries × repetições × carga. É só uma referência do seu esforço, não uma meta de treino.</p>
+    </section>
+
     <section class="card">
       <div class="kicker">Minutos de exercício por dia</div>
       <div class="seg" data-seg></div>
@@ -626,7 +648,7 @@ button.fab:active{transform:scale(.94)}
     </div>
 
     <section class="card">
-      <div class="kicker">Hoje em anéis</div>
+      <div class="kicker">Progresso de hoje</div>
       <div class="rings">
         <svg viewBox="0 0 120 120" role="img" aria-label="Progresso do dia: água, exercício e comida" id="ringsSvg">
           <circle class="ringbg" cx="60" cy="60" r="52"/><circle class="ringbg" cx="60" cy="60" r="40"/><circle class="ringbg" cx="60" cy="60" r="28"/>
@@ -680,7 +702,7 @@ button.fab:active{transform:scale(.94)}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 9.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 11.</p>
   </footer>
 </div>
 
@@ -740,6 +762,7 @@ button.fab:active{transform:scale(.94)}
       <option value="light">Claro</option>
       <option value="dark">Escuro</option>
     </select>
+    <label class="chk" style="margin-top:12px"><input type="checkbox" id="calmInput"> Reduzir as animações do fundo</label>
     <label class="lbl">Seus dados</label>
     <div class="row" style="margin-top:0">
       <button class="btn" id="btnExport" type="button">⬇️ Exportar</button>
@@ -777,6 +800,15 @@ button.fab:active{transform:scale(.94)}
     <p id="exModalHint"></p>
     <label class="lbl">Qual exercício? (opcional)</label>
     <div class="subs" id="exSubs"></div>
+    <div id="exSets">
+      <label class="lbl">Séries, repetições e carga (opcional)</label>
+      <div class="sets3">
+        <input id="exSer" type="number" inputmode="numeric" min="1" max="20" placeholder="Séries" aria-label="Séries">
+        <input id="exRep" type="number" inputmode="numeric" min="1" max="100" placeholder="Reps" aria-label="Repetições">
+        <input id="exKg" type="number" inputmode="decimal" min="0" max="500" step="0.5" placeholder="kg" aria-label="Carga em quilos">
+      </div>
+      <p class="hint" id="exLast" style="margin:6px 2px 0"></p>
+    </div>
     <label class="lbl">Quanto tempo?</label>
     <div class="mins">
       <button type="button" data-min="15">15 min</button>
@@ -1527,6 +1559,21 @@ function renderEx(){
     ? '🛑 Você já passou de ' + MAX_EX_MIN + ' min em ' + over.map(function(e){ return e.nome.toLowerCase(); }).join(' e ') + ' hoje. Os músculos crescem no descanso, então é melhor parar por hoje.'
     : '';
 
+  var vol = {}, maxV = 0;
+  series(function(kk){ return kk; }, 7, 0).forEach(function(x){
+    (ex[x.v] || []).forEach(function(e){
+      if(!e.ser) return;
+      var o = vol[e.g] = vol[e.g] || {ser: 0, v: 0};
+      o.ser += e.ser; o.v += e.kg ? e.ser * e.rep * e.kg : 0;
+    });
+  });
+  var vg = EX.filter(function(e){ return vol[e.id]; });
+  $('volCard').hidden = !vg.length;
+  vg.forEach(function(e){ maxV = Math.max(maxV, vol[e.id].v); });
+  $('volList').innerHTML = vg.map(function(e){
+    var o = vol[e.id], w = maxV ? Math.max(4, o.v / maxV * 100) : 4;
+    return '<div class="vrow"><div class="vt"><span>' + e.emoji + ' ' + e.nome + '</span><b>' + o.ser + (o.ser === 1 ? ' série' : ' séries') + (o.v ? ' · ' + fmt(Math.round(o.v)) + ' kg' : '') + '</b></div><div class="vb"><i style="width:' + w.toFixed(0) + '%"></i></div></div>';
+  }).join('');
   var ul = $('exUnlocked');
   if(!trained.length){
     ul.innerHTML = '<li class="empty" style="border-left-color:transparent">Nada ainda. Registre um treino para ver o que ele faz pelo seu corpo.</li>';
@@ -2156,12 +2203,36 @@ function add(ml){
 
 /* ---------- registrar exercício ---------- */
 var exGroup = null, exSub = null;
+function setsText(e){ return e.ser + '×' + e.rep + (e.kg ? ' · ' + String(e.kg).replace('.', ',') + ' kg' : ''); }
+function lastSets(g){
+  var ks = Object.keys(ex).sort().reverse();
+  for(var i = 0; i < ks.length; i++){
+    var l = ex[ks[i]];
+    for(var j = l.length - 1; j >= 0; j--) if(l[j].g === g && l[j].ser) return l[j];
+  }
+  return null;
+}
+function readSets(){
+  if(exGroup === 'cardio') return {ok: true, v: null};
+  var a = String($('exSer').value).trim(), b = String($('exRep').value).trim(), c = String($('exKg').value).trim().replace(',', '.');
+  if(!a && !b && !c) return {ok: true, v: null};
+  var ser = parseInt(a, 10), rep = parseInt(b, 10), kg = c ? parseFloat(c) : 0;
+  if(!(ser >= 1 && ser <= 20) || !(rep >= 1 && rep <= 100)) return {ok: false, msg: 'Para registrar a série, preencha séries (1 a 20) e repetições (1 a 100).'};
+  if(!(kg >= 0 && kg <= 500)) return {ok: false, msg: 'A carga deve ficar entre 0 e 500 kg.'};
+  var o = {ser: ser, rep: rep}; if(kg > 0) o.kg = Math.round(kg * 10) / 10;
+  return {ok: true, v: o};
+}
 function openEx(g){
   exGroup = g;
   var e = exById(g);
   $('exModalTitle').textContent = e.emoji + ' ' + e.nome + ': quanto tempo?';
   $('exModalHint').textContent = 'Ex.: ' + e.dica + '. 30 min ou mais já desbloqueia mais benefícios.';
   $('exInput').value = ''; $('exErr').textContent = '';
+  $('exSets').hidden = (g === 'cardio');
+  $('exSer').value = ''; $('exRep').value = ''; $('exKg').value = '';
+  var ls = lastSets(g);
+  $('exLast').textContent = ls ? 'Última vez: ' + setsText(ls) + '. Comece com uma carga que permita boa técnica.' : 'Comece com uma carga que permita boa técnica. Dor aguda, tontura ou falta de ar: pare.';
+  if(ls){ $('exSer').placeholder = ls.ser; $('exRep').placeholder = ls.rep; if(ls.kg) $('exKg').placeholder = ls.kg; }
   exSub = null;
   var box = $('exSubs');
   var hs = '', last = '';
@@ -2181,11 +2252,12 @@ function openEx(g){
   }
   open('mEx');
 }
-function addEx(g, min, sub){
+function addEx(g, min, sub, sets){
   var k = key(), e = exById(g);
   var before = exTotals(k)[g] || 0, lb = lvDay(before);
   var entry = {g: g, min: min, t: Date.now()};
   if(sub && subOk(e, sub)) entry.s = sub;
+  if(sets){ entry.ser = sets.ser; entry.rep = sets.rep; if(sets.kg) entry.kg = sets.kg; }
   (ex[k] = ex[k] || []).push(entry);
   persist();
   var after = before + min, la = lvDay(after);
@@ -2205,14 +2277,15 @@ function addEx(g, min, sub){
 }
 var mins = document.querySelectorAll('#mEx .mins button');
 for(var mi = 0; mi < mins.length; mi++){
-  (function(b){ b.onclick = function(){ close('mEx'); addEx(exGroup, parseInt(b.getAttribute('data-min'), 10), exSub); }; })(mins[mi]);
+  (function(b){ b.onclick = function(){ var r = readSets(); if(!r.ok){ $('exErr').textContent = r.msg; return; } close('mEx'); addEx(exGroup, parseInt(b.getAttribute('data-min'), 10), exSub, r.v); }; })(mins[mi]);
 }
 $('exCancel').onclick = function(){ close('mEx'); };
 $('exSave').onclick = function(){
   var v = Math.round(parseFloat(String($('exInput').value).replace(',', '.')));
   if(!(v >= 5 && v <= 240)){ $('exErr').textContent = 'Digite entre 5 e 240 minutos.'; return; }
+  var r = readSets(); if(!r.ok){ $('exErr').textContent = r.msg; return; }
   close('mEx');
-  addEx(exGroup, v, exSub);
+  addEx(exGroup, v, exSub, r.v);
 };
 $('btnUndoEx').onclick = function(){
   var k = key();
@@ -2379,6 +2452,10 @@ function cleanEx(o){
                 .map(function(e){
                   var r1 = {g: e.g, min: Math.round(e.min), t: (typeof e.t === 'number' ? e.t : 0)};
                   if(e.s && subOk(exById(e.g), e.s)) r1.s = e.s;
+                  if(typeof e.ser === 'number' && e.ser >= 1 && e.ser <= 20 && typeof e.rep === 'number' && e.rep >= 1 && e.rep <= 100){
+                    r1.ser = Math.round(e.ser); r1.rep = Math.round(e.rep);
+                    if(typeof e.kg === 'number' && e.kg > 0 && e.kg <= 500) r1.kg = Math.round(e.kg * 10) / 10;
+                  }
                   return r1;
                 });
     if(a.length) r[k] = a;
@@ -2469,6 +2546,11 @@ $('btnTheme').onclick = function(){
   toast('Tema ' + THEME_NAMES[next]);
 };
 $('themeInput').onchange = function(){ setTheme($('themeInput').value); };
+var calm = load('calm', false) === true;
+function applyCalm(){ document.body.classList.toggle('calm', calm); $('calmInput').checked = calm; }
+$('calmInput').onchange = function(){ calm = $('calmInput').checked; save('calm', calm); applyCalm(); };
+applyCalm();
+document.addEventListener('visibilitychange', function(){ document.body.classList.toggle('paused', document.hidden); });
 if(window.matchMedia){
   try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ if(theme === 'auto') applyTheme(); }); }catch(e){}
 }
@@ -2686,7 +2768,7 @@ function dayLabel(k){ return new Date(k + 'T12:00:00').toLocaleDateString('pt-BR
 function entryText(kind, e){
   var tm = e.t ? hhmm(e.t) + ' · ' : '';
   if(kind === 'log'){ var d = drinkOf(e); return tm + fmt(e.ml) + ' ml · ' + d.nome + (d.c ? '' : ' (não conta)'); }
-  if(kind === 'ex'){ var g = exById(e.g); return tm + g.emoji + ' ' + g.nome + (e.s ? ' · ' + subShort(g, e.s) : '') + ' · ' + e.min + ' min'; }
+  if(kind === 'ex'){ var g = exById(e.g); return tm + g.emoji + ' ' + g.nome + (e.s ? ' · ' + subShort(g, e.s) : '') + ' · ' + e.min + ' min' + (e.ser ? ' · ' + setsText(e) : ''); }
   var f = foodById(e.g);
   return tm + f.emoji + ' ' + f.nome + (e.s ? ' · ' + subShort(f, e.s) : '');
 }
