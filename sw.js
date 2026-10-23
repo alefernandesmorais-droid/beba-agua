@@ -1,7 +1,7 @@
 // Service worker do Beba Água: faz o app abrir mesmo sem internet.
 // Estratégia: tenta a rede primeiro (assim as atualizações chegam sozinhas) e usa o cache se estiver offline.
-// Se mudar muita coisa no app, troque o número da versão abaixo (v8 -> v9).
-var CACHE = 'beba-agua-v8';
+// Se mudar muita coisa no app, troque o número da versão abaixo (v9 -> v10).
+var CACHE = 'beba-agua-v9';
 var ASSETS = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'fonts/plus-jakarta-sans.woff2'];
 
 self.addEventListener('install', function(e){

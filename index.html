@@ -343,13 +343,53 @@ header{align-items:flex-start}
 .rrow .rb{height:6px;border-radius:99px;background:var(--line);margin-top:4px;overflow:hidden}
 .rrow .rb i{display:block;height:100%;border-radius:99px;width:0;transition:width .3s ease}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{transition-duration:.01ms !important}}
+
+/* ===== painel inicial ===== */
+:root{--c-home:#4f46e5;--bg-home:#ffffff;--bg2-home:#eef0fb;--ln-home:#e6e9f5;--cd-home:#ffffff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-home:#a5a0ff;--bg-home:#0f0b2a;--bg2-home:#241a5c;--ln-home:rgba(255,255,255,.13);--cd-home:#1b1448}}
+:root[data-theme="dark"]{--c-home:#a5a0ff;--bg-home:#0f0b2a;--bg2-home:#241a5c;--ln-home:rgba(255,255,255,.13);--cd-home:#1b1448}
+body[data-tab="inicio"]{--bg:var(--bg-home);--bg2:var(--bg2-home);--line:var(--ln-home);--card:var(--cd-home);--accent:var(--c-home);--t1:var(--pu1);--t2:var(--pu2)}
+body[data-tab="inicio"] #btnWeight{display:none}
+.hero{border-radius:28px;padding:18px 20px;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);color:#fff;margin-top:14px;box-shadow:0 12px 26px rgba(79,70,229,.28)}
+.hero-k{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85;font-weight:700}
+.hero-t{font-size:1.3rem;font-weight:800;margin-top:4px;line-height:1.2}
+.hero-s{font-size:.88rem;opacity:.92;margin-top:4px;line-height:1.4}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.hm{display:flex;flex-direction:column;align-items:stretch;text-align:left;border:1px solid var(--gline);background:var(--glass);border-radius:28px;padding:14px 14px 16px;box-shadow:var(--sh);color:var(--text);font:inherit;cursor:pointer;min-width:0}
+body[data-tab="inicio"] .hm{background:var(--cd-home);border-color:var(--ln-home)}
+.hm:active{transform:scale(.98)}
+.hm-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;color:var(--hc)}
+.hm-chip{position:relative;width:28px;height:28px;border-radius:10px;display:grid;place-items:center;font-style:normal;font-size:.95rem;overflow:hidden}
+.hm-chip::before{content:"";position:absolute;inset:0;background:var(--hc);opacity:.16}
+.hm svg{width:100%;height:auto;display:block}
+.hm .ch{max-width:112px;margin:8px auto 4px}
+.hm-v{font-size:1.4rem;font-weight:800;line-height:1.1;margin-top:6px;color:var(--text)}
+.hm-s{font-size:.75rem;color:var(--muted);margin-top:2px;line-height:1.3}
+.hm-wide{margin-top:12px;cursor:default;padding:14px 14px 16px}
+.hm-wide:active{transform:none}
+.wk-leg{display:flex;justify-content:center;gap:14px;font-size:.75rem;color:var(--muted);margin-top:4px}
+.wk-leg i{display:inline-block;width:14px;height:5px;border-radius:99px;margin-right:5px;vertical-align:middle}
+.custom{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px;padding:16px;border-radius:28px;background:var(--glass);border:1px dashed var(--c-home)}
+body[data-tab="inicio"] .custom{background:var(--cd-home)}
+.custom-ic{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;font-size:1.3rem;background:var(--line)}
+.custom-b{flex:1;min-width:160px;display:flex;flex-direction:column;gap:2px}
+.custom-b b{font-size:1rem}
+.custom-b span{font-size:.82rem;color:var(--muted);line-height:1.35}
+.custom-btn{border:0;border-radius:999px;padding:12px 18px;min-height:44px;font:inherit;font-weight:700;font-size:.9rem;background:var(--c-home);color:var(--bg-home);cursor:pointer;width:100%}
+/* botão + flutuante */
+.nav button.fab{display:none}
+button.fab{position:fixed;right:max(18px,calc(50% - 228px + 6px));bottom:calc(92px + env(safe-area-inset-bottom));z-index:16;width:56px;height:56px;border-radius:50%;border:0;background:var(--accent);color:var(--bg);font-size:2rem;font-weight:700;line-height:1;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.28)}
+button.fab:active{transform:scale(.94)}
+.nav{max-width:456px}
+.nav button{min-width:0;font-size:.66rem}
+#nav-inicio.on{color:var(--c-home)}
 </style>
 </head>
-<body data-tab="agua">
+<body data-tab="inicio">
 <div class="app">
   <header>
     <div class="hl">
-      <h1 id="pageTitle">💧 Água</h1>
+      <h1 id="pageTitle">🏠 Início</h1>
       <div class="sub" id="greetTxt"></div>
       <div class="sub" id="dateTxt"></div>
     </div>
@@ -358,6 +398,58 @@ header{align-items:flex-start}
       <button class="icon-btn" id="btnWeight" type="button" aria-label="Ajustes">⚙️ <span id="wLabel">Ajustes</span></button>
     </div>
   </header>
+
+  <!-- ================= INÍCIO (painel) ================= -->
+  <main id="tab-inicio">
+    <section class="hero" id="homeHero">
+      <div class="hero-k">Resumo de hoje</div>
+      <div class="hero-t" id="hHead"></div>
+      <div class="hero-s" id="hText"></div>
+    </section>
+
+    <div class="hgrid">
+      <button type="button" class="hm" data-go="agua" style="--hc:var(--c-agua)" aria-label="Abrir Água">
+        <div class="hm-h"><i class="hm-chip">💧</i>Água</div>
+        <div id="hmAgua"></div>
+        <div class="hm-v" id="hvAgua"></div><div class="hm-s" id="hsAgua"></div>
+      </button>
+      <button type="button" class="hm" data-go="ex" style="--hc:var(--c-ex)" aria-label="Abrir Exercício">
+        <div class="hm-h"><i class="hm-chip">💪</i>Exercício</div>
+        <div id="hmEx"></div>
+        <div class="hm-v" id="hvEx"></div><div class="hm-s" id="hsEx"></div>
+      </button>
+      <button type="button" class="hm" data-go="comida" style="--hc:var(--c-food)" aria-label="Abrir Comida">
+        <div class="hm-h"><i class="hm-chip">🍎</i>Comida</div>
+        <div id="hmFood"></div>
+        <div class="hm-v" id="hvFood"></div><div class="hm-s" id="hsFood"></div>
+      </button>
+      <button type="button" class="hm" data-go="corpo" style="--hc:var(--c-corpo)" aria-label="Abrir Corpo">
+        <div class="hm-h"><i class="hm-chip">🧍</i>Corpo</div>
+        <div id="hmCorpo"></div>
+        <div class="hm-v" id="hvCorpo"></div><div class="hm-s" id="hsCorpo"></div>
+      </button>
+    </div>
+
+    <section class="hm hm-wide" style="--hc:var(--c-home)">
+      <div class="hm-h"><i class="hm-chip">📈</i>Sua semana</div>
+      <div id="hmWeek"></div>
+      <div class="wk-leg">
+        <span><i style="background:var(--c-agua)"></i>Água</span>
+        <span><i style="background:var(--c-ex)"></i>Treino</span>
+        <span><i style="background:var(--c-food)"></i>Comida</span>
+      </div>
+      <div class="hm-s" style="text-align:center;margin-top:4px">Cada linha mostra quanto da meta do dia você cumpriu.</div>
+    </section>
+
+    <section class="custom">
+      <div class="custom-ic">⚙️</div>
+      <div class="custom-b">
+        <b>Deixe o app com a sua cara</b>
+        <span>Seu nome, peso, condições de saúde, metas e lembretes.</span>
+      </div>
+      <button type="button" class="custom-btn" id="goSettings">Personalizar aqui</button>
+    </section>
+  </main>
 
   <!-- ================= ÁGUA ================= -->
   <main id="tab-agua">
@@ -588,20 +680,21 @@ header{align-items:flex-start}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 8.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 9.</p>
   </footer>
 </div>
 
 <nav class="nav" aria-label="Navegação">
   <div class="nav-in">
+    <button type="button" id="nav-inicio" data-tab="inicio"><span>🏠</span>Início</button>
     <button type="button" id="nav-agua" data-tab="agua"><span>💧</span>Água</button>
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
-    <button type="button" id="nav-add" class="fab" aria-label="Registrar agora">+</button>
     <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
     <button type="button" id="nav-corpo" data-tab="corpo"><span>🧍</span>Corpo</button>
   </div>
 </nav>
 
+<button type="button" id="nav-add" class="fab" aria-label="Registrar agora">+</button>
 <div class="toast" id="toast"></div>
 
 <div class="overlay" id="mWeight">
@@ -1133,10 +1226,9 @@ var prof = load('prof', null);
 if(!prof || typeof prof !== 'object') prof = {age: null, cond: [], water: null, level: 'regular', done: !!weight};
 prof = cleanProf(prof);
 var range = load('range', 7); if(range !== 30) range = 7;
-var TABS = ['agua', 'ex', 'comida', 'corpo'];
+var TABS = ['inicio', 'agua', 'ex', 'comida', 'corpo'];
 var theme = load('theme', 'auto');
-var tab = load('tab', 'agua');
-if(TABS.indexOf(tab) < 0) tab = 'agua';
+var tab = 'inicio'; /* o app sempre abre no painel */
 /* registros antigos eram só números; agora cada um tem ml e horário */
 Object.keys(log).forEach(function(k){
   log[k] = (log[k] || []).map(function(e){ return (typeof e === 'number') ? {ml: e, t: null} : e; });
@@ -1718,7 +1810,121 @@ function renderCross(){
   $('crossF').textContent = (nf > 0 && pct !== null) ? '💧 E a água? Você está em ' + pct + '% da meta de hoje.' : '';
 }
 
-function renderAll(){ setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); }
+function renderAll(){ setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); renderHome(); }
+
+/* ---------- painel inicial ---------- */
+function smoothPath(pts, lo, hi){
+  function cl(y){ return lo === undefined ? y : Math.min(hi, Math.max(lo, y)); }
+  var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
+  for(var i = 0; i < pts.length - 1; i++){
+    var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+    d += ' C' + (p1.x + (p2.x - p0.x) / 6).toFixed(1) + ',' + cl(p1.y + (p2.y - p0.y) / 6).toFixed(1) + ' ' +
+         (p2.x - (p3.x - p1.x) / 6).toFixed(1) + ',' + cl(p2.y - (p3.y - p1.y) / 6).toFixed(1) + ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1);
+  }
+  return d;
+}
+function litros(ml){ return (ml / 1000).toFixed(1).replace('.', ',') + ' L'; }
+var WK = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+function homeWater(lv, hg, t, pctTxt){
+  var Y = 15 + (1 - Math.min(Math.max(lv, 0), 1)) * 90;
+  return '<svg class="ch" viewBox="0 0 120 120" role="img" aria-label="Nível de água de hoje: ' + pctTxt + '">' +
+    '<defs><clipPath id="hwc"><circle cx="60" cy="60" r="46"/></clipPath>' +
+    '<linearGradient id="hwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient></defs>' +
+    '<circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="5"/>' +
+    '<circle cx="60" cy="60" r="46" fill="var(--line)" fill-opacity=".45"/>' +
+    '<g clip-path="url(#hwc)"><g transform="translate(0 ' + Y.toFixed(1) + ')">' +
+    '<path d="M-20 0 Q0 -8 20 0 T60 0 T100 0 T140 0 V140 H-20Z" fill="url(#hwg)" opacity=".55" transform="translate(-8 -3)"/>' +
+    '<path d="M-20 0 Q0 -8 20 0 T60 0 T100 0 T140 0 V140 H-20Z" fill="url(#hwg)"/></g></g>' +
+    '<text x="60" y="68" text-anchor="middle" font-size="23" font-weight="800" fill="var(--text)" stroke="var(--card)" stroke-width="4" paint-order="stroke" stroke-linejoin="round">' + pctTxt + '</text></svg>';
+}
+function homeBars(vals, labels){
+  var mx = Math.max(30, Math.max.apply(null, vals)), o = '<svg viewBox="0 0 140 92" role="img" aria-label="Minutos de treino nos últimos 7 dias">' +
+    '<defs><linearGradient id="hxg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--fx1)"/><stop offset="1" style="stop-color:var(--fx2)"/></linearGradient></defs>';
+  vals.forEach(function(v, i){
+    var x = 6 + i * 19.6, h = v ? Math.max(8, v / mx * 62) : 5, last = i === vals.length - 1;
+    o += '<rect x="' + x.toFixed(1) + '" y="' + (70 - h).toFixed(1) + '" width="13" height="' + h.toFixed(1) + '" rx="6.5" ' +
+         (v ? (last ? 'fill="url(#hxg)"' : 'fill="var(--c-ex)" fill-opacity=".38"') : 'fill="var(--line)"') + '/>' +
+         '<text x="' + (x + 6.5).toFixed(1) + '" y="86" text-anchor="middle" font-size="9" fill="var(--muted)"' + (last ? ' font-weight="800"' : '') + '>' + labels[i] + '</text>';
+  });
+  return o + '</svg>';
+}
+function homeDonut(eaten){
+  var o = '<svg class="ch" viewBox="0 0 120 120" role="img" aria-label="' + eaten.filter(Boolean).length + ' de ' + FOOD.length + ' grupos de comida hoje">';
+  eaten.forEach(function(on, i){
+    o += '<circle cx="60" cy="60" r="44" fill="none" stroke-width="11" stroke-linecap="round" pathLength="60" stroke-dasharray="5.2 54.8" stroke-dashoffset="' + (-(i * 10) - 2.4) + '" transform="rotate(-90 60 60)" ' +
+         (on ? 'stroke="var(--c-food)"' : 'stroke="var(--line)"') + '/>';
+  });
+  var n = eaten.filter(Boolean).length;
+  return o + '<text x="60" y="63" text-anchor="middle" font-size="26" font-weight="800" fill="var(--text)">' + n + '<tspan font-size="13" fill="var(--muted)" font-weight="700">/' + FOOD.length + '</tspan></text>' +
+         '<text x="60" y="80" text-anchor="middle" font-size="9.5" fill="var(--muted)">grupos</text></svg>';
+}
+function homeRings(a, b, c, streak){
+  var rs = [[50, a, 'var(--c-agua)'], [38, b, 'var(--c-ex)'], [26, c, 'var(--c-food)']];
+  var o = '<svg class="ch" viewBox="0 0 120 120" role="img" aria-label="Anéis de água, treino e comida de hoje">';
+  rs.forEach(function(r){
+    o += '<circle cx="60" cy="60" r="' + r[0] + '" fill="none" stroke="var(--line)" stroke-width="9"/>' +
+         '<circle cx="60" cy="60" r="' + r[0] + '" fill="none" stroke="' + r[2] + '" stroke-width="9" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="' + (100 - Math.min(r[1], 1) * 100).toFixed(1) + '" transform="rotate(-90 60 60)"/>';
+  });
+  return o + '<text x="60" y="68" text-anchor="middle" font-size="20">' + (streak > 0 ? '🔥' : '✨') + '</text></svg>';
+}
+function homeWeek(sw, se, sf, labels){
+  var W = 320, H = 150, L = 34, R = 12, T = 12, B = 26, n = sw.length, iw = W - L - R, ih = H - T - B;
+  function pts(a){ return a.map(function(v, i){ return {x: L + i * iw / (n - 1), y: T + (1 - Math.min(Math.max(v, 0), 1)) * ih}; }); }
+  var pw = pts(sw), px = pts(se), pf = pts(sf);
+  var o = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Evolução dos últimos 7 dias em porcentagem das metas" style="margin-top:8px">' +
+    '<defs><linearGradient id="wkg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c-agua);stop-opacity:.32"/><stop offset="1" style="stop-color:var(--c-agua);stop-opacity:0"/></linearGradient></defs>';
+  [0, .5, 1].forEach(function(g){
+    var y = T + (1 - g) * ih;
+    o += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '" stroke="var(--line)" stroke-width="1" ' + (g === 0 ? '' : 'stroke-dasharray="3 5"') + '/>' +
+         '<text x="' + (L - 8) + '" y="' + (y + 3) + '" text-anchor="end" font-size="9" fill="var(--muted)">' + Math.round(g * 100) + '%</text>';
+  });
+  var base = T + ih, pwd = smoothPath(pw, T, base);
+  o += '<path d="' + pwd + ' L' + pw[n - 1].x + ',' + base + ' L' + pw[0].x + ',' + base + ' Z" fill="url(#wkg)"/>';
+  [[pf, 'var(--c-food)'], [px, 'var(--c-ex)'], [pw, 'var(--c-agua)']].forEach(function(l){
+    o += '<path d="' + smoothPath(l[0], T, base) + '" fill="none" stroke="' + l[1] + '" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>' +
+         '<circle cx="' + l[0][n - 1].x.toFixed(1) + '" cy="' + l[0][n - 1].y.toFixed(1) + '" r="4.5" fill="var(--card)" stroke="' + l[1] + '" stroke-width="2.5"/>';
+  });
+  labels.forEach(function(lb, i){
+    o += '<text x="' + (L + i * iw / (n - 1)).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle" font-size="10" fill="var(--muted)"' + (i === n - 1 ? ' font-weight="800"' : '') + '>' + lb + '</text>';
+  });
+  return o + '</svg>';
+}
+function renderHome(){
+  var k = key(), hg = hasGoal(), bl = blocked(), g = goal(), t = totalOf(k), pct = hg ? t / g : 0;
+  var minToday = sumVals(exTotals(k)), nf = Object.keys(fdTotals(k)).length;
+  $('hHead').textContent = $('cHeadline').textContent;
+  $('hText').textContent = $('cText').textContent;
+  /* água */
+  var pt = hg ? Math.round(pct * 100) + '%' : '—';
+  $('hmAgua').innerHTML = homeWater(hg ? pct : 0, hg, t, pt);
+  $('hvAgua').textContent = t >= 1000 ? litros(t) : fmt(t) + ' ml';
+  $('hsAgua').textContent = hg ? (bl ? 'meta informada: ' : 'de ') + litros(g) : 'informe o peso nos ajustes';
+  /* exercício */
+  var ex7 = series(function(kk){ return sumVals(exTotals(kk)); }, 7, 0), act = ex7.filter(function(x){ return x.v > 0; }).length;
+  $('hmEx').innerHTML = homeBars(ex7.map(function(x){ return x.v; }), ex7.map(function(x){ return WK[x.d.getDay()]; }));
+  $('hvEx').textContent = minToday + ' min';
+  $('hsEx').textContent = 'hoje · treinou em ' + act + ' de 7 dias';
+  /* comida */
+  var ft = fdTotals(k);
+  $('hmFood').innerHTML = homeDonut(FOOD.map(function(f){ return !!ft[f.id]; }));
+  $('hvFood').textContent = nf + (nf === 1 ? ' grupo' : ' grupos');
+  $('hsFood').textContent = nf >= 3 ? 'prato variado hoje' : 'tente chegar a 3 grupos';
+  /* corpo */
+  var sc = streakCount();
+  $('hmCorpo').innerHTML = homeRings(pct, minToday / 30, nf / FOOD.length, sc);
+  $('hvCorpo').textContent = sc + (sc === 1 ? ' dia' : ' dias');
+  $('hsCorpo').textContent = 'de sequência · ver tudo';
+  /* semana */
+  var w7 = series(function(kk){ return hg ? totalOf(kk) / g : 0; }, 7, 0);
+  var x7 = series(function(kk){ return sumVals(exTotals(kk)) / 30; }, 7, 0);
+  var f7 = series(function(kk){ return Object.keys(fdTotals(kk)).length / FOOD.length; }, 7, 0);
+  $('hmWeek').innerHTML = homeWeek(w7.map(function(x){ return x.v; }), x7.map(function(x){ return x.v; }), f7.map(function(x){ return x.v; }), w7.map(function(x){ return WK[x.d.getDay()]; }));
+}
+(function(){
+  var b = document.querySelectorAll('[data-go]');
+  for(var i = 0; i < b.length; i++){ (function(el){ el.onclick = function(){ showTab(el.getAttribute('data-go')); }; })(b[i]); }
+  $('goSettings').onclick = function(){ openSettings(false); };
+})();
 
 /* ---------- avisos ---------- */
 var toastTimer;
@@ -2244,7 +2450,7 @@ $('fileImport').onchange = function(){ var f = this.files && this.files[0]; if(f
 
 /* ---------- tema ---------- */
 var THEME_NAMES = {auto: 'automático', light: 'claro', dark: 'escuro'};
-var META = {agua: ['#0a6fb8', '#08141d'], ex: ['#c2410c', '#150f0a'], comida: ['#2e7d32', '#09150d'], corpo: ['#6d3fc0', '#110c1b']};
+var META = {inicio: ['#4f46e5', '#0f0b2a'], agua: ['#0a6fb8', '#08141d'], ex: ['#c2410c', '#150f0a'], comida: ['#2e7d32', '#09150d'], corpo: ['#6d3fc0', '#110c1b']};
 function setMeta(){
   var dark = theme === 'dark' || (theme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
   $('metaTheme').setAttribute('content', (META[tab] || META.agua)[dark ? 1 : 0]);
@@ -2268,7 +2474,7 @@ if(window.matchMedia){
 }
 
 /* ---------- abas ---------- */
-var TITLES = {agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
+var TITLES = {inicio: '🏠 Início', agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
 function showTab(t){
   tab = t; save('tab', t);
   document.body.setAttribute('data-tab', t);
@@ -2282,7 +2488,7 @@ function showTab(t){
   try{ window.scrollTo(0, 0); }catch(e){}
   renderAll();
 }
-$('nav-add').onclick = function(){ openAdd({agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
+$('nav-add').onclick = function(){ openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
 TABS.forEach(function(id){
   $('nav-' + id).onclick = function(){ showTab(id); };
 });
@@ -2684,7 +2890,7 @@ setDate();
 showTab(tab);
 requestAnimationFrame(function(){ requestAnimationFrame(renderAll); });
 setInterval(function(){ tick(true); }, 30000);
-if(!prof.done && tab === 'agua') setTimeout(function(){ openSettings(true); }, 400);
+if(!prof.done) setTimeout(function(){ openSettings(true); }, 400);
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
