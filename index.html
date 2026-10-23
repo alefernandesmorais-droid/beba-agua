@@ -18,6 +18,7 @@
 (function(){ try{ var t = JSON.parse(localStorage.getItem('theme')); if(t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); }catch(e){} })();
 </script>
 <style>
+@font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans.woff2) format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
 
 :root{
   --bg:#f3f7fb; --card:#ffffff; --text:#0f2a3d; --muted:#586f80; --line:#d9e5ef;
@@ -62,7 +63,7 @@ body[data-tab="corpo"]{--bg:var(--bg-corpo);--line:var(--ln-corpo);--card:var(--
 html,body{margin:0}
 body{
   background:var(--bg);color:var(--text);
-  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   min-height:100vh;padding:env(safe-area-inset-top) 0 0;
 }
 .app{max-width:480px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
@@ -271,12 +272,83 @@ footer{margin-top:22px;text-align:center}
 .subs .sec{width:100%;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:8px}
 #greetTxt{font-weight:700;color:var(--text);font-size:.95rem}
 .modal select{width:100%;padding:12px;font-size:1rem;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+
+/* ===== visual v8: vidro, cantos grandes, barra flutuante, anéis ===== */
+:root{
+  --bg2-agua:#e3eefb; --bg2-ex:#fbe7d8; --bg2-food:#e1f2e3; --bg2-corpo:#e9defb;
+  --glass:rgba(255,255,255,.82); --gline:rgba(15,42,61,.08);
+  --sh:0 6px 18px rgba(30,40,90,.09); --sh-nav:0 10px 28px rgba(30,40,90,.18);
+  --fab-ring:var(--bg);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --text:#eef0ff; --muted:#aab0dc; --shape:#2b2870; --nav:rgba(24,20,66,.82);
+    --bg-agua:#0b1233; --bg2-agua:#16275f; --bg-ex:#1c0f2e; --bg2-ex:#3d1c3c; --bg-food:#0a1d2b; --bg2-food:#10403f; --bg-corpo:#1a0f3d; --bg2-corpo:#2f1c6c;
+    --cd-agua:#16205a; --cd-ex:#2c1a3a; --cd-food:#10323b; --cd-corpo:#2a1b5e;
+    --ln-agua:rgba(255,255,255,.13); --ln-ex:rgba(255,255,255,.13); --ln-food:rgba(255,255,255,.13); --ln-corpo:rgba(255,255,255,.14);
+    --shp-ex:#4a2d4c; --shp-food:#1d4d4a; --shp-corpo:#3b2b80;
+    --glass:rgba(255,255,255,.07); --gline:rgba(255,255,255,.13);
+    --sh:0 6px 18px rgba(0,0,0,.35); --sh-nav:0 10px 28px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --text:#eef0ff; --muted:#aab0dc; --shape:#2b2870; --nav:rgba(24,20,66,.82);
+  --bg-agua:#0b1233; --bg2-agua:#16275f; --bg-ex:#1c0f2e; --bg2-ex:#3d1c3c; --bg-food:#0a1d2b; --bg2-food:#10403f; --bg-corpo:#1a0f3d; --bg2-corpo:#2f1c6c;
+  --cd-agua:#16205a; --cd-ex:#2c1a3a; --cd-food:#10323b; --cd-corpo:#2a1b5e;
+  --ln-agua:rgba(255,255,255,.13); --ln-ex:rgba(255,255,255,.13); --ln-food:rgba(255,255,255,.13); --ln-corpo:rgba(255,255,255,.14);
+  --shp-ex:#4a2d4c; --shp-food:#1d4d4a; --shp-corpo:#3b2b80;
+  --glass:rgba(255,255,255,.07); --gline:rgba(255,255,255,.13);
+  --sh:0 6px 18px rgba(0,0,0,.35); --sh-nav:0 10px 28px rgba(0,0,0,.5);
+}
+body[data-tab="agua"]{--bg2:var(--bg2-agua)} body[data-tab="ex"]{--bg2:var(--bg2-ex)}
+body[data-tab="comida"]{--bg2:var(--bg2-food)} body[data-tab="corpo"]{--bg2:var(--bg2-corpo)}
+body{background:var(--bg);background-image:linear-gradient(180deg,var(--bg) 0%,var(--bg2,var(--bg)) 100%);background-attachment:fixed}
+.app{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+header{align-items:flex-start}
+.hl{display:flex;flex-direction:column;min-width:0}
+#dateTxt{order:1;text-transform:uppercase;letter-spacing:.04em;font-size:.68rem;font-weight:600}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+#greetTxt{order:2;font-size:1.7rem;font-weight:800;color:var(--text);line-height:1.15;margin:2px 0 4px}
+#pageTitle{order:3;font-size:.95rem;font-weight:700;color:var(--accent)}
+.icon-btn{border-radius:999px;background:var(--glass);border-color:var(--gline);min-height:44px;min-width:44px;font-weight:600}
+.card,.stat,.tile,.status,.cross{background:var(--glass);border-color:var(--gline);box-shadow:var(--sh)}
+.card{border-radius:24px;padding:18px}
+.tile{border-radius:20px}
+.stat{border-radius:20px}
+.status{border-radius:20px}
+.status[data-s="ok"]{background:rgba(29,155,240,.12)}
+.add{border-radius:999px;min-height:48px}
+.add.alt{background:var(--glass)}
+.modal{border-radius:28px}
+.kicker{letter-spacing:.06em}
+.donate{border-radius:999px;background:var(--glass);border-color:var(--gline)}
+/* barra inferior flutuante */
+.nav{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));max-width:456px;margin:0 auto;border:1px solid var(--gline);border-radius:999px;box-shadow:var(--sh-nav);padding:0}
+.nav-in{align-items:center;padding:6px 8px}
+.nav button{border-radius:22px;padding:7px 2px 7px;min-height:52px;justify-content:center}
+.nav button.on::after{display:none}
+.nav button.on{background:var(--line)}
+.nav button.fab{flex:0 0 60px;width:60px;height:60px;min-height:60px;margin:-30px 4px 0;padding:0;border-radius:50%;background:var(--accent);color:var(--bg);font-size:2rem;font-weight:700;line-height:1;box-shadow:0 8px 20px rgba(0,0,0,.28);border:5px solid var(--bg);align-items:center;justify-content:center}
+.nav button.fab:active{transform:scale(.94)}
+.toast{bottom:calc(96px + env(safe-area-inset-bottom))}
+/* anéis */
+.rings{display:flex;align-items:center;gap:16px}
+.rings svg{width:132px;height:132px;flex:none}
+.ringbg{fill:none;stroke:var(--line);stroke-width:9}
+.ring{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .3s ease}
+.rl{flex:1;min-width:0}
+.rrow{margin:0 0 10px}
+.rrow .rt{display:flex;justify-content:space-between;gap:6px;font-size:.82rem;color:var(--muted)}
+.rrow .rt b{color:var(--text);font-weight:700;white-space:nowrap}
+.rrow .rb{height:6px;border-radius:99px;background:var(--line);margin-top:4px;overflow:hidden}
+.rrow .rb i{display:block;height:100%;border-radius:99px;width:0;transition:width .3s ease}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition-duration:.01ms !important}}
 </style>
 </head>
 <body data-tab="agua">
 <div class="app">
   <header>
-    <div>
+    <div class="hl">
       <h1 id="pageTitle">💧 Água</h1>
       <div class="sub" id="greetTxt"></div>
       <div class="sub" id="dateTxt"></div>
@@ -462,6 +534,23 @@ footer{margin-top:22px;text-align:center}
     </div>
 
     <section class="card">
+      <div class="kicker">Hoje em anéis</div>
+      <div class="rings">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Progresso do dia: água, exercício e comida" id="ringsSvg">
+          <circle class="ringbg" cx="60" cy="60" r="52"/><circle class="ringbg" cx="60" cy="60" r="40"/><circle class="ringbg" cx="60" cy="60" r="28"/>
+          <circle class="ring" id="rgW" cx="60" cy="60" r="52" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-agua)"/>
+          <circle class="ring" id="rgX" cx="60" cy="60" r="40" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-ex)"/>
+          <circle class="ring" id="rgF" cx="60" cy="60" r="28" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-food)"/>
+        </svg>
+        <div class="rl">
+          <div class="rrow"><div class="rt"><span>💧 Água</span><b id="rtW">—</b></div><div class="rb"><i id="rbW" style="background:var(--c-agua)"></i></div></div>
+          <div class="rrow"><div class="rt"><span>💪 Treino</span><b id="rtX">0 / 30 min</b></div><div class="rb"><i id="rbX" style="background:var(--c-ex)"></i></div></div>
+          <div class="rrow"><div class="rt"><span>🍎 Comida</span><b id="rtF">0 / 6</b></div><div class="rb"><i id="rbF" style="background:var(--c-food)"></i></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
       <div class="kicker">Resumo do dia</div>
       <h2 id="cHeadline"></h2>
       <p class="latest" id="cText"></p>
@@ -499,7 +588,7 @@ footer{margin-top:22px;text-align:center}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 6.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 8.</p>
   </footer>
 </div>
 
@@ -507,6 +596,7 @@ footer{margin-top:22px;text-align:center}
   <div class="nav-in">
     <button type="button" id="nav-agua" data-tab="agua"><span>💧</span>Água</button>
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
+    <button type="button" id="nav-add" class="fab" aria-label="Registrar agora">+</button>
     <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
     <button type="button" id="nav-corpo" data-tab="corpo"><span>🧍</span>Corpo</button>
   </div>
@@ -1567,6 +1657,13 @@ function renderCorpo(){
   $('cFood').textContent = nf + ' de ' + FOOD.length;
   $('cFoodSub').textContent = 'grupos de comida';
 
+  (function(){
+    var pw = hg ? Math.min(pct, 1) : 0, px = Math.min(minToday / 30, 1), pf = Math.min(nf / FOOD.length, 1);
+    $('rgW').setAttribute('stroke-dashoffset', 100 - pw * 100); $('rgX').setAttribute('stroke-dashoffset', 100 - px * 100); $('rgF').setAttribute('stroke-dashoffset', 100 - pf * 100);
+    $('rbW').style.width = (pw * 100) + '%'; $('rbX').style.width = (px * 100) + '%'; $('rbF').style.width = (pf * 100) + '%';
+    $('rtW').textContent = hg ? fmt(t) + ' / ' + fmt(g) + ' ml' : (bl ? fmt(t) + ' ml' : 'informe o peso');
+    $('rtX').textContent = minToday + ' / 30 min'; $('rtF').textContent = nf + ' / ' + FOOD.length;
+  })();
   var water = !!(hg && !bl && t >= g), trained = minToday > 0, ate = nf >= 3;
   var items = [];
   if(!bl) items.push({ok: water, miss: hg ? 'beber água até a meta (faltam ' + fmt(Math.max(0, g - t)) + ' ml)' : 'informar seu peso e bater a meta de água'});
@@ -2185,6 +2282,7 @@ function showTab(t){
   try{ window.scrollTo(0, 0); }catch(e){}
   renderAll();
 }
+$('nav-add').onclick = function(){ openAdd({agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
 TABS.forEach(function(id){
   $('nav-' + id).onclick = function(){ showTab(id); };
 });
@@ -2506,10 +2604,10 @@ function setAddKind(k){
   $('addWater').hidden = k !== 'log'; $('addEx').hidden = k !== 'ex'; $('addFd').hidden = k !== 'fd';
   $('addErr').textContent = '';
 }
-function openAdd(kind){
+function openAdd(kind, today){
   var y = daysBack(1);
   $('addDate').min = key(daysBack(89)); $('addDate').max = key();
-  $('addDate').value = key(y);
+  $('addDate').value = today ? key() : key(y);
   $('addMl').value = ''; $('addMin').value = ''; $('addQty').value = '1';
   fillSel('addDrink', DRINKS.map(function(d){ return [d.id, d.emoji + ' ' + d.nome + (d.c ? '' : ' (não conta)')]; }));
   fillSel('addExG', EX.map(function(e){ return [e.id, e.emoji + ' ' + e.nome]; }));
