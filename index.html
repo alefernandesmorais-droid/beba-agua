@@ -174,6 +174,8 @@ h1{font-size:1.3rem;margin:0}
 .pl.lv1{fill:var(--fd1);fill-opacity:.55}
 .pl.lv2{fill:var(--fd1);fill-opacity:.95}
 .pl.lv3{fill:var(--fd2);fill-opacity:1}
+.pl.off{fill:var(--line);fill-opacity:.35}
+.tile.off{opacity:.55}
 .ripple.fd{stroke:var(--fd2)}
 .float.fd{color:var(--fdtext)}
 .tile.on.fd{border-color:var(--fd2);background:rgba(47,179,68,.10)}
@@ -601,7 +603,8 @@ body[data-tab="tasks"]{--bg:var(--bg-tasks);--bg2:var(--bg2-tasks);--line:var(--
 :root:not([data-theme="light"]) .hm[data-go="tasks"]{--tb1:#138d7d;--tb2:#0a4a47}
 :root[data-theme="dark"] .hm[data-go="tasks"]{--tb1:#138d7d;--tb2:#0a4a47}
 .modal textarea{font:inherit;background:var(--bg);color:var(--text);border:1px solid var(--line);resize:vertical}
-main#tab-meds,main#tab-tasks{display:block}
+main#tab-meds{display:block}
+.tasksec{display:block}
 .tk{display:block}
 .tk-views{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;margin:0 -2px;scrollbar-width:none}
 .tk-views::-webkit-scrollbar{display:none}
@@ -669,6 +672,18 @@ main#tab-meds,main#tab-tasks{display:block}
   .tkv.on{background:var(--accent)}
   .tk-sep{width:auto;height:1px;margin:6px 8px}
 }
+
+/* ===== v15: botão Início no centro ===== */
+.tasksec,.corposec{scroll-margin-top:12px}
+@media (max-width:999px){
+  #nav-agua{order:1}#nav-comida{order:2}#nav-inicio{order:3}#nav-ex{order:4}#nav-meds{order:5}
+  .nav button#nav-inicio{flex:0 0 66px;width:66px;height:66px;min-height:66px;margin:-24px 4px 0;padding:0;border-radius:50%;justify-content:center;background:var(--c-home);color:#fff;box-shadow:0 8px 20px rgba(79,70,229,.38);font-size:.62rem}
+  .nav button#nav-inicio span{font-size:1.55rem;filter:none;opacity:1}
+  .nav button#nav-inicio.on{color:#fff;background:var(--c-home);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--c-home),0 8px 20px rgba(79,70,229,.38)}
+  .nav button#nav-inicio .bd{top:2px;right:2px}
+}
+@media (max-width:999px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nav button#nav-inicio,:root:not([data-theme="light"]) .nav button#nav-inicio.on{color:#0f0b2a}}
+@media (max-width:999px){:root[data-theme="dark"] .nav button#nav-inicio,:root[data-theme="dark"] .nav button#nav-inicio.on{color:#0f0b2a}}
 </style>
 <style id="palStyle"></style>
 </head>
@@ -714,6 +729,25 @@ main#tab-meds,main#tab-tasks{display:block}
     <div class="hgrid" id="hHost"></div>
     <div id="hHidden" class="hhid" hidden></div>
 
+    <h2 class="corpo-h">✅ Tarefas</h2>
+  <section id="tab-tasks" class="tasksec">
+    <div class="tk">
+      <aside class="tk-side"><div class="tk-views" id="tkViews"></div></aside>
+      <div class="tk-main">
+        <div class="tk-top"><h2 id="tkTitle">Hoje</h2><span class="tk-cnt" id="tkCount"></span></div>
+        <form class="tk-quick" id="tkQuick" autocomplete="off">
+          <input id="tkIn" type="text" maxlength="120" placeholder="＋ Adicionar tarefa e apertar Enter" aria-label="Nova tarefa">
+          <button type="submit" class="tk-go" aria-label="Adicionar tarefa">↵</button>
+        </form>
+        <input id="tkSearch" class="tk-search" type="search" maxlength="60" placeholder="🔍 Buscar tarefas" aria-label="Buscar tarefas">
+        <div id="tkList"></div>
+        <div class="tk-ctl" id="tkCtl"></div>
+        <p class="hint">Suas tarefas ficam só neste aparelho (sem conta e sem servidor). Elas entram no backup dos Ajustes.</p>
+        <label class="chk"><input type="checkbox" id="tkHide"> Ocultar os títulos das tarefas (mostra ••••)</label>
+      </div>
+    </div>
+  </section>
+
     <h2 class="corpo-h">🧍 Meu corpo</h2>
     <section id="tab-corpo" class="corposec">
     <div class="stage both" id="stageC"></div>
@@ -725,6 +759,11 @@ main#tab-meds,main#tab-tasks{display:block}
       <div class="stat s-f"><div class="v" id="cFood">0 de 6</div><div class="l" id="cFoodSub">grupos de comida</div></div>
       <div class="stat s-s"><div class="v" id="cStreak">0 dias</div><div class="l" id="cStreakSub">de sequência</div></div>
     </div>
+
+    <section class="card" id="wCard">
+      <div class="kicker">Seu peso ao longo do tempo</div>
+      <div id="wBody"></div>
+    </section>
 
     <section class="card">
       <div class="kicker">Progresso de hoje</div>
@@ -789,24 +828,6 @@ main#tab-meds,main#tab-tasks{display:block}
     </section>
   </main>
 
-  <!-- ================= TAREFAS ================= -->
-  <main id="tab-tasks" hidden>
-    <div class="tk">
-      <aside class="tk-side"><div class="tk-views" id="tkViews"></div></aside>
-      <div class="tk-main">
-        <div class="tk-top"><h2 id="tkTitle">Hoje</h2><span class="tk-cnt" id="tkCount"></span></div>
-        <form class="tk-quick" id="tkQuick" autocomplete="off">
-          <input id="tkIn" type="text" maxlength="120" placeholder="＋ Adicionar tarefa e apertar Enter" aria-label="Nova tarefa">
-          <button type="submit" class="tk-go" aria-label="Adicionar tarefa">↵</button>
-        </form>
-        <input id="tkSearch" class="tk-search" type="search" maxlength="60" placeholder="🔍 Buscar tarefas" aria-label="Buscar tarefas">
-        <div id="tkList"></div>
-        <div class="tk-ctl" id="tkCtl"></div>
-        <p class="hint">Suas tarefas ficam só neste aparelho (sem conta e sem servidor). Elas entram no backup dos Ajustes.</p>
-        <label class="chk"><input type="checkbox" id="tkHide"> Ocultar os títulos das tarefas (mostra ••••)</label>
-      </div>
-    </div>
-  </main>
 
   <!-- ================= LEMBRETES ================= -->
   <main id="tab-meds" hidden>
@@ -973,12 +994,16 @@ main#tab-meds,main#tab-tasks{display:block}
     <div class="stage plate" id="stageF"></div>
 
     <div class="numbers">
-      <div class="big"><span id="fdTotal">0</span><small> de 6 grupos hoje</small></div>
+      <div class="big"><span id="fdTotal">0</span><small id="fdOf"> de 6 grupos hoje</small></div>
       <div class="sub" id="fdGroupsTxt"></div>
     </div>
 
     <div class="tiles" id="fdTiles"></div>
     <button class="link" id="btnUndoFd" type="button">↩ Desfazer último</button>
+    <section class="card" id="avoidCard">
+      <div class="kicker">Minhas restrições</div>
+      <div id="avoidBody"></div>
+    </section>
     <div class="cross" id="crossF"></div>
 
     <section class="card" id="notesFc" hidden>
@@ -1020,14 +1045,13 @@ main#tab-meds,main#tab-tasks{display:block}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 14.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 15.</p>
   </footer>
 </div>
 
 <nav class="nav" aria-label="Navegação">
   <div class="nav-in">
-    <button type="button" id="nav-inicio" data-tab="inicio"><span>🏠</span>Início</button>
-    <button type="button" id="nav-tasks" data-tab="tasks"><span>✅</span>Tarefas<b class="bd" id="tkBd" hidden></b></button>
+    <button type="button" id="nav-inicio" data-tab="inicio"><span>🏠</span>Início<b class="bd" id="tkBd" hidden></b></button>
     <button type="button" id="nav-agua" data-tab="agua"><span>💧</span>Água</button>
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
     <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
@@ -1142,6 +1166,8 @@ main#tab-meds,main#tab-tasks{display:block}
       <button class="btn" id="exCancel" type="button">Cancelar</button>
       <button class="btn fx" id="exSave" type="button">Adicionar</button>
     </div>
+    <button class="btn" id="exMore" type="button" style="width:100%;margin-top:8px">➕ Adicionar e registrar outro exercício</button>
+    <p class="hint" style="margin:6px 2px 0">Fez vários exercícios no mesmo treino? Use este botão: o modal continua aberto para o próximo.</p>
   </div>
 </div>
 
@@ -1734,11 +1760,32 @@ function cleanTasks(o){
   return r;
 }
 var tasks = cleanTasks(load('tasks', null));
+var FOOD_IDS = ['frutas', 'legumes', 'carnes', 'peixes', 'graos', 'laticinios'];
+function cleanAvoid(o){
+  var r = {};
+  if(o && typeof o === 'object') FOOD_IDS.forEach(function(id){ if(o[id] === true) r[id] = true; });
+  return r;
+}
+function cleanWlog(o){
+  var r = {}, dre = /^\d{4}-\d{2}-\d{2}$/;
+  if(o && typeof o === 'object') Object.keys(o).slice(0, 2000).forEach(function(k){
+    var v = o[k]; if(dre.test(k) && typeof v === 'number' && v >= 20 && v <= 300) r[k] = Math.round(v * 10) / 10;
+  });
+  return r;
+}
+var avoid = cleanAvoid(load('avoid', null));
+var wlog = cleanWlog(load('wlog', null));
+var wcfg = (function(o){ return {hide: !!(o && o.hide === true)}; })(load('wcfg', null));
+function FA(){ return FOOD.filter(function(f){ return !avoid[f.id]; }); }
+function foodTarget(){ return Math.min(3, Math.max(1, FA().length)); }
+function nGt(t){ return Object.keys(t).filter(function(id){ return !avoid[id]; }).length; }
+function nG(k){ return nGt(fdTotals(k)); }
+
 
 var dash = cleanDash(load('dash', null));
 function saveDash(){ save('dash', dash); }
 
-var TABS = ['inicio', 'tasks', 'agua', 'ex', 'comida', 'meds'];
+var TABS = ['inicio', 'agua', 'ex', 'comida', 'meds'];
 var theme = load('theme', 'auto');
 var tab = 'inicio'; /* o app sempre abre no painel */
 /* registros antigos eram só números; agora cada um tem ml e horário */
@@ -1772,6 +1819,9 @@ function persist(){
   var tcut = Date.now() - 30 * 86400000, dcut = Date.now() - 180 * 86400000;
   tasks.items = tasks.items.filter(function(x){ return !(x.del && x.del < tcut) && !(x.x && x.xa && x.xa < dcut); });
   save('tasks', tasks);
+  save('avoid', avoid); save('wcfg', wcfg);
+  var wk = Object.keys(wlog).sort(); while(wk.length > 800) delete wlog[wk.shift()];
+  save('wlog', wlog);
 }
 
 /* ---------- água: perfil, meta e bebidas ---------- */
@@ -2091,14 +2141,14 @@ function lvFood(n){ return n >= 3 ? 3 : n; }
 function lvFoodWeek(n){ return n >= 14 ? 3 : (n >= 7 ? 2 : (n > 0 ? 1 : 0)); }
 
 function renderFood(){
-  var k = key(), tot = fdTotals(k), n = Object.keys(tot).length;
+  var k = key(), tot = fdTotals(k), n = nGt(tot);
   var st = $('stageF');
   FOOD.forEach(function(f){
     var el = st.querySelector('.pl-' + f.id);
-    if(el) el.setAttribute('class', 'pl pl-' + f.id + ' lv' + lvFood(tot[f.id] || 0));
+    if(el) el.setAttribute('class', 'pl pl-' + f.id + ' lv' + lvFood(tot[f.id] || 0) + (avoid[f.id] ? ' off' : ''));
   });
-  $('fdTotal').textContent = n;
-  var eaten = FOOD.filter(function(f){ return tot[f.id]; });
+  $('fdTotal').textContent = n; $('fdOf').textContent = ' de ' + FA().length + (FA().length === 1 ? ' grupo hoje' : ' grupos hoje'); renderAvoid();
+  var eaten = FA().filter(function(f){ return tot[f.id]; });
   $('fdGroupsTxt').textContent = eaten.length
     ? eaten.map(function(f){ return f.nome + ' ×' + tot[f.id]; }).join(' · ')
     : 'Nenhum alimento registrado hoje';
@@ -2115,12 +2165,12 @@ function renderFood(){
   }
   FOOD.forEach(function(f){
     var b = tiles.querySelector('[data-g="' + f.id + '"]');
-    b.classList.toggle('on', !!tot[f.id]);
-    b.querySelector('small').textContent = tot[f.id] ? tot[f.id] + (tot[f.id] > 1 ? ' porções hoje' : ' porção hoje') : f.dica;
+    b.classList.toggle('on', !!tot[f.id] && !avoid[f.id]); b.classList.toggle('off', !!avoid[f.id]); b.disabled = !!avoid[f.id];
+    b.querySelector('small').textContent = avoid[f.id] ? 'não consumo' : tot[f.id] ? tot[f.id] + (tot[f.id] > 1 ? ' porções hoje' : ' porção hoje') : f.dica;
   });
 
   var list = fd[k] || [], last = list.length ? list[list.length - 1] : null;
-  $('fdHeadline').textContent = n === 0 ? 'Seu prato está vazio' : (n >= 4 ? 'Prato variado! 🌈' : 'Hoje: ' + n + ' de ' + FOOD.length + ' grupos');
+  $('fdHeadline').textContent = n === 0 ? 'Seu prato está vazio' : (n >= 4 ? 'Prato variado! 🌈' : 'Hoje: ' + n + ' de ' + FA().length + ' grupos');
   if(last){
     var lf = foodById(last.g);
     $('fdLatest').textContent = lf.msgs[Math.max(0, lvFood(tot[last.g]) - 1)];
@@ -2181,12 +2231,12 @@ function openFood(g){
   open('mFd');
 }
 function addFood(g, sub){
-  var k = key(), f = foodById(g), before = fdTotals(k)[g] || 0, nb = Object.keys(fdTotals(k)).length;
+  var k = key(), f = foodById(g), before = fdTotals(k)[g] || 0, nb = nG(k);
   var entry = {g: g, t: Date.now()};
   if(sub && subOk(f, sub)) entry.s = sub;
   (fd[k] = fd[k] || []).push(entry);
   persist();
-  var after = before + 1, na = Object.keys(fdTotals(k)).length;
+  var after = before + 1, na = nG(k);
   renderAll();
   foodEffects(g);
   if(nb < 4 && na >= 4){
@@ -2213,7 +2263,7 @@ function dayInfo(d){
   var k = key(d);
   var w = !!(hasGoal() && !blocked() && totalOf(k) >= goal());
   var t = sumVals(exTotals(k)) >= 15;
-  var f = Object.keys(fdTotals(k)).length >= 3;
+  var f = nG(k) >= foodTarget();
   return {active: w || t || f, rest: !!rest[k]};
 }
 function streakFrom(i0){
@@ -2270,7 +2320,7 @@ function renderStreak(){
 function renderCorpo(){
   var g = goal(), k = key(), t = totalOf(k), pct = g ? t / g : 0;
   var wkT = weekTotals(), today = exTotals(k), minToday = sumVals(today), nToday = Object.keys(today).length;
-  var ft = fdTotals(k), nf = Object.keys(ft).length, fw = fdWeek();
+  var ft = fdTotals(k), nf = nGt(ft), fw = fdWeek();
   setLevels('stageC', wkT, lvWeek);
 
   var hg = hasGoal(), bl = blocked();
@@ -2278,17 +2328,17 @@ function renderCorpo(){
   $('cWaterSub').textContent = hg ? Math.round(pct * 100) + (bl ? '% da meta informada' : '% da meta') : (bl ? 'registrados hoje' : 'Informe seu peso');
   $('cEx').textContent = minToday + ' min';
   $('cExSub').textContent = nToday ? nToday + (nToday > 1 ? ' grupos' : ' grupo') + ' hoje' : 'Nenhum treino hoje';
-  $('cFood').textContent = nf + ' de ' + FOOD.length;
+  $('cFood').textContent = nf + ' de ' + FA().length;
   $('cFoodSub').textContent = 'grupos de comida';
 
   (function(){
-    var pw = hg ? Math.min(pct, 1) : 0, px = Math.min(minToday / 30, 1), pf = Math.min(nf / FOOD.length, 1);
+    var pw = hg ? Math.min(pct, 1) : 0, px = Math.min(minToday / 30, 1), pf = Math.min(nf / FA().length, 1);
     $('rgW').setAttribute('stroke-dashoffset', 100 - pw * 100); $('rgX').setAttribute('stroke-dashoffset', 100 - px * 100); $('rgF').setAttribute('stroke-dashoffset', 100 - pf * 100);
     $('rbW').style.width = (pw * 100) + '%'; $('rbX').style.width = (px * 100) + '%'; $('rbF').style.width = (pf * 100) + '%';
     $('rtW').textContent = hg ? fmt(t) + ' / ' + fmt(g) + ' ml' : (bl ? fmt(t) + ' ml' : 'informe o peso');
-    $('rtX').textContent = minToday + ' / 30 min'; $('rtF').textContent = nf + ' / ' + FOOD.length;
+    $('rtX').textContent = minToday + ' / 30 min'; $('rtF').textContent = nf + ' / ' + FA().length;
   })();
-  var water = !!(hg && !bl && t >= g), trained = minToday > 0, ate = nf >= 3;
+  var water = !!(hg && !bl && t >= g), trained = minToday > 0, ate = nf >= foodTarget();
   var items = [];
   if(!bl) items.push({ok: water, miss: hg ? 'beber água até a meta (faltam ' + fmt(Math.max(0, g - t)) + ' ml)' : 'informar seu peso e bater a meta de água'});
   items.push({ok: trained, miss: 'um treino curto, nem que seja de 15 minutos'});
@@ -2317,13 +2367,13 @@ function renderCorpo(){
   else hint = 'Você trabalhou todos os grupos nos últimos 7 dias. Corpo equilibrado! 🏆';
   $('cHint').textContent = hint;
 
-  $('cFoodChips').innerHTML = FOOD.map(function(f){
+  $('cFoodChips').innerHTML = FA().map(function(f){
     var m = fw[f.id] || 0;
     return '<span class="chip f' + lvFoodWeek(m) + '">' + f.emoji + ' ' + f.nome + '<i>' + m + '×</i></span>';
   }).join('');
-  var fmiss = FOOD.filter(function(f){ return !fw[f.id]; });
+  var fmiss = FA().filter(function(f){ return !fw[f.id]; });
   var fh;
-  if(fmiss.length === FOOD.length) fh = 'Nada registrado nos últimos 7 dias. Comece com uma fruta.';
+  if(fmiss.length === FA().length) fh = 'Nada registrado nos últimos 7 dias. Comece com uma fruta.';
   else if(fmiss.length) fh = 'Ainda sem registro esta semana: ' + fmiss.map(function(f){ return f.nome.toLowerCase(); }).join(', ') + '. Variar faz bem.';
   else fh = 'Você comeu de todos os grupos nos últimos 7 dias. Prato variado! 🌈';
   $('cFoodHint').textContent = fh;
@@ -2334,7 +2384,7 @@ function renderCorpo(){
 /* ---------- dicas entre as abas ---------- */
 function renderCross(){
   var k = key(), g = goal(), t = totalOf(k), bl = blocked(), pct = (hasGoal() && !bl && g) ? Math.round(t / g * 100) : null;
-  var min = sumVals(exTotals(k)), nf = Object.keys(fdTotals(k)).length;
+  var min = sumVals(exTotals(k)), nf = nG(k);
   $('crossW').textContent = (min > 0 && !bl) ? '💪 Você treinou ' + min + ' min hoje. Reponha a água aos poucos, conforme a sede.' : '';
   $('crossX').textContent = (min > 0 && !bl)
     ? '💧 Depois do treino, beba água aos poucos, conforme a sede.' + (pct !== null ? ' Você está em ' + pct + '% da meta de hoje.' : '')
@@ -2342,7 +2392,7 @@ function renderCross(){
   $('crossF').textContent = (nf > 0 && pct !== null) ? '💧 E a água? Você está em ' + pct + '% da meta de hoje.' : '';
 }
 
-function renderAll(){ setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); renderHome(); renderMeds(); renderTasks(); }
+function renderAll(){ setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); renderHome(); renderMeds(); renderTasks(); renderWeight(); }
 
 /* ---------- painel inicial ---------- */
 function smoothPath(pts, lo, hi){
@@ -2381,13 +2431,13 @@ function homeBars(vals, labels){
   return o + '</svg>';
 }
 function homeDonut(eaten){
-  var o = '<svg class="ch" viewBox="0 0 120 120" role="img" aria-label="' + eaten.filter(Boolean).length + ' de ' + FOOD.length + ' grupos de comida hoje">';
+  var o = '<svg class="ch" viewBox="0 0 120 120" role="img" aria-label="' + eaten.filter(Boolean).length + ' de ' + FA().length + ' grupos de comida hoje">';
   eaten.forEach(function(on, i){
     o += '<circle cx="60" cy="60" r="44" fill="none" stroke-width="11" stroke-linecap="round" pathLength="60" stroke-dasharray="5.2 54.8" stroke-dashoffset="' + (-(i * 10) - 2.4) + '" transform="rotate(-90 60 60)" ' +
          (on ? 'stroke="var(--c-food)"' : 'stroke="var(--line)"') + '/>';
   });
   var n = eaten.filter(Boolean).length;
-  return o + '<text x="60" y="63" text-anchor="middle" font-size="26" font-weight="800" fill="var(--text)">' + n + '<tspan font-size="13" fill="var(--muted)" font-weight="700">/' + FOOD.length + '</tspan></text>' +
+  return o + '<text x="60" y="63" text-anchor="middle" font-size="26" font-weight="800" fill="var(--text)">' + n + '<tspan font-size="13" fill="var(--muted)" font-weight="700">/' + FA().length + '</tspan></text>' +
          '<text x="60" y="80" text-anchor="middle" font-size="9.5" fill="var(--muted)">grupos</text></svg>';
 }
 function homeRings(a, b, c, streak){
@@ -2481,9 +2531,9 @@ var MSGS = [
 ];
 function dayScore(k){
   var g = goal(), pw = (hasGoal() && !blocked() && g) ? Math.min(totalOf(k) / g, 1) : 0;
-  return (pw + Math.min(sumVals(exTotals(k)) / 30, 1) + Math.min(Object.keys(fdTotals(k)).length / FOOD.length, 1)) / 3;
+  return (pw + Math.min(sumVals(exTotals(k)) / 30, 1) + Math.min(nG(k) / FA().length, 1)) / 3;
 }
-function anyAct(k){ return totalOf(k) > 0 || sumVals(exTotals(k)) > 0 || Object.keys(fdTotals(k)).length > 0; }
+function anyAct(k){ return totalOf(k) > 0 || sumVals(exTotals(k)) > 0 || nG(k) > 0; }
 function dailyMsg(){
   if(dash.mantra) return {t: dash.mantra, mine: true};
   if(dash.msgOff) return null;
@@ -2495,7 +2545,7 @@ function dailyMsg(){
   if(sc === 0 && recent && !anyAct(key())) cat = 'dia_dificil';
   else if(!noWater && hasGoal() && h >= 11 && totalOf(key()) / goal() < 0.3) cat = 'agua';
   else if(recent && !series(function(kk){ return sumVals(exTotals(kk)); }, 3, 0).some(function(x){ return x.v > 0; })) cat = 'movimento';
-  else if(h >= 14 && Object.keys(fdTotals(key())).length < 3 && recent) cat = 'alimentacao';
+  else if(h >= 14 && nG(key()) < foodTarget() && recent) cat = 'alimentacao';
   else if(sc >= 5) cat = 'descanso';
   else cat = cats[Math.floor(Date.now() / 86400000) % cats.length];
   var pool = MSGS.filter(function(m){ return m.c === cat && !(noWater && m.w); });
@@ -2571,7 +2621,7 @@ function homeDose(){
 }
 function wInner(id){
   var k = key(), hg = hasGoal(), bl = blocked(), g = goal(), t = totalOf(k), pct = hg ? t / g : 0;
-  var minToday = sumVals(exTotals(k)), nf = Object.keys(fdTotals(k)).length, ft = fdTotals(k), o = '';
+  var minToday = sumVals(exTotals(k)), nf = nG(k), ft = fdTotals(k), o = '';
   if(id === 'agua'){
     return homeWater(hg ? pct : 0, hg, t, hg ? Math.round(pct * 100) + '%' : '—') +
       '<div class="hm-v">' + (t >= 1000 ? litros(t) : fmt(t) + ' ml') + '</div><div class="hm-s">' + (hg ? (bl ? 'meta informada: ' : 'de ') + litros(g) : 'informe o peso nos ajustes') + '</div>';
@@ -2582,14 +2632,14 @@ function wInner(id){
       '<div class="hm-v">' + minToday + ' min</div><div class="hm-s">hoje · treinou em ' + act + ' de 7 dias</div>';
   }
   if(id === 'comida'){
-    return homeDonut(FOOD.map(function(f){ return !!ft[f.id]; })) + '<div class="hm-v">' + nf + (nf === 1 ? ' grupo' : ' grupos') + '</div><div class="hm-s">' + (nf >= 3 ? 'prato variado hoje' : 'tente chegar a 3 grupos') + '</div>';
+    return homeDonut(FA().map(function(f){ return !!ft[f.id]; })) + '<div class="hm-v">' + nf + (nf === 1 ? ' grupo' : ' grupos') + '</div><div class="hm-s">' + (nf >= foodTarget() ? 'prato variado hoje' : 'tente chegar a ' + foodTarget() + (foodTarget() === 1 ? ' grupo' : ' grupos')) + '</div>';
   }
   if(id === 'corpo'){
     var sc = streakCount();
-    return homeRings(pct, minToday / 30, nf / FOOD.length, sc) + '<div class="hm-v">' + sc + (sc === 1 ? ' dia' : ' dias') + '</div><div class="hm-s">de sequência · ver tudo</div>';
+    return homeRings(pct, minToday / 30, nf / FA().length, sc) + '<div class="hm-v">' + sc + (sc === 1 ? ' dia' : ' dias') + '</div><div class="hm-s">de sequência · ver tudo</div>';
   }
   if(id === 'semana'){
-    var w7 = series(function(kk){ return hg ? totalOf(kk) / g : 0; }, 7, 0), x7 = series(function(kk){ return sumVals(exTotals(kk)) / 30; }, 7, 0), f7 = series(function(kk){ return Object.keys(fdTotals(kk)).length / FOOD.length; }, 7, 0);
+    var w7 = series(function(kk){ return hg ? totalOf(kk) / g : 0; }, 7, 0), x7 = series(function(kk){ return sumVals(exTotals(kk)) / 30; }, 7, 0), f7 = series(function(kk){ return nG(kk) / FA().length; }, 7, 0);
     return homeWeek(w7.map(function(x){ return x.v; }), x7.map(function(x){ return x.v; }), f7.map(function(x){ return x.v; }), w7.map(function(x){ return WK[x.d.getDay()]; })) +
       '<div class="wk-leg"><span><i style="background:var(--c-agua)"></i>Água</span><span><i style="background:var(--c-ex)"></i>Treino</span><span><i style="background:var(--c-food)"></i>Comida</span></div>' +
       '<div class="hm-s" style="text-align:center;margin-top:4px">Cada linha mostra quanto da meta do dia você cumpriu.</div>';
@@ -3054,7 +3104,7 @@ function tkRow(x){
 function renderTasks(){
   var t = key(), over = tkActive().filter(function(x){ return x.d && x.d < t; }).length, bd = $('tkBd');
   bd.hidden = !over; bd.textContent = over;
-  if(tab !== 'tasks') return;
+  if(tab !== 'inicio') return;
   var vs = tkViewsList(), h = '', cur = null;
   vs.forEach(function(v){
     if(v.sep){ h += '<span class="tk-sep"></span>'; return; }
@@ -3204,6 +3254,110 @@ function tkTick(fire){
   };
   $('tmSubs').onchange = function(ev){ var i = ev.target.getAttribute('data-si'); if(i !== null) tkSubs[parseInt(i, 10)].x = ev.target.checked; };
   $('tmSubs').oninput = function(ev){ var i = ev.target.getAttribute('data-st'); if(i !== null) tkSubs[parseInt(i, 10)].t = ev.target.value; };
+})();
+
+/* ---------- restrições alimentares ---------- */
+var AVOID_PRESETS = [
+  {n: 'Vegetariano', g: ['carnes', 'peixes']},
+  {n: 'Vegano', g: ['carnes', 'peixes', 'laticinios']},
+  {n: 'Sem lactose', g: ['laticinios']},
+  {n: 'Sem peixe', g: ['peixes']}
+];
+function renderAvoid(){
+  var b = $('avoidBody'); if(!b) return;
+  if(prof.age !== null && prof.age < 18){
+    b.innerHTML = '<p class="latest">Para crianças e adolescentes, as restrições alimentares devem ser definidas com pediatra ou nutricionista. Por isso o app não ajusta o prato.</p>';
+    return;
+  }
+  var any = Object.keys(avoid).length, h = '<p class="hint" style="margin-top:0">Você tem alguma restrição alimentar? Marque o que se aplica a você. Isso só ajusta a sua roda de grupos: o app não vai sugerir substituições nem avaliar sua dieta.</p>';
+  h += '<div class="subs">' + AVOID_PRESETS.map(function(p, i){ return '<button type="button" data-ap="' + i + '">' + p.n + '</button>'; }).join('') + '</div>';
+  h += '<div class="lbl">Grupos que eu não consumo</div><div class="subs">' + FOOD.map(function(f){ return '<button type="button" data-av="' + f.id + '" aria-pressed="' + (avoid[f.id] ? 'true' : 'false') + '" class="' + (avoid[f.id] ? 'sel' : '') + '">' + f.emoji + ' ' + f.nome + '</button>'; }).join('') + '</div>';
+  if(any){
+    h += '<p class="hint">Sua roda foi ajustada. O app não substitui nutricionista. Se tiver dúvidas sobre como manter uma alimentação variada, converse com um profissional.</p>';
+    if(avoid.peixes || avoid.laticinios) h += '<p class="hint">Para alergias, siga sempre a orientação do seu médico. O app não verifica rótulos nem contaminação cruzada.</p>';
+    if(FA().length < 2) h += '<p class="latest">Você marcou várias restrições. O app não avalia se sua alimentação está completa. Se a sua alimentação está muito limitada, considere conversar com um nutricionista.</p>';
+    h += '<button class="link" type="button" data-ap="clear">Limpar restrições</button>';
+  }
+  h += '<p class="hint">Este app registra grupos de alimentos, não avalia nutrição. Para orientação individual, procure um nutricionista.</p>';
+  b.innerHTML = h;
+}
+(function(){
+  $('avoidBody').onclick = function(ev){
+    var t = ev.target, v = t.getAttribute && t.getAttribute('data-av'), p = t.getAttribute && t.getAttribute('data-ap');
+    if(v){ if(avoid[v]) delete avoid[v]; else avoid[v] = true; }
+    else if(p === 'clear') avoid = {};
+    else if(p !== null && p !== undefined){ avoid = {}; AVOID_PRESETS[parseInt(p, 10)].g.forEach(function(id){ avoid[id] = true; }); }
+    else return;
+    persist(); renderAll();
+  };
+})();
+
+/* ---------- peso ao longo do tempo ---------- */
+var wRange = 30;
+function wAvgAt(k){
+  var vals = [], i;
+  for(i = 0; i < 7; i++){ var kk = key(new Date(new Date(k + 'T12:00:00').getTime() - i * 86400000)); if(wlog[kk]) vals.push(wlog[kk]); }
+  return vals.length >= 2 ? vals.reduce(function(a, b){ return a + b; }, 0) / vals.length : null;
+}
+function wWindowAvg(off){
+  var vals = [], i;
+  for(i = off; i < off + 7; i++){ var v = wlog[key(daysBack(i))]; if(v) vals.push(v); }
+  return vals.length >= 2 ? vals.reduce(function(a, b){ return a + b; }, 0) / vals.length : null;
+}
+function renderWeight(){
+  var b = $('wBody'); if(!b) return;
+  if(prof.age !== null && prof.age < 18){ b.innerHTML = '<p class="latest">Para adolescentes, o acompanhamento de peso deve ser feito com pediatra ou nutricionista. O app não mostra gráfico de peso.</p>'; return; }
+  if(hasCond('gest')){ b.innerHTML = '<p class="latest">Na gestação, o ganho de peso é acompanhado no pré-natal. O app não substitui essa avaliação e não mostra gráfico de peso.</p>'; return; }
+  if(wcfg.hide){ b.innerHTML = '<p class="hint" style="margin-top:0">Gráfico de peso oculto. Você pode ativá-lo quando quiser.</p><button class="btn" type="button" data-w="show">Mostrar o gráfico de peso</button>'; return; }
+  var n = wRange, days = series(function(k){ return k; }, n, 0), h = '';
+  h += '<div class="row" style="margin-top:0"><input id="wIn" style="flex:1;min-width:0;width:auto;padding:12px;font:inherit;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Peso de hoje (kg)" aria-label="Peso de hoje em quilos"><button class="btn primary" type="button" data-w="add" style="flex:none;width:110px">Registrar</button></div>';
+  h += '<div class="seg" style="margin-top:10px"><button type="button" data-w="r7" class="' + (n === 7 ? 'on' : '') + '">7 dias</button><button type="button" data-w="r30" class="' + (n === 30 ? 'on' : '') + '">30 dias</button></div>';
+  var pts = [];
+  days.forEach(function(d, i){ if(wlog[d.v]) pts.push({i: i, v: wlog[d.v]}); });
+  if(pts.length < 2){
+    h += '<p class="hint">Registre seu peso em pelo menos 2 dias para ver o gráfico.</p>';
+  } else {
+    var avgs = [];
+    days.forEach(function(d, i){ var a = wAvgAt(d.v); if(a !== null) avgs.push({i: i, v: a}); });
+    var all = pts.map(function(p){ return p.v; }).concat(avgs.map(function(p){ return p.v; })), lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+    var pad = Math.max(0.5, (hi - lo) * 0.25); lo -= pad; hi += pad;
+    var W = 300, H = 120, X = function(i){ return 8 + i * (W - 16) / Math.max(1, n - 1); }, Y = function(v){ return 8 + (hi - v) / (hi - lo) * (H - 16); };
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Gráfico do peso nos últimos ' + n + ' dias, com média de 7 dias">';
+    svg += '<text x="2" y="12" font-size="9" fill="var(--muted)">' + hi.toFixed(1).replace('.', ',') + '</text><text x="2" y="' + (H - 2) + '" font-size="9" fill="var(--muted)">' + lo.toFixed(1).replace('.', ',') + '</text>';
+    pts.forEach(function(p){ svg += '<circle cx="' + X(p.i).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="3" fill="var(--c-corpo)" fill-opacity=".4"/>'; });
+    if(avgs.length > 1) svg += '<path d="' + avgs.map(function(p, j){ return (j ? 'L' : 'M') + X(p.i).toFixed(1) + ' ' + Y(p.v).toFixed(1); }).join(' ') + '" fill="none" stroke="var(--c-corpo)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+    svg += '</svg>';
+    h += '<div style="margin-top:10px">' + svg + '</div><p class="hint">A linha mais forte é a média dos últimos 7 dias. Os pontinhos são os registros diários.</p>';
+    var a0 = wWindowAvg(0), a1 = wWindowAvg(7), a2 = wWindowAvg(14);
+    if(a0 !== null && a1 !== null){
+      var dlt = a0 - a1;
+      h += '<p class="latest" style="margin-top:6px">' + (Math.abs(dlt) < 0.3 ? 'Seu peso variou dentro do esperado: tendência de estabilidade.' : (dlt < 0 ? 'Tendência da média: variação para menos nesta semana.' : 'Tendência da média: variação para mais nesta semana.')) + '</p>';
+      if(a2 !== null && a1 - a0 > 1 && a2 - a1 > 1) h += '<p class="latest">Notamos uma variação de peso mais rápida que o habitual. O app não avalia sua saúde. Se isso não foi planejado com um profissional, considere conversar com alguém de confiança ou com um médico.</p>';
+    }
+    /* treino no mesmo período: gráfico separado, sem sobrepor */
+    var tr = series(function(k){ return sumVals(exTotals(k)); }, n, 0), mx = Math.max.apply(null, tr.map(function(p){ return p.v; }).concat([30]));
+    var bars = '<svg viewBox="0 0 ' + W + ' 44" role="img" aria-label="Minutos de treino por dia no mesmo período">';
+    tr.forEach(function(p, i){ var bh = p.v ? Math.max(3, p.v / mx * 38) : 0; bars += '<rect x="' + (X(i) - (n === 7 ? 9 : 3)).toFixed(1) + '" y="' + (42 - bh) + '" width="' + (n === 7 ? 18 : 6) + '" height="' + bh + '" rx="2" fill="var(--c-ex)"/>'; });
+    bars += '<line x1="4" y1="42.5" x2="' + (W - 4) + '" y2="42.5" stroke="var(--line)"/></svg>';
+    h += '<div class="lbl" style="margin-top:12px">Minutos de treino por dia (no mesmo período)</div>' + bars + '<p class="hint">Treino e peso são registros separados. O app não avalia se um influenciou o outro.</p>';
+  }
+  if(prof.age !== null && prof.age >= 65) h += '<p class="hint">Acima dos 65 anos, a interpretação das variações de peso deve ser feita com um profissional de saúde.</p>';
+  h += '<p class="hint">Este gráfico é só um registro. Ele não avalia sua saúde nem indica metas.</p><button class="link" type="button" data-w="hide">🙈 Ocultar o gráfico de peso</button>';
+  b.innerHTML = h;
+}
+(function(){
+  $('wBody').onclick = function(ev){
+    var a = ev.target.getAttribute && ev.target.getAttribute('data-w'); if(!a) return;
+    if(a === 'r7') wRange = 7; else if(a === 'r30') wRange = 30;
+    else if(a === 'hide'){ wcfg.hide = true; persist(); }
+    else if(a === 'show'){ wcfg.hide = false; persist(); }
+    else if(a === 'add'){
+      var v = parseFloat(String($('wIn').value).replace(',', '.'));
+      if(!(v >= 20 && v <= 300)){ toast('Digite um peso entre 20 e 300 kg.'); return; }
+      v = Math.round(v * 10) / 10; wlog[key()] = v; weight = v; save('weight', weight); persist(); renderAll(); toast('Peso registrado.'); return;
+    }
+    renderWeight();
+  };
 })();
 
 /* ---------- avisos ---------- */
@@ -3515,6 +3669,15 @@ for(var mi = 0; mi < mins.length; mi++){
   (function(b){ b.onclick = function(){ var r = readSets(); if(!r.ok){ $('exErr').textContent = r.msg; return; } close('mEx'); addEx(exGroup, parseInt(b.getAttribute('data-min'), 10), exSub, r.v); }; })(mins[mi]);
 }
 $('exCancel').onclick = function(){ close('mEx'); };
+$('exMore').onclick = function(){
+  var v = Math.round(parseFloat(String($('exInput').value).replace(',', '.')));
+  if(!(v >= 5 && v <= 240)){ $('exErr').textContent = 'Digite os minutos deste exercício (5 a 240) para registrar e continuar.'; return; }
+  var r = readSets(); if(!r.ok){ $('exErr').textContent = r.msg; return; }
+  var g = exGroup, lbl = exSub ? (function(){ var e = exById(g), nm = ''; e.subs.forEach(function(x){ if(x.id === exSub) nm = x.nome; }); return nm; })() : exById(g).nome;
+  addEx(g, v, exSub, r.v);
+  openEx(g);
+  $('exErr').textContent = '✅ Registrado: ' + lbl + ' (' + v + ' min). Escolha o próximo exercício.';
+};
 $('exSave').onclick = function(){
   var v = Math.round(parseFloat(String($('exInput').value).replace(',', '.')));
   if(!(v >= 5 && v <= 240)){ $('exErr').textContent = 'Digite entre 5 e 240 minutos.'; return; }
@@ -3604,6 +3767,7 @@ $('wSave').onclick = function(){
   cfg = {wake: w, sleep: sl, interval: parseInt($('intervalInput').value, 10) || 90};
   prof = {name: String($('nameInput').value).replace(/[<>]/g, '').trim().slice(0, 20), age: age, cond: cond, water: man, level: $('levelInput').value === 'inicio' ? 'inicio' : 'regular', done: true};
   save('weight', weight);
+  if(weight !== null){ wlog[key()] = weight; }
   save('cfg', cfg);
   save('prof', prof);
   weightLocked = false;
@@ -3717,7 +3881,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'beba-agua', versao: 6, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'beba-agua', versao: 6, avoid: avoid, wlog: wlog, wcfg: wcfg, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -3748,6 +3912,9 @@ function importData(file){
     log = cleanLog(d.log); ex = cleanEx(d.ex); fd = cleanFd(d.fd); rest = cleanRest(d.rest);
     if(d.meds) meds = cleanMeds(d.meds);
     if(d.tasks) tasks = cleanTasks(d.tasks);
+    if(d.avoid) avoid = cleanAvoid(d.avoid);
+    if(d.wlog) wlog = cleanWlog(d.wlog);
+    if(d.wcfg) wcfg = {hide: d.wcfg.hide === true};
     if(d.foto){ foto = cleanFoto(d.foto); save('foto', foto); }
     if(d.dash){ dash = cleanDash(d.dash); saveDash(); applyPal(); }
     if(['auto', 'light', 'dark'].indexOf(d.theme) >= 0) theme = d.theme;
@@ -3798,8 +3965,8 @@ if(window.matchMedia){
 /* ---------- abas ---------- */
 var TITLES = {tasks: '✅ Tarefas', meds: '💊 Rotina', inicio: '🏠 Início', agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
 function showTab(t){
-  var toCorpo = (t === 'corpo');
-  if(toCorpo) t = 'inicio';
+  var secId = (t === 'corpo') ? 'tab-corpo' : (t === 'tasks' ? 'tab-tasks' : null);
+  if(secId) t = 'inicio';
   tab = t; save('tab', t);
   document.body.setAttribute('data-tab', t);
   setMeta();
@@ -3811,9 +3978,9 @@ function showTab(t){
   $('pageTitle').textContent = TITLES[t];
   try{ window.scrollTo(0, 0); }catch(e){}
   renderAll();
-  if(toCorpo){ try{ $('tab-corpo').scrollIntoView({behavior: 'smooth', block: 'start'}); }catch(e){} }
+  if(secId){ try{ $(secId).scrollIntoView({behavior: 'smooth', block: 'start'}); }catch(e){} }
 }
-$('nav-add').onclick = function(){ if(tab === 'meds'){ openMed(null); return; } if(tab === 'tasks'){ openTask(null); return; } openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
+$('nav-add').onclick = function(){ if(tab === 'meds'){ openMed(null); return; }  openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
 (function(){
   ['agua', 'ex', 'comida', 'corpo'].forEach(function(id){
     var m = $('tab-' + id), L = document.createElement('div'), R = document.createElement('div'), inL = true;
@@ -3893,7 +4060,7 @@ function renderFoodRef(){
     return;
   }
   var tot = fdTotals(key()), wk = fdWeek();
-  box.innerHTML = FOOD.map(function(f){
+  box.innerHTML = FA().map(function(f){
     var r = FOOD_REF[f.id] || {}, txt, ok;
     if(r.w){ txt = 'semana: ' + (wk[f.id] || 0) + ' de ' + r.w; ok = (wk[f.id] || 0) >= r.w; }
     else if(r.txt){ txt = (tot[f.id] || 0) + ' de ' + r.txt + ' hoje'; ok = (tot[f.id] || 0) >= r.n; }
@@ -3994,11 +4161,11 @@ function renderCharts(){
   $('chXSum').textContent = sx;
 
   /* comida */
-  var gc = function(k){ return Object.keys(fdTotals(k)).length; };
+  var gc = function(k){ return nG(k); };
   cur = series(gc, n, 0); prev = series(gc, n, n);
-  var sf = 'Média de ' + avg(cur).toFixed(1).replace('.', ',') + ' grupos por dia · ' + cur.filter(function(p){ return p.v >= 3; }).length + ' dia(s) com 3 grupos ou mais.';
+  var sf = 'Média de ' + avg(cur).toFixed(1).replace('.', ',') + ' grupos por dia · ' + cur.filter(function(p){ return p.v >= foodTarget(); }).length + ' dia(s) com ' + foodTarget() + (foodTarget() === 1 ? ' grupo' : ' grupos') + ' ou mais.';
   if(anyV(prev)) sf += ' Período anterior: média de ' + avg(prev).toFixed(1).replace('.', ',') + '.';
-  $('chF').innerHTML = barChart(cur, {color: 'var(--fd2)', goal: 3, goalLabel: '3 grupos', min: FOOD.length, aria: 'Gráfico de barras dos grupos de alimentos por dia. ' + sf,
+  $('chF').innerHTML = barChart(cur, {color: 'var(--fd2)', goal: foodTarget(), goalLabel: foodTarget() + (foodTarget() === 1 ? ' grupo' : ' grupos'), min: FA().length, aria: 'Gráfico de barras dos grupos de alimentos por dia. ' + sf,
     lab: String, tipf: function(v){ return v + (v === 1 ? ' grupo' : ' grupos'); }});
   $('chFSum').textContent = sf;
 
