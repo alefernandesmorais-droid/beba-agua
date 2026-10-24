@@ -441,6 +441,8 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body[data-tab="agua"]{--shape:#1f4c96}}
 /* colunas: no celular ficam transparentes (layout igual ao de antes) */
 .colL,.colR{display:contents}
+.corpo-h{font-size:1.15rem;margin:26px 4px 10px;color:var(--text)}
+.corposec{display:block}
 /* ===== computador / tablet grande ===== */
 @media (min-width:1000px){
   :root{--sbL:max(16px,calc(50vw - 640px))}
@@ -451,6 +453,11 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
   .nav button span{font-size:1.3rem}
   .app{max-width:1020px;margin:0 0 0 calc(var(--sbL) + 240px);padding:24px 8px 56px}
   button.fab{right:32px;bottom:32px}
+  .corposec{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);column-gap:28px;align-items:start;grid-column:1/-1}
+  .corposec .colL{display:block;position:sticky;top:16px}
+  .corposec .colR{display:block}
+  .corposec .colR>*:first-child{margin-top:0}
+  .corpo-h{grid-column:1/-1}
   .toast{bottom:28px}
   main:not(#tab-inicio){display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);column-gap:28px;align-items:start}
   main:not(#tab-inicio) .colL{display:block;position:sticky;top:16px}
@@ -546,6 +553,39 @@ body[data-tab] .hm[data-go="meds"] .hm-h,.hm[data-go="meds"] .hm-h{color:var(--h
 .mgrid .h{text-align:center;color:var(--muted);font-size:.72rem}
 @media (min-width:1000px){#tab-meds{display:block !important;max-width:760px}#tab-meds[hidden]{display:none !important}}
 /* paletas escolhidas pelo usuário são injetadas em #palStyle */
+
+/* ===== v14: estilo Apple (paleta "Apple", a padrão) ===== */
+body[data-pal="padrao"][data-tab]{--bg:#f2f2f7;--bg2:#f2f2f7;--line:#e5e5ea;--card:#fff;--text:#000;--muted:#5f5f64;--nav:rgba(249,249,249,.9);--glass:#fff;--gline:rgba(60,60,67,.14);--sh:0 1px 2px rgba(0,0,0,.06),0 2px 10px rgba(0,0,0,.04)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body[data-pal="padrao"][data-tab]{--bg:#000;--bg2:#000;--line:#2c2c2e;--card:#1c1c1e;--text:#fff;--muted:#aeaeb2;--nav:rgba(28,28,30,.86);--glass:#1c1c1e;--gline:rgba(84,84,88,.5);--sh:none}}
+:root[data-theme="dark"] body[data-pal="padrao"][data-tab]{--bg:#000;--bg2:#000;--line:#2c2c2e;--card:#1c1c1e;--text:#fff;--muted:#aeaeb2;--nav:rgba(28,28,30,.86);--glass:#1c1c1e;--gline:rgba(84,84,88,.5);--sh:none}
+body[data-pal="padrao"]::before{display:none}
+body[data-pal="padrao"][data-tab] .hm,body[data-pal="padrao"][data-tab] .custom{--hc:var(--c-home);background:color-mix(in srgb,var(--hc) 8%,#fff);border:0;--line:rgba(60,60,67,.12);--card:#fff;box-shadow:var(--sh);border-radius:22px}
+body[data-pal="padrao"][data-tab] .custom{border:1px dashed color-mix(in srgb,var(--c-home) 45%,transparent)}
+body[data-pal="padrao"][data-tab] .custom .custom-ic{background:var(--line)}
+body[data-pal="padrao"] .hero{background:#fff;color:var(--text);box-shadow:var(--sh);border-radius:22px}
+body[data-pal="padrao"] .hero-k{color:var(--c-home);opacity:1}
+body[data-pal="padrao"] .hero-s{color:var(--muted);opacity:1}
+body[data-pal="padrao"] .card,body[data-pal="padrao"] .stat,body[data-pal="padrao"] .tile,body[data-pal="padrao"] .status,body[data-pal="padrao"] .cross{border-radius:20px;border-width:0;box-shadow:var(--sh)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) body[data-pal="padrao"][data-tab] .hm,:root:not([data-theme="light"]) body[data-pal="padrao"][data-tab] .custom{background:color-mix(in srgb,var(--hc) 16%,#1c1c1e);--line:rgba(255,255,255,.14);--card:#1c1c1e;box-shadow:none}
+  :root:not([data-theme="light"]) body[data-pal="padrao"] .hm-h{color:var(--hc)}
+  :root:not([data-theme="light"]) body[data-pal="padrao"] .hero{background:#1c1c1e}
+  :root:not([data-theme="light"]) body[data-pal="padrao"] .custom-btn{background:var(--c-home);color:#0f0b2a}
+}
+:root[data-theme="dark"] body[data-pal="padrao"][data-tab] .hm,:root[data-theme="dark"] body[data-pal="padrao"][data-tab] .custom{background:color-mix(in srgb,var(--hc) 16%,#1c1c1e);--line:rgba(255,255,255,.14);--card:#1c1c1e;box-shadow:none}
+:root[data-theme="dark"] body[data-pal="padrao"] .hm-h{color:var(--hc)}
+:root[data-theme="dark"] body[data-pal="padrao"] .hero{background:#1c1c1e}
+:root[data-theme="dark"] body[data-pal="padrao"] .custom-btn{background:var(--c-home);color:#0f0b2a}
+/* barra de abas no estilo iOS (celular) */
+@media (max-width:999px){
+  body[data-pal="padrao"] .nav{left:0;right:0;bottom:0;max-width:none;margin:0;border:0;border-top:.5px solid var(--gline);border-radius:0;box-shadow:none;background:var(--nav);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding-bottom:env(safe-area-inset-bottom)}
+  body[data-pal="padrao"] .nav button{border-radius:0;min-height:50px;padding:6px 2px 4px}
+  body[data-pal="padrao"] .nav button.on{background:none;color:var(--accent)}
+  body[data-pal="padrao"] button.fab{bottom:calc(64px + env(safe-area-inset-bottom))}
+}
+@media (min-width:1000px){
+  body[data-pal="padrao"] .nav{background:var(--glass);border:0;box-shadow:var(--sh);border-radius:22px}
+}
 </style>
 <style id="palStyle"></style>
 </head>
@@ -590,6 +630,71 @@ body[data-tab] .hm[data-go="meds"] .hm-h,.hm[data-go="meds"] .hm-h{color:var(--h
 
     <div class="hgrid" id="hHost"></div>
     <div id="hHidden" class="hhid" hidden></div>
+
+    <h2 class="corpo-h">🧍 Meu corpo</h2>
+    <section id="tab-corpo" class="corposec">
+    <div class="stage both" id="stageC"></div>
+    <p class="legend">💧 Azul: água de hoje · 🔥 Laranja: músculos trabalhados nos últimos 7 dias</p>
+
+    <div class="stats">
+      <div class="stat s-w"><div class="v" id="cWater">—</div><div class="l" id="cWaterSub">Água hoje</div></div>
+      <div class="stat s-x"><div class="v" id="cEx">0 min</div><div class="l" id="cExSub">Treino hoje</div></div>
+      <div class="stat s-f"><div class="v" id="cFood">0 de 6</div><div class="l" id="cFoodSub">grupos de comida</div></div>
+      <div class="stat s-s"><div class="v" id="cStreak">0 dias</div><div class="l" id="cStreakSub">de sequência</div></div>
+    </div>
+
+    <section class="card">
+      <div class="kicker">Progresso de hoje</div>
+      <div class="rings">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Progresso do dia: água, exercício e comida" id="ringsSvg">
+          <circle class="ringbg" cx="60" cy="60" r="52"/><circle class="ringbg" cx="60" cy="60" r="40"/><circle class="ringbg" cx="60" cy="60" r="28"/>
+          <circle class="ring" id="rgW" cx="60" cy="60" r="52" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-agua)"/>
+          <circle class="ring" id="rgX" cx="60" cy="60" r="40" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-ex)"/>
+          <circle class="ring" id="rgF" cx="60" cy="60" r="28" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-food)"/>
+        </svg>
+        <div class="rl">
+          <div class="rrow"><div class="rt"><span>💧 Água</span><b id="rtW">—</b></div><div class="rb"><i id="rbW" style="background:var(--c-agua)"></i></div></div>
+          <div class="rrow"><div class="rt"><span>💪 Treino</span><b id="rtX">0 / 30 min</b></div><div class="rb"><i id="rbX" style="background:var(--c-ex)"></i></div></div>
+          <div class="rrow"><div class="rt"><span>🍎 Comida</span><b id="rtF">0 / 6</b></div><div class="rb"><i id="rbF" style="background:var(--c-food)"></i></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Resumo do dia</div>
+      <h2 id="cHeadline"></h2>
+      <p class="latest" id="cText"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Sequência</div>
+      <div class="streak">
+        <span class="flame">🔥</span>
+        <div><b id="sTitle"></b><div class="latest" id="sText"></div></div>
+      </div>
+      <div class="dots" id="sDots"></div>
+      <div class="rests" id="sRests"></div>
+      <p class="hint">Um dia conta quando você bate a meta de água, treina pelo menos 15 minutos ou registra 3 grupos de comida. Um dia de folga mantém a sequência (até 2 por semana).</p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Dias ativos por semana</div>
+      <div id="chC"></div>
+      <p class="hint" id="chCSum"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Músculos da semana</div>
+      <div class="chips" id="cChips"></div>
+      <p class="hint" id="cHint"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Alimentação da semana</div>
+      <div class="chips" id="cFoodChips"></div>
+      <p class="hint" id="cFoodHint"></p>
+    </section>
+    </section>
 
     <section class="custom">
       <div class="custom-ic">⚙️</div>
@@ -810,70 +915,6 @@ body[data-tab] .hm[data-go="meds"] .hm-h,.hm[data-go="meds"] .hm-h{color:var(--h
     <p class="note">Aqui não contamos calorias nem pesos: o foco é a variedade. As informações são de caráter geral e não substituem a orientação de um médico ou nutricionista. Se você tem alergia, restrição alimentar, uma doença ou histórico de transtorno alimentar, siga o acompanhamento profissional. A recomendação de pelo menos 400 g de frutas e verduras por dia é da Organização Mundial da Saúde.</p>
   </main>
 
-  <!-- ================= CORPO ================= -->
-  <main id="tab-corpo" hidden>
-    <div class="stage both" id="stageC"></div>
-    <p class="legend">💧 Azul: água de hoje · 🔥 Laranja: músculos trabalhados nos últimos 7 dias</p>
-
-    <div class="stats">
-      <div class="stat s-w"><div class="v" id="cWater">—</div><div class="l" id="cWaterSub">Água hoje</div></div>
-      <div class="stat s-x"><div class="v" id="cEx">0 min</div><div class="l" id="cExSub">Treino hoje</div></div>
-      <div class="stat s-f"><div class="v" id="cFood">0 de 6</div><div class="l" id="cFoodSub">grupos de comida</div></div>
-      <div class="stat s-s"><div class="v" id="cStreak">0 dias</div><div class="l" id="cStreakSub">de sequência</div></div>
-    </div>
-
-    <section class="card">
-      <div class="kicker">Progresso de hoje</div>
-      <div class="rings">
-        <svg viewBox="0 0 120 120" role="img" aria-label="Progresso do dia: água, exercício e comida" id="ringsSvg">
-          <circle class="ringbg" cx="60" cy="60" r="52"/><circle class="ringbg" cx="60" cy="60" r="40"/><circle class="ringbg" cx="60" cy="60" r="28"/>
-          <circle class="ring" id="rgW" cx="60" cy="60" r="52" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-agua)"/>
-          <circle class="ring" id="rgX" cx="60" cy="60" r="40" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-ex)"/>
-          <circle class="ring" id="rgF" cx="60" cy="60" r="28" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90 60 60)" style="stroke:var(--c-food)"/>
-        </svg>
-        <div class="rl">
-          <div class="rrow"><div class="rt"><span>💧 Água</span><b id="rtW">—</b></div><div class="rb"><i id="rbW" style="background:var(--c-agua)"></i></div></div>
-          <div class="rrow"><div class="rt"><span>💪 Treino</span><b id="rtX">0 / 30 min</b></div><div class="rb"><i id="rbX" style="background:var(--c-ex)"></i></div></div>
-          <div class="rrow"><div class="rt"><span>🍎 Comida</span><b id="rtF">0 / 6</b></div><div class="rb"><i id="rbF" style="background:var(--c-food)"></i></div></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="kicker">Resumo do dia</div>
-      <h2 id="cHeadline"></h2>
-      <p class="latest" id="cText"></p>
-    </section>
-
-    <section class="card">
-      <div class="kicker">Sequência</div>
-      <div class="streak">
-        <span class="flame">🔥</span>
-        <div><b id="sTitle"></b><div class="latest" id="sText"></div></div>
-      </div>
-      <div class="dots" id="sDots"></div>
-      <div class="rests" id="sRests"></div>
-      <p class="hint">Um dia conta quando você bate a meta de água, treina pelo menos 15 minutos ou registra 3 grupos de comida. Um dia de folga mantém a sequência (até 2 por semana).</p>
-    </section>
-
-    <section class="card">
-      <div class="kicker">Dias ativos por semana</div>
-      <div id="chC"></div>
-      <p class="hint" id="chCSum"></p>
-    </section>
-
-    <section class="card">
-      <div class="kicker">Músculos da semana</div>
-      <div class="chips" id="cChips"></div>
-      <p class="hint" id="cHint"></p>
-    </section>
-
-    <section class="card">
-      <div class="kicker">Alimentação da semana</div>
-      <div class="chips" id="cFoodChips"></div>
-      <p class="hint" id="cFoodHint"></p>
-    </section>
-  </main>
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
@@ -887,8 +928,7 @@ body[data-tab] .hm[data-go="meds"] .hm-h,.hm[data-go="meds"] .hm-h{color:var(--h
     <button type="button" id="nav-agua" data-tab="agua"><span>💧</span>Água</button>
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
     <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
-    <button type="button" id="nav-corpo" data-tab="corpo"><span>🧍</span>Corpo</button>
-    <button type="button" id="nav-meds" data-tab="meds"><span>💊</span>Lembretes<b class="bd" id="medBd" hidden></b></button>
+    <button type="button" id="nav-meds" data-tab="meds"><span>💊</span>Rotina<b class="bd" id="medBd" hidden></b></button>
   </div>
 </nav>
 
@@ -1146,7 +1186,7 @@ body[data-tab] .hm[data-go="meds"] .hm-h,.hm[data-go="meds"] .hm-h{color:var(--h
 /* ====== CONFIGURE AQUI SUA DOAÇÃO ======
    pixKey: sua chave Pix (e-mail, telefone, CPF ou chave aleatória).
    link:   opcional, um link de doação (ex.: Apoia.se, Ko-fi, Mercado Pago). Deixe '' se não tiver. */
-var DONATE = { pixKey: 'SUA-CHAVE-PIX-AQUI', link: '' };
+var DONATE = { pixKey: 'alefernandesmorais@gmail.com', link: '' };
 
 var ML_PER_KG = 35;            // 80 kg -> 2800 ml (referência editável)
 var MAX_GOAL = 4000;           // teto da meta calculada pelo peso
@@ -1437,7 +1477,7 @@ function bodySVG(p, mode){
 /* ---------- utilidades ---------- */
 function $(id){ return document.getElementById(id); }
 function load(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } }
-function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
 function pad(n){ return String(n).padStart(2, '0'); }
 function key(d){ d = d || new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
 function fmt(n){ return Number(n).toLocaleString('pt-BR'); }
@@ -1468,8 +1508,8 @@ var range = load('range', 7); if(range !== 30) range = 7;
 /* ---------- lembretes e painel: estado ---------- */
 var MED_TYPES = ['medicamento', 'suplemento', 'vitamina'];
 var MED_COLORS = ['#1478C8', '#C2410C', '#277A38', '#6741D9', '#BE185D', '#B45309'];
-var WIDS = ['msg', 'agua', 'ex', 'comida', 'corpo', 'semana', 'streak', 'mes', 'musculos', 'melhor', 'dose', 'tomados'];
-var PALS = {padrao: {n: 'Padrão'}, oceano: {n: 'Oceano', l: [['#d6f0ff', '#8fd0ff'], ['#d2f7f4', '#86e0d8'], ['#dbe7ff', '#9db9ff'], ['#d0f2fa', '#7fd6ee'], ['#e0f0ff', '#a6c8f5'], ['#cdeeee', '#8ad3d6']], d: [['#1f6fc2', '#124a8c'], ['#107f7a', '#0a5a5c'], ['#3355c2', '#1f3a8a'], ['#117e9e', '#0a5470'], ['#2a62a8', '#173d70'], ['#17828d', '#0d5560']]}, floresta: {n: 'Floresta', l: [['#dcf6dd', '#98e0a6'], ['#e6f7c9', '#bfe67f'], ['#cdf2e6', '#85d9bd'], ['#e1f5d6', '#a8dd8f'], ['#d4f1e0', '#8fd8a8'], ['#eaf6cf', '#c8e38a']], d: [['#19804b', '#0f5e3a'], ['#588017', '#3b5e0c'], ['#10866c', '#0a5c4e'], ['#3e8531', '#2a6420'], ['#1a8653', '#0f5538'], ['#637c1a', '#4a6012']]}, sol: {n: 'Pôr do sol', l: [['#ffe3c8', '#ffab84'], ['#ffd9e0', '#ff9fb4'], ['#fff0c2', '#ffd36e'], ['#ffd6c2', '#ff9c82'], ['#ffe0ec', '#ffb0c8'], ['#ffeacd', '#ffc178']], d: [['#bc5524', '#6e2a3c'], ['#c43a64', '#6c1f4a'], ['#996e16', '#6e4a0c'], ['#c4452a', '#70221c'], ['#b03a80', '#5e2058'], ['#a96318', '#6a3a10']]}, uva: {n: 'Uva', l: [['#ebe0ff', '#b79fff'], ['#f6dcff', '#d9a0f5'], ['#e0e4ff', '#a7b0ff'], ['#fadcf0', '#eea0d4'], ['#e4d8ff', '#bda6f0'], ['#dfe6ff', '#b0b9ff']], d: [['#7a4fe0', '#3d2490'], ['#a040c0', '#5a1f78'], ['#4a52d0', '#2a2f86'], ['#b0409a', '#601f5a'], ['#6a46c0', '#38237a'], ['#3f56c8', '#232f82']]}, grafite: {n: 'Grafite', l: [['#e6eaf0', '#b8c3d2'], ['#eceff4', '#c6cfdc'], ['#e0e6ee', '#aab8cb'], ['#e9edf2', '#bcc7d6'], ['#e3e8ef', '#b2bfd0'], ['#eef1f5', '#cbd3de']], d: [['#4a5668', '#2b3442'], ['#3f4b5e', '#252e3b'], ['#566178', '#323b4e'], ['#445066', '#283142'], ['#505c70', '#2e3748'], ['#3b475a', '#222a37']]}};
+var WIDS = ['msg', 'agua', 'ex', 'comida', 'corpo', 'semana', 'streak', 'mes', 'musculos', 'melhor', 'dose', 'tomados', 'foto'];
+var PALS = {padrao: {n: 'Apple (padrão)'}, oceano: {n: 'Oceano', l: [['#d6f0ff', '#8fd0ff'], ['#d2f7f4', '#86e0d8'], ['#dbe7ff', '#9db9ff'], ['#d0f2fa', '#7fd6ee'], ['#e0f0ff', '#a6c8f5'], ['#cdeeee', '#8ad3d6']], d: [['#1f6fc2', '#124a8c'], ['#107f7a', '#0a5a5c'], ['#3355c2', '#1f3a8a'], ['#117e9e', '#0a5470'], ['#2a62a8', '#173d70'], ['#17828d', '#0d5560']]}, floresta: {n: 'Floresta', l: [['#dcf6dd', '#98e0a6'], ['#e6f7c9', '#bfe67f'], ['#cdf2e6', '#85d9bd'], ['#e1f5d6', '#a8dd8f'], ['#d4f1e0', '#8fd8a8'], ['#eaf6cf', '#c8e38a']], d: [['#19804b', '#0f5e3a'], ['#588017', '#3b5e0c'], ['#10866c', '#0a5c4e'], ['#3e8531', '#2a6420'], ['#1a8653', '#0f5538'], ['#637c1a', '#4a6012']]}, sol: {n: 'Pôr do sol', l: [['#ffe3c8', '#ffab84'], ['#ffd9e0', '#ff9fb4'], ['#fff0c2', '#ffd36e'], ['#ffd6c2', '#ff9c82'], ['#ffe0ec', '#ffb0c8'], ['#ffeacd', '#ffc178']], d: [['#bc5524', '#6e2a3c'], ['#c43a64', '#6c1f4a'], ['#996e16', '#6e4a0c'], ['#c4452a', '#70221c'], ['#b03a80', '#5e2058'], ['#a96318', '#6a3a10']]}, uva: {n: 'Uva', l: [['#ebe0ff', '#b79fff'], ['#f6dcff', '#d9a0f5'], ['#e0e4ff', '#a7b0ff'], ['#fadcf0', '#eea0d4'], ['#e4d8ff', '#bda6f0'], ['#dfe6ff', '#b0b9ff']], d: [['#7a4fe0', '#3d2490'], ['#a040c0', '#5a1f78'], ['#4a52d0', '#2a2f86'], ['#b0409a', '#601f5a'], ['#6a46c0', '#38237a'], ['#3f56c8', '#232f82']]}, grafite: {n: 'Grafite', l: [['#e6eaf0', '#b8c3d2'], ['#eceff4', '#c6cfdc'], ['#e0e6ee', '#aab8cb'], ['#e9edf2', '#bcc7d6'], ['#e3e8ef', '#b2bfd0'], ['#eef1f5', '#cbd3de']], d: [['#4a5668', '#2b3442'], ['#3f4b5e', '#252e3b'], ['#566178', '#323b4e'], ['#445066', '#283142'], ['#505c70', '#2e3748'], ['#3b475a', '#222a37']]}};
 function cleanMeds(o){
   var r = {items: [], regs: {}, hide: false};
   if(!o || typeof o !== 'object') return r;
@@ -1507,8 +1547,9 @@ function cleanMeds(o){
   return r;
 }
 function cleanDash(o){
-  var d = {order: WIDS.slice(), hidden: {streak: true, mes: true, musculos: true, melhor: true, dose: true, tomados: true}, wide: {msg: true, semana: true, mes: true}, pal: 'padrao', msgOff: false, mantra: ''};
+  var d = {order: WIDS.slice(), hidden: {streak: true, mes: true, musculos: true, melhor: true, dose: true, tomados: true, foto: true}, wide: {msg: true, semana: true, mes: true}, pal: 'padrao', msgOff: false, mantra: ''};
   if(!o || typeof o !== 'object') return d;
+  var known = Array.isArray(o.order) ? o.order : [];
   if(Array.isArray(o.order)){
     var ord = o.order.filter(function(x, i, a){ return WIDS.indexOf(x) >= 0 && a.indexOf(x) === i; });
     WIDS.forEach(function(w){ if(ord.indexOf(w) < 0) ord.push(w); });
@@ -1516,16 +1557,23 @@ function cleanDash(o){
   }
   if(o.hidden && typeof o.hidden === 'object'){ d.hidden = {}; WIDS.forEach(function(w){ if(o.hidden[w] === true) d.hidden[w] = true; }); }
   if(o.wide && typeof o.wide === 'object'){ d.wide = {}; WIDS.forEach(function(w){ if(o.wide[w] === true) d.wide[w] = true; }); }
+  if(known.indexOf('foto') < 0) d.hidden.foto = true;
   if(typeof o.pal === 'string' && PALS[o.pal]) d.pal = o.pal;
   d.msgOff = o.msgOff === true;
   d.mantra = (typeof o.mantra === 'string') ? o.mantra.replace(/[<>]/g, '').trim().slice(0, 110) : '';
   return d;
 }
+function cleanFoto(o){
+  if(!o || typeof o !== 'object' || typeof o.src !== 'string') return {src: '', cap: ''};
+  if(!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(o.src) || o.src.length > 400000) return {src: '', cap: ''};
+  return {src: o.src, cap: String(o.cap || '').replace(/[<>]/g, '').trim().slice(0, 40)};
+}
+var foto = cleanFoto(load('foto', null));
 var meds = cleanMeds(load('meds', null));
 var dash = cleanDash(load('dash', null));
 function saveDash(){ save('dash', dash); }
 
-var TABS = ['inicio', 'agua', 'ex', 'comida', 'corpo', 'meds'];
+var TABS = ['inicio', 'agua', 'ex', 'comida', 'meds'];
 var theme = load('theme', 'auto');
 var tab = 'inicio'; /* o app sempre abre no painel */
 /* registros antigos eram só números; agora cada um tem ml e horário */
@@ -2299,7 +2347,8 @@ var WDEF = {
   musculos: {n: 'Músculos da semana', e: '🏋️', go: 'ex', hc: '--c-ex'},
   melhor: {n: 'Seu melhor dia', e: '🏆', cls: 'w-ind'},
   dose: {n: 'Próxima dose', e: '💊', go: 'meds', hc: '--c-meds'},
-  tomados: {n: 'Tomados hoje', e: '✅', go: 'meds', hc: '--c-meds'}
+  tomados: {n: 'Tomados hoje', e: '✅', go: 'meds', hc: '--c-meds'},
+  foto: {n: 'Minha foto', e: '📷', cls: 'w-ind'}
 };
 function cap(x){ return x.charAt(0).toUpperCase() + x.slice(1); }
 function medName(it, idx){ return meds.hide && revealId !== it.id ? 'Item ' + (idx + 1) : it.nome; }
@@ -2393,6 +2442,12 @@ function wInner(id){
     var it = medItem(nx.id);
     return '<div class="hm-v" style="margin-top:22px;font-size:1.9rem">' + nx.time + '</div><div class="hm-s">' + medName(it, meds.items.indexOf(it)) + '</div>';
   }
+  if(id === 'foto'){
+    var hgt = isWide('foto') ? 200 : 150;
+    if(!foto.src) return '<div class="hm-s" style="margin:12px 0 8px">Coloque aqui a foto de quem ou do que você ama: seu pet, sua família, um lugar.</div>' + (dashEditing ? '' : '<button type="button" class="btn" data-foto="pick" style="margin-top:6px">📷 Adicionar foto</button>');
+    return '<img src="' + foto.src + '" alt="' + (foto.cap || 'Minha foto') + '" style="display:block;width:100%;height:' + hgt + 'px;object-fit:cover;border-radius:16px;margin-top:10px">' + (foto.cap ? '<div class="hm-v" style="font-size:1.05rem;margin-top:8px">' + foto.cap + '</div>' : '') +
+      (dashEditing ? '<div class="macts" style="margin-top:8px"><button type="button" data-foto="pick">Trocar foto</button><button type="button" data-foto="cap">Legenda</button><button type="button" data-foto="del">Remover</button></div>' : '');
+  }
   if(id === 'tomados'){
     var all = slotsFor(new Date()), dn = all.filter(function(x){ return medReg(x.k).s === 't'; }).length;
     if(!all.length) return '<div class="hm-v" style="margin-top:22px">Nada hoje</div><div class="hm-s">sem horários para hoje</div>';
@@ -2435,7 +2490,7 @@ function renderHome(){
   var pr = $('palRow');
   if(dashEditing){
     pr.innerHTML = Object.keys(PALS).map(function(k){
-      var p = PALS[k], bg = k === 'padrao' ? 'linear-gradient(135deg,#92c6ff,#ffab84 40%,#92dfa6 70%,#b79fff)' : 'linear-gradient(135deg,' + p.l[0][1] + ',' + p.l[1][1] + ',' + p.l[2][1] + ')';
+      var p = PALS[k], bg = k === 'padrao' ? 'linear-gradient(135deg,#f2f2f7 50%,#1c1c1e 50%)' : 'linear-gradient(135deg,' + p.l[0][1] + ',' + p.l[1][1] + ',' + p.l[2][1] + ')';
       return '<button type="button" data-pal="' + k + '" class="' + (dash.pal === k ? 'sel' : '') + '" style="background:' + bg + '" aria-label="Paleta ' + p.n + '" title="' + p.n + '"></button>';
     }).join('');
   }
@@ -2466,6 +2521,8 @@ function applyPal(){
 (function(){
   var host = $('hHost');
   host.onclick = function(ev){
+    var ft = ev.target.closest ? ev.target.closest('[data-foto]') : null;
+    if(ft){ fotoAct(ft.getAttribute('data-foto')); return; }
     var t = ev.target.closest ? ev.target.closest('[data-ed],[data-go]') : null;
     if(!t) return;
     if(t.hasAttribute('data-ed')){
@@ -2488,7 +2545,7 @@ function applyPal(){
   $('palRow').onclick = function(ev){
     var p = ev.target.getAttribute && ev.target.getAttribute('data-pal');
     if(!p) return;
-    dash.pal = p; saveDash(); applyPal(); renderHome();
+    dash.pal = p; saveDash(); applyPal(); setMeta(); renderHome();
   };
   $('dashEdit').onclick = function(){ dashEditing = true; $('mantraInput').value = dash.mantra; $('msgOff').checked = dash.msgOff; renderHome(); };
   $('dashDone').onclick = function(){ dashEditing = false; renderHome(); };
@@ -2502,6 +2559,41 @@ function applyPal(){
   $('goSettings').onclick = function(){ openSettings(false); };
   applyPal();
 })();
+
+/* ---------- foto do painel ---------- */
+var fotoIn = document.createElement('input');
+fotoIn.type = 'file'; fotoIn.accept = 'image/*'; fotoIn.hidden = true; document.body.appendChild(fotoIn);
+function fotoAct(a){
+  if(a === 'pick'){ fotoIn.value = ''; fotoIn.click(); }
+  else if(a === 'cap'){
+    var c = prompt('Legenda da foto (até 40 letras):', foto.cap);
+    if(c !== null){ foto.cap = String(c).replace(/[<>]/g, '').trim().slice(0, 40); save('foto', foto); renderHome(); }
+  } else if(a === 'del'){
+    confirmBox('Remover a foto?', 'Ela será apagada deste aparelho.', 'Remover', function(){ foto = {src: '', cap: ''}; save('foto', foto); renderHome(); });
+  }
+}
+fotoIn.onchange = function(){
+  var f = fotoIn.files && fotoIn.files[0];
+  if(!f) return;
+  if(!/^image\//.test(f.type)){ toast('Escolha um arquivo de imagem.'); return; }
+  var url = URL.createObjectURL(f), im = new Image();
+  im.onload = function(){
+    try{
+      var m = 720, r = Math.min(1, m / Math.max(im.width, im.height)), w = Math.max(1, Math.round(im.width * r)), h = Math.max(1, Math.round(im.height * r));
+      var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      var cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, w, h); cx.drawImage(im, 0, 0, w, h);
+      var out = cv.toDataURL('image/jpeg', 0.8);
+      if(out.length > 400000) out = cv.toDataURL('image/jpeg', 0.6);
+      foto = cleanFoto({src: out, cap: foto.cap});
+      if(!foto.src){ toast('A foto ficou grande demais. Tente outra.'); }
+      else { if(!save('foto', foto)){ toast('Sem espaço para guardar a foto.'); } else { toast('Foto adicionada 📷'); } }
+      renderHome();
+    }catch(e){ toast('Não consegui usar essa foto.'); }
+    URL.revokeObjectURL(url);
+  };
+  im.onerror = function(){ toast('Não consegui abrir essa foto.'); URL.revokeObjectURL(url); };
+  im.src = url;
+};
 
 /* ---------- lembretes de medicamentos e suplementos ---------- */
 function medItem(id){ for(var i = 0; i < meds.items.length; i++) if(meds.items[i].id === id) return meds.items[i]; return null; }
@@ -3217,7 +3309,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'beba-agua', versao: 6, meds: meds, dash: dash, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'beba-agua', versao: 6, meds: meds, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -3247,6 +3339,7 @@ function importData(file){
     prof.done = true;
     log = cleanLog(d.log); ex = cleanEx(d.ex); fd = cleanFd(d.fd); rest = cleanRest(d.rest);
     if(d.meds) meds = cleanMeds(d.meds);
+    if(d.foto){ foto = cleanFoto(d.foto); save('foto', foto); }
     if(d.dash){ dash = cleanDash(d.dash); saveDash(); applyPal(); }
     if(['auto', 'light', 'dark'].indexOf(d.theme) >= 0) theme = d.theme;
     save('weight', weight); save('cfg', cfg); save('prof', prof); save('theme', theme);
@@ -3267,7 +3360,7 @@ var THEME_NAMES = {auto: 'automático', light: 'claro', dark: 'escuro'};
 var META = {meds: ['#be185d', '#200a1e'], inicio: ['#4f46e5', '#0f0b2a'], agua: ['#0a6fb8', '#08141d'], ex: ['#c2410c', '#150f0a'], comida: ['#2e7d32', '#09150d'], corpo: ['#6d3fc0', '#110c1b']};
 function setMeta(){
   var dark = theme === 'dark' || (theme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  $('metaTheme').setAttribute('content', (META[tab] || META.agua)[dark ? 1 : 0]);
+  $('metaTheme').setAttribute('content', dash.pal === 'padrao' ? (dark ? '#000000' : '#f2f2f7') : (META[tab] || META.agua)[dark ? 1 : 0]);
 }
 function applyTheme(){
   var r = document.documentElement;
@@ -3294,8 +3387,10 @@ if(window.matchMedia){
 }
 
 /* ---------- abas ---------- */
-var TITLES = {meds: '💊 Lembretes', inicio: '🏠 Início', agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
+var TITLES = {meds: '💊 Rotina', inicio: '🏠 Início', agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
 function showTab(t){
+  var toCorpo = (t === 'corpo');
+  if(toCorpo) t = 'inicio';
   tab = t; save('tab', t);
   document.body.setAttribute('data-tab', t);
   setMeta();
@@ -3307,6 +3402,7 @@ function showTab(t){
   $('pageTitle').textContent = TITLES[t];
   try{ window.scrollTo(0, 0); }catch(e){}
   renderAll();
+  if(toCorpo){ try{ $('tab-corpo').scrollIntoView({behavior: 'smooth', block: 'start'}); }catch(e){} }
 }
 $('nav-add').onclick = function(){ if(tab === 'meds'){ openMed(null); return; } openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
 (function(){
