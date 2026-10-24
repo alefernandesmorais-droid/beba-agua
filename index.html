@@ -399,6 +399,76 @@ button.fab:active{transform:scale(.94)}
 .nav{max-width:456px}
 .nav button{min-width:0;font-size:.66rem}
 #nav-inicio.on{color:var(--c-home)}
+
+/* ===== v12: mais cor + layout de computador ===== */
+body{--glass:color-mix(in srgb,var(--accent) 10%,rgba(255,255,255,.92));--gline:color-mix(in srgb,var(--accent) 24%,transparent);
+  --sh:0 8px 22px color-mix(in srgb,var(--accent) 16%,transparent)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body{--glass:color-mix(in srgb,var(--accent) 15%,rgba(255,255,255,.04));--gline:color-mix(in srgb,var(--accent) 34%,transparent);--sh:0 8px 22px rgba(0,0,0,.35)}}
+:root[data-theme="dark"] body{--glass:color-mix(in srgb,var(--accent) 15%,rgba(255,255,255,.04));--gline:color-mix(in srgb,var(--accent) 34%,transparent);--sh:0 8px 22px rgba(0,0,0,.35)}
+/* quadrados do painel, cada um com a sua cor */
+body[data-tab] .hm,body[data-tab] .custom{background:linear-gradient(150deg,var(--tb1),var(--tb2));border:0;--line:rgba(255,255,255,.62);--card:var(--tb2);box-shadow:0 10px 24px color-mix(in srgb,var(--tb2) 55%,transparent)}
+.hm[data-go="agua"]{--tb1:#d9eeff;--tb2:#92c6ff}
+.hm[data-go="ex"]{--tb1:#ffe3c8;--tb2:#ffab84}
+.hm[data-go="comida"]{--tb1:#d9f7da;--tb2:#92dfa6}
+.hm[data-go="corpo"]{--tb1:#ebe0ff;--tb2:#b79fff}
+.hm.hm-wide{--tb1:#e6e9ff;--tb2:#bcc6ff}
+.custom{--tb1:#ffe6f2;--tb2:#ffbedb}
+body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body[data-tab] .hm,:root:not([data-theme="light"]) body[data-tab] .custom{--line:rgba(255,255,255,.2);color:#fff}
+  :root:not([data-theme="light"]) .hm[data-go="agua"]{--tb1:#2a63c8;--tb2:#16337f}
+  :root:not([data-theme="light"]) .hm[data-go="ex"]{--tb1:#c85a26;--tb2:#6e2a3c}
+  :root:not([data-theme="light"]) .hm[data-go="comida"]{--tb1:#16a07a;--tb2:#0b5a4e}
+  :root:not([data-theme="light"]) .hm[data-go="corpo"]{--tb1:#7a4fe0;--tb2:#3d2490}
+  :root:not([data-theme="light"]) .hm.hm-wide{--tb1:#4a4fc4;--tb2:#2b2c86}
+  :root:not([data-theme="light"]) .custom{--tb1:#b04a98;--tb2:#5e2a7e}
+  :root:not([data-theme="light"]) .hm .hm-s,:root:not([data-theme="light"]) .custom-b span,:root:not([data-theme="light"]) .wk-leg,:root:not([data-theme="light"]) .hm .rt{color:rgba(255,255,255,.82)}
+  :root:not([data-theme="light"]) .hm .hm-v,:root:not([data-theme="light"]) .custom-b b{color:#fff}
+  :root:not([data-theme="light"]) .hm-h{color:#fff}
+  :root:not([data-theme="light"]) .custom-btn{background:#fff;color:#4a1f6a}
+}
+:root[data-theme="dark"] body[data-tab] .hm,:root[data-theme="dark"] body[data-tab] .custom{--line:rgba(255,255,255,.2);color:#fff}
+:root[data-theme="dark"] .hm[data-go="agua"]{--tb1:#2a63c8;--tb2:#16337f}
+:root[data-theme="dark"] .hm[data-go="ex"]{--tb1:#c85a26;--tb2:#6e2a3c}
+:root[data-theme="dark"] .hm[data-go="comida"]{--tb1:#16a07a;--tb2:#0b5a4e}
+:root[data-theme="dark"] .hm[data-go="corpo"]{--tb1:#7a4fe0;--tb2:#3d2490}
+:root[data-theme="dark"] .hm.hm-wide{--tb1:#4a4fc4;--tb2:#2b2c86}
+:root[data-theme="dark"] .custom{--tb1:#b04a98;--tb2:#5e2a7e}
+:root[data-theme="dark"] .hm .hm-s,:root[data-theme="dark"] .custom-b span,:root[data-theme="dark"] .wk-leg{color:rgba(255,255,255,.82)}
+:root[data-theme="dark"] .hm .hm-v,:root[data-theme="dark"] .custom-b b,:root[data-theme="dark"] .hm-h{color:#fff}
+:root[data-theme="dark"] .custom-btn{background:#fff;color:#4a1f6a}
+.hm-chip::before{opacity:.28}
+:root[data-theme="dark"] body[data-tab="agua"]{--shape:#1f4c96}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body[data-tab="agua"]{--shape:#1f4c96}}
+/* colunas: no celular ficam transparentes (layout igual ao de antes) */
+.colL,.colR{display:contents}
+/* ===== computador / tablet grande ===== */
+@media (min-width:1000px){
+  :root{--sbL:max(16px,calc(50vw - 640px))}
+  .nav{left:var(--sbL);right:auto;top:16px;bottom:16px;width:216px;max-width:none;margin:0;border-radius:28px;display:block}
+  .nav-in{flex-direction:column;align-items:stretch;padding:16px 10px;gap:6px;max-width:none}
+  .nav-in::before{content:"💧 Beba Água";font-weight:800;font-size:1.15rem;padding:6px 14px 16px;color:var(--text)}
+  .nav button{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;font-size:.95rem;padding:12px 14px;min-height:48px;border-radius:18px;text-align:left}
+  .nav button span{font-size:1.3rem}
+  .app{max-width:1020px;margin:0 0 0 calc(var(--sbL) + 240px);padding:24px 8px 56px}
+  button.fab{right:32px;bottom:32px}
+  .toast{bottom:28px}
+  main:not(#tab-inicio){display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);column-gap:28px;align-items:start}
+  main:not(#tab-inicio) .colL{display:block;position:sticky;top:16px}
+  main:not(#tab-inicio) .colR{display:block}
+  main:not(#tab-inicio) .colR>*:first-child{margin-top:0}
+  #tab-inicio{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+  #tab-inicio .hero{grid-column:1 / -1;margin-top:0}
+  #tab-inicio .hgrid{grid-column:1 / -1;grid-template-columns:repeat(4,1fr);margin-top:0;gap:16px}
+  #tab-inicio .hm-wide,#tab-inicio .custom{margin-top:0}
+  #tab-inicio .custom{flex-direction:column;align-items:flex-start;justify-content:center}
+  .hm{min-height:250px}
+  .hm .ch{max-width:132px}
+  header{padding:0 4px}
+  #greetTxt{font-size:2rem}
+}
+@media (min-width:1000px) and (max-width:1250px){
+  .app{margin-left:calc(var(--sbL) + 240px)}
+}
 </style>
 </head>
 <body data-tab="inicio">
@@ -702,7 +772,7 @@ button.fab:active{transform:scale(.94)}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 11.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 12.</p>
   </footer>
 </div>
 
@@ -2571,6 +2641,17 @@ function showTab(t){
   renderAll();
 }
 $('nav-add').onclick = function(){ openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
+(function(){
+  ['agua', 'ex', 'comida', 'corpo'].forEach(function(id){
+    var m = $('tab-' + id), L = document.createElement('div'), R = document.createElement('div'), inL = true;
+    L.className = 'colL'; R.className = 'colR';
+    Array.prototype.slice.call(m.children).forEach(function(c){
+      if(inL && (c.classList.contains('stage') || c.classList.contains('numbers') || c.classList.contains('legend'))) L.appendChild(c);
+      else { inL = false; R.appendChild(c); }
+    });
+    m.appendChild(L); m.appendChild(R);
+  });
+})();
 TABS.forEach(function(id){
   $('nav-' + id).onclick = function(){ showTab(id); };
 });
