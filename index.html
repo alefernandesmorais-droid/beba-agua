@@ -469,7 +469,85 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
 @media (min-width:1000px) and (max-width:1250px){
   .app{margin-left:calc(var(--sbL) + 240px)}
 }
+
+/* ===== v13: painel personalizável + lembretes ===== */
+:root{--c-meds:#be185d;--bg-meds:#fff6fa;--bg2-meds:#ffe0ee;--ln-meds:#f6cfe0;--cd-meds:#ffffff;--shp-meds:#f7e0ea}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-meds:#f9a8d4;--bg-meds:#200a1e;--bg2-meds:#4a1a40;--ln-meds:rgba(255,255,255,.14);--cd-meds:#34142f;--shp-meds:#5a2850}}
+:root[data-theme="dark"]{--c-meds:#f9a8d4;--bg-meds:#200a1e;--bg2-meds:#4a1a40;--ln-meds:rgba(255,255,255,.14);--cd-meds:#34142f;--shp-meds:#5a2850}
+body[data-tab="meds"]{--bg:var(--bg-meds);--bg2:var(--bg2-meds);--line:var(--ln-meds);--card:var(--cd-meds);--accent:var(--c-meds);--t1:#f472b6;--t2:#be185d;--shape:var(--shp-meds)}
+#nav-meds.on{color:var(--c-meds)}
+.nav button .bd{position:absolute;top:2px;right:calc(50% - 22px);min-width:18px;height:18px;border-radius:9px;background:#e5484d;color:#fff;font-size:.65rem;line-height:18px;text-align:center;padding:0 4px}
+/* cores semânticas (padrão) */
+.hm[data-go="meds"]{--tb1:#ffe0ee;--tb2:#ffa8c8}
+.hm.w-ind{--tb1:#e6e9ff;--tb2:#bcc6ff}
+.hm[data-go="agua"]{--tb1:#d9eeff;--tb2:#92c6ff}
+.hm[data-go="ex"]{--tb1:#ffe3c8;--tb2:#ffab84}
+.hm[data-go="comida"]{--tb1:#d9f7da;--tb2:#92dfa6}
+.hm[data-go="corpo"]{--tb1:#ebe0ff;--tb2:#b79fff}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]) .hm[data-go="agua"]{--tb1:#2a63c8;--tb2:#16337f}
+:root:not([data-theme="light"]) .hm[data-go="ex"]{--tb1:#bc5524;--tb2:#6e2a3c}
+:root:not([data-theme="light"]) .hm[data-go="comida"]{--tb1:#138566;--tb2:#0b5a4e}
+:root:not([data-theme="light"]) .hm[data-go="corpo"]{--tb1:#7a4fe0;--tb2:#3d2490}
+:root:not([data-theme="light"]) .hm[data-go="meds"]{--tb1:#c2377a;--tb2:#6a1f4e}
+:root:not([data-theme="light"]) .hm.w-ind{--tb1:#4a4fc4;--tb2:#2b2c86}
+:root:not([data-theme="light"]) .custom{--tb1:#b04a98;--tb2:#5e2a7e}
+}
+:root[data-theme="dark"] .hm[data-go="agua"]{--tb1:#2a63c8;--tb2:#16337f}
+:root[data-theme="dark"] .hm[data-go="ex"]{--tb1:#bc5524;--tb2:#6e2a3c}
+:root[data-theme="dark"] .hm[data-go="comida"]{--tb1:#138566;--tb2:#0b5a4e}
+:root[data-theme="dark"] .hm[data-go="corpo"]{--tb1:#7a4fe0;--tb2:#3d2490}
+:root[data-theme="dark"] .hm[data-go="meds"]{--tb1:#c2377a;--tb2:#6a1f4e}
+:root[data-theme="dark"] .hm.w-ind{--tb1:#4a4fc4;--tb2:#2b2c86}
+:root[data-theme="dark"] .custom{--tb1:#b04a98;--tb2:#5e2a7e}
+
+.hm.w-ind,.hm[data-go="meds"]{border:0}
+body[data-tab] .hm[data-go="meds"] .hm-h,.hm[data-go="meds"] .hm-h{color:var(--hc)}
+.hbar{display:flex;justify-content:flex-end;margin-top:12px}
+.hedit{border:1px solid var(--gline);background:var(--glass);color:var(--text);border-radius:999px;padding:8px 14px;min-height:40px;font:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.hgrid{margin-top:8px}
+.hw.wide{grid-column:1/-1}
+.hw{position:relative}
+.msgtx{margin:10px 2px 2px;font-size:1.12rem;line-height:1.4;font-weight:600;font-style:italic;color:var(--text)}
+.msgtag{font-size:.7rem;font-weight:700;opacity:.8;margin-left:auto}
+.mini{margin-top:8px}
+.etb{display:flex;gap:6px;justify-content:flex-end;margin:-2px 0 6px}
+.etb button{border:1px solid rgba(0,0,0,.18);background:rgba(255,255,255,.85);color:#0f2a3d;border-radius:10px;min-width:40px;min-height:40px;font:inherit;font-size:1rem;font-weight:700;cursor:pointer}
+.editing .hw{outline:2px dashed var(--c-home);outline-offset:3px;cursor:default}
+.dpanel{margin-top:10px;padding:16px;border-radius:24px;background:var(--glass);border:1px solid var(--gline)}
+.pals{display:flex;gap:10px;flex-wrap:wrap}
+.pals button{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer;padding:0}
+.pals button.sel{border-color:var(--text)}
+.hhid{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hhid .kicker{width:100%;margin:0}
+.hhid button{border:1px dashed var(--c-home);background:var(--glass);color:var(--text);border-radius:999px;padding:8px 12px;min-height:40px;font:inherit;font-size:.85rem;cursor:pointer}
+/* lembretes */
+.medbtn{display:block;width:100%;margin-top:14px;border:0;border-radius:999px;min-height:52px;font:inherit;font-weight:800;font-size:1rem;color:var(--bg);background:var(--accent);cursor:pointer}
+.mrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.mrow:first-child{border-top:0}
+.mck{flex:none;width:52px;height:52px;border-radius:50%;border:3px solid var(--mc,var(--accent));background:transparent;color:var(--mc,var(--accent));font-size:1.5rem;font-weight:800;cursor:pointer;display:grid;place-items:center}
+.mck.done{background:var(--mc,var(--accent));color:#fff}
+.mck.skip{border-style:dashed;color:var(--muted);border-color:var(--muted)}
+.mmain{flex:1;min-width:0}
+.mname{font-weight:800;font-size:1.02rem;line-height:1.25;word-break:break-word}
+.msub{font-size:.85rem;color:var(--muted);margin-top:2px;line-height:1.35}
+.mst{display:inline-block;font-size:.72rem;font-weight:800;border-radius:99px;padding:2px 8px;margin-left:6px;background:var(--line);color:var(--text)}
+.mst.late{background:#e5484d;color:#fff}.mst.now{background:#f5a524;color:#1a1000}
+.macts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.macts button{border:1px solid var(--line);background:var(--glass);color:var(--text);border-radius:999px;padding:6px 12px;min-height:36px;font:inherit;font-size:.8rem;cursor:pointer}
+.mitem{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.mitem:first-child{border-top:0}
+.mdot{flex:none;width:14px;height:14px;border-radius:50%}
+.mgrid{display:grid;gap:6px;align-items:center;font-size:.8rem}
+.mgrid .c{height:28px;border-radius:8px;display:grid;place-items:center;font-weight:800;background:var(--line);color:var(--muted)}
+.mgrid .c.ok{background:var(--accent);color:var(--bg)}
+.mgrid .c.part{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.mgrid .l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mgrid .h{text-align:center;color:var(--muted);font-size:.72rem}
+@media (min-width:1000px){#tab-meds{display:block !important;max-width:760px}#tab-meds[hidden]{display:none !important}}
+/* paletas escolhidas pelo usuário são injetadas em #palStyle */
 </style>
+<style id="palStyle"></style>
 </head>
 <body data-tab="inicio">
 <div class="app">
@@ -493,39 +571,25 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
       <div class="hero-s" id="hText"></div>
     </section>
 
-    <div class="hgrid">
-      <button type="button" class="hm" data-go="agua" style="--hc:var(--c-agua)" aria-label="Abrir Água">
-        <div class="hm-h"><i class="hm-chip">💧</i>Água</div>
-        <div id="hmAgua"></div>
-        <div class="hm-v" id="hvAgua"></div><div class="hm-s" id="hsAgua"></div>
-      </button>
-      <button type="button" class="hm" data-go="ex" style="--hc:var(--c-ex)" aria-label="Abrir Exercício">
-        <div class="hm-h"><i class="hm-chip">💪</i>Exercício</div>
-        <div id="hmEx"></div>
-        <div class="hm-v" id="hvEx"></div><div class="hm-s" id="hsEx"></div>
-      </button>
-      <button type="button" class="hm" data-go="comida" style="--hc:var(--c-food)" aria-label="Abrir Comida">
-        <div class="hm-h"><i class="hm-chip">🍎</i>Comida</div>
-        <div id="hmFood"></div>
-        <div class="hm-v" id="hvFood"></div><div class="hm-s" id="hsFood"></div>
-      </button>
-      <button type="button" class="hm" data-go="corpo" style="--hc:var(--c-corpo)" aria-label="Abrir Corpo">
-        <div class="hm-h"><i class="hm-chip">🧍</i>Corpo</div>
-        <div id="hmCorpo"></div>
-        <div class="hm-v" id="hvCorpo"></div><div class="hm-s" id="hsCorpo"></div>
-      </button>
+    <div class="hbar">
+      <button type="button" class="hedit" id="dashEdit">✏️ Editar painel</button>
     </div>
 
-    <section class="hm hm-wide" style="--hc:var(--c-home)">
-      <div class="hm-h"><i class="hm-chip">📈</i>Sua semana</div>
-      <div id="hmWeek"></div>
-      <div class="wk-leg">
-        <span><i style="background:var(--c-agua)"></i>Água</span>
-        <span><i style="background:var(--c-ex)"></i>Treino</span>
-        <span><i style="background:var(--c-food)"></i>Comida</span>
+    <section class="dpanel" id="dashPanel" hidden>
+      <div class="kicker">Cores do painel</div>
+      <div class="pals" id="palRow"></div>
+      <label class="lbl" for="mantraInput">Sua frase (opcional)</label>
+      <input id="mantraInput" type="text" maxlength="110" placeholder="Ex.: Um dia de cada vez, com gentileza.">
+      <label class="chk" style="margin-top:10px"><input type="checkbox" id="msgOff"> Esconder a mensagem automática do dia</label>
+      <p class="hint">Use ↑ ↓ para mudar a ordem, ⇔ para mudar o tamanho e 🙈 para esconder. Os dados de água, exercício e comida não são afetados.</p>
+      <div class="row">
+        <button class="btn" id="dashReset" type="button">Restaurar padrão</button>
+        <button class="btn fx" id="dashDone" type="button">Concluir</button>
       </div>
-      <div class="hm-s" style="text-align:center;margin-top:4px">Cada linha mostra quanto da meta do dia você cumpriu.</div>
     </section>
+
+    <div class="hgrid" id="hHost"></div>
+    <div id="hHidden" class="hhid" hidden></div>
 
     <section class="custom">
       <div class="custom-ic">⚙️</div>
@@ -534,6 +598,47 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
         <span>Seu nome, peso, condições de saúde, metas e lembretes.</span>
       </div>
       <button type="button" class="custom-btn" id="goSettings">Personalizar aqui</button>
+    </section>
+  </main>
+
+  <!-- ================= LEMBRETES ================= -->
+  <main id="tab-meds" hidden>
+    <section class="card">
+      <div class="kicker">Importante</div>
+      <p class="latest">Esta área é apenas para os seus lembretes pessoais. Ela não substitui a orientação do seu médico, farmacêutico ou nutricionista. Os dados ficam só neste aparelho; quem pegar o celular desbloqueado pode vê-los.</p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Hoje</div>
+      <h2 id="medSum"></h2>
+      <div id="medToday"></div>
+      <p class="hint">O app registra o que você marcou. Ele não verifica se o item foi realmente tomado.</p>
+    </section>
+
+    <button type="button" class="medbtn" id="medNew">➕ Novo lembrete</button>
+
+    <section class="card">
+      <div class="kicker">Meus itens</div>
+      <div id="medItems"></div>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Últimos 7 dias</div>
+      <div id="medWeek"></div>
+      <p class="hint" id="medWeekTxt"></p>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Alarme com o app fechado</div>
+      <p class="latest">Este app não consegue tocar alarme com o app fechado ou o celular bloqueado. Para mais segurança, exporte os horários para o calendário do celular. Mesmo assim, o alarme pode não tocar se o celular estiver em economia de bateria ou com o calendário silenciado.</p>
+      <button type="button" class="btn" id="medIcs" style="width:100%;margin-top:10px">📅 Exportar para o calendário (.ics)</button>
+    </section>
+
+    <section class="card">
+      <div class="kicker">Privacidade</div>
+      <label class="chk"><input type="checkbox" id="medHide"> Ocultar os nomes (mostra "Item 1", "Item 2"...)</label>
+      <p class="hint">Seus lembretes não saem do aparelho: não há conta nem servidor. Você pode baixar tudo no backup (Ajustes) ou apagar aqui.</p>
+      <button class="link" type="button" id="medWipe">🗑️ Apagar todos os lembretes</button>
     </section>
   </main>
 
@@ -772,7 +877,7 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 12.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 13.</p>
   </footer>
 </div>
 
@@ -783,6 +888,7 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
     <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
     <button type="button" id="nav-corpo" data-tab="corpo"><span>🧍</span>Corpo</button>
+    <button type="button" id="nav-meds" data-tab="meds"><span>💊</span>Lembretes<b class="bd" id="medBd" hidden></b></button>
   </div>
 </nav>
 
@@ -892,6 +998,37 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
     <div class="row">
       <button class="btn" id="exCancel" type="button">Cancelar</button>
       <button class="btn fx" id="exSave" type="button">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="mMed">
+  <div class="modal">
+    <h3 id="mdTitle">Novo lembrete</h3>
+    <p class="hint" style="margin-top:0">Digite o nome e a dose exatamente como foram orientados por um profissional. O app não confere se estão corretos.</p>
+    <label class="lbl" for="mdName">Nome</label>
+    <input id="mdName" type="text" maxlength="40" placeholder="Ex.: Vitamina D, creatina, whey...">
+    <label class="lbl">Tipo</label>
+    <div class="subs" id="mdType">
+      <button type="button" data-t="medicamento">💊 Medicamento</button>
+      <button type="button" data-t="suplemento">🥤 Suplemento</button>
+      <button type="button" data-t="vitamina">🍊 Vitamina</button>
+    </div>
+    <label class="lbl" for="mdDose">Dose (texto livre)</label>
+    <input id="mdDose" type="text" maxlength="40" placeholder="Ex.: 1 cápsula, 5 g, 1 scoop">
+    <label class="lbl">Horários</label>
+    <div id="mdTimes"></div>
+    <button type="button" class="link" id="mdAddTime" style="margin:4px 0 0">➕ Adicionar horário</button>
+    <label class="lbl">Dias da semana</label>
+    <div class="subs" id="mdDays"></div>
+    <label class="lbl" for="mdNote">Anotação (opcional)</label>
+    <input id="mdNote" type="text" maxlength="80" placeholder="Ex.: junto com o café da manhã">
+    <label class="lbl" for="mdEnd">Até quando? (opcional)</label>
+    <input id="mdEnd" type="date">
+    <div class="err" id="mdErr"></div>
+    <div class="row">
+      <button class="btn" id="mdCancel" type="button">Cancelar</button>
+      <button class="btn fx" id="mdSave" type="button">Salvar</button>
     </div>
   </div>
 </div>
@@ -1328,7 +1465,67 @@ var prof = load('prof', null);
 if(!prof || typeof prof !== 'object') prof = {age: null, cond: [], water: null, level: 'regular', done: !!weight};
 prof = cleanProf(prof);
 var range = load('range', 7); if(range !== 30) range = 7;
-var TABS = ['inicio', 'agua', 'ex', 'comida', 'corpo'];
+/* ---------- lembretes e painel: estado ---------- */
+var MED_TYPES = ['medicamento', 'suplemento', 'vitamina'];
+var MED_COLORS = ['#1478C8', '#C2410C', '#277A38', '#6741D9', '#BE185D', '#B45309'];
+var WIDS = ['msg', 'agua', 'ex', 'comida', 'corpo', 'semana', 'streak', 'mes', 'musculos', 'melhor', 'dose', 'tomados'];
+var PALS = {padrao: {n: 'Padrão'}, oceano: {n: 'Oceano', l: [['#d6f0ff', '#8fd0ff'], ['#d2f7f4', '#86e0d8'], ['#dbe7ff', '#9db9ff'], ['#d0f2fa', '#7fd6ee'], ['#e0f0ff', '#a6c8f5'], ['#cdeeee', '#8ad3d6']], d: [['#1f6fc2', '#124a8c'], ['#107f7a', '#0a5a5c'], ['#3355c2', '#1f3a8a'], ['#117e9e', '#0a5470'], ['#2a62a8', '#173d70'], ['#17828d', '#0d5560']]}, floresta: {n: 'Floresta', l: [['#dcf6dd', '#98e0a6'], ['#e6f7c9', '#bfe67f'], ['#cdf2e6', '#85d9bd'], ['#e1f5d6', '#a8dd8f'], ['#d4f1e0', '#8fd8a8'], ['#eaf6cf', '#c8e38a']], d: [['#19804b', '#0f5e3a'], ['#588017', '#3b5e0c'], ['#10866c', '#0a5c4e'], ['#3e8531', '#2a6420'], ['#1a8653', '#0f5538'], ['#637c1a', '#4a6012']]}, sol: {n: 'Pôr do sol', l: [['#ffe3c8', '#ffab84'], ['#ffd9e0', '#ff9fb4'], ['#fff0c2', '#ffd36e'], ['#ffd6c2', '#ff9c82'], ['#ffe0ec', '#ffb0c8'], ['#ffeacd', '#ffc178']], d: [['#bc5524', '#6e2a3c'], ['#c43a64', '#6c1f4a'], ['#996e16', '#6e4a0c'], ['#c4452a', '#70221c'], ['#b03a80', '#5e2058'], ['#a96318', '#6a3a10']]}, uva: {n: 'Uva', l: [['#ebe0ff', '#b79fff'], ['#f6dcff', '#d9a0f5'], ['#e0e4ff', '#a7b0ff'], ['#fadcf0', '#eea0d4'], ['#e4d8ff', '#bda6f0'], ['#dfe6ff', '#b0b9ff']], d: [['#7a4fe0', '#3d2490'], ['#a040c0', '#5a1f78'], ['#4a52d0', '#2a2f86'], ['#b0409a', '#601f5a'], ['#6a46c0', '#38237a'], ['#3f56c8', '#232f82']]}, grafite: {n: 'Grafite', l: [['#e6eaf0', '#b8c3d2'], ['#eceff4', '#c6cfdc'], ['#e0e6ee', '#aab8cb'], ['#e9edf2', '#bcc7d6'], ['#e3e8ef', '#b2bfd0'], ['#eef1f5', '#cbd3de']], d: [['#4a5668', '#2b3442'], ['#3f4b5e', '#252e3b'], ['#566178', '#323b4e'], ['#445066', '#283142'], ['#505c70', '#2e3748'], ['#3b475a', '#222a37']]}};
+function cleanMeds(o){
+  var r = {items: [], regs: {}, hide: false};
+  if(!o || typeof o !== 'object') return r;
+  var dre = /^\d{4}-\d{2}-\d{2}$/, tre = /^([01]\d|2[0-3]):[0-5]\d$/, ids = {};
+  (Array.isArray(o.items) ? o.items : []).slice(0, 30).forEach(function(it){
+    if(!it || typeof it.id !== 'string' || !/^[a-z0-9_]{3,24}$/.test(it.id) || ids[it.id]) return;
+    var nome = String(it.nome || '').replace(/[<>]/g, '').trim().slice(0, 40);
+    if(!nome) return;
+    var hs = (Array.isArray(it.horarios) ? it.horarios : []).filter(function(h, i, a){ return typeof h === 'string' && tre.test(h) && a.indexOf(h) === i; }).sort().slice(0, 6);
+    if(!hs.length) return;
+    var dias = (Array.isArray(it.dias) ? it.dias : []).filter(function(d, i, a){ return typeof d === 'number' && d >= 0 && d <= 6 && a.indexOf(d) === i; });
+    if(!dias.length) dias = [0, 1, 2, 3, 4, 5, 6];
+    ids[it.id] = true;
+    r.items.push({
+      id: it.id, nome: nome, tipo: MED_TYPES.indexOf(it.tipo) >= 0 ? it.tipo : 'suplemento',
+      dose: String(it.dose || '').replace(/[<>]/g, '').trim().slice(0, 40), horarios: hs, dias: dias.sort(),
+      obs: String(it.obs || '').replace(/[<>]/g, '').trim().slice(0, 80),
+      ini: (typeof it.ini === 'string' && dre.test(it.ini)) ? it.ini : key(),
+      fim: (typeof it.fim === 'string' && dre.test(it.fim)) ? it.fim : null,
+      cor: MED_COLORS.indexOf(it.cor) >= 0 ? it.cor : MED_COLORS[r.items.length % MED_COLORS.length]
+    });
+  });
+  var rg = (o.regs && typeof o.regs === 'object') ? o.regs : {};
+  Object.keys(rg).forEach(function(k){
+    var p = k.split('|');
+    if(p.length !== 3 || !dre.test(p[0]) || !ids[p[1]] || !tre.test(p[2])) return;
+    var v = rg[k]; if(!v || typeof v !== 'object') return;
+    var e = {};
+    if(v.s === 't' || v.s === 'p') e.s = v.s;
+    if(typeof v.at === 'number') e.at = v.at;
+    if(typeof v.sn === 'number') e.sn = v.sn;
+    if(e.s || e.sn) r.regs[k] = e;
+  });
+  r.hide = o.hide === true;
+  return r;
+}
+function cleanDash(o){
+  var d = {order: WIDS.slice(), hidden: {streak: true, mes: true, musculos: true, melhor: true, dose: true, tomados: true}, wide: {msg: true, semana: true, mes: true}, pal: 'padrao', msgOff: false, mantra: ''};
+  if(!o || typeof o !== 'object') return d;
+  if(Array.isArray(o.order)){
+    var ord = o.order.filter(function(x, i, a){ return WIDS.indexOf(x) >= 0 && a.indexOf(x) === i; });
+    WIDS.forEach(function(w){ if(ord.indexOf(w) < 0) ord.push(w); });
+    d.order = ord;
+  }
+  if(o.hidden && typeof o.hidden === 'object'){ d.hidden = {}; WIDS.forEach(function(w){ if(o.hidden[w] === true) d.hidden[w] = true; }); }
+  if(o.wide && typeof o.wide === 'object'){ d.wide = {}; WIDS.forEach(function(w){ if(o.wide[w] === true) d.wide[w] = true; }); }
+  if(typeof o.pal === 'string' && PALS[o.pal]) d.pal = o.pal;
+  d.msgOff = o.msgOff === true;
+  d.mantra = (typeof o.mantra === 'string') ? o.mantra.replace(/[<>]/g, '').trim().slice(0, 110) : '';
+  return d;
+}
+var meds = cleanMeds(load('meds', null));
+var dash = cleanDash(load('dash', null));
+function saveDash(){ save('dash', dash); }
+
+var TABS = ['inicio', 'agua', 'ex', 'comida', 'corpo', 'meds'];
 var theme = load('theme', 'auto');
 var tab = 'inicio'; /* o app sempre abre no painel */
 /* registros antigos eram só números; agora cada um tem ml e horário */
@@ -1356,7 +1553,9 @@ function persist(){
   save('log', log);
   save('ex', ex);
   save('fd', fd);
+  Object.keys(meds.regs).forEach(function(k){ if(k.slice(0, 10) < ck) delete meds.regs[k]; });
   save('rest', rest);
+  save('meds', meds);
 }
 
 /* ---------- água: perfil, meta e bebidas ---------- */
@@ -1927,7 +2126,7 @@ function renderCross(){
   $('crossF').textContent = (nf > 0 && pct !== null) ? '💧 E a água? Você está em ' + pct + '% da meta de hoje.' : '';
 }
 
-function renderAll(){ setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); renderHome(); }
+function renderAll(){ setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); renderHome(); renderMeds(); }
 
 /* ---------- painel inicial ---------- */
 function smoothPath(pts, lo, hi){
@@ -2006,41 +2205,506 @@ function homeWeek(sw, se, sf, labels){
   });
   return o + '</svg>';
 }
-function renderHome(){
+
+var MSGS = [
+  {id:'a01',c:'agua',w:1,t:'Um copo agora é um cuidado simples com você.'},
+  {id:'a02',c:'agua',w:1,t:'Sua água de hoje não precisa ser perfeita. Só precisa acontecer.'},
+  {id:'a03',c:'agua',w:1,t:'Beba com calma, ao longo do dia. Seu corpo agradece.'},
+  {id:'a04',c:'agua',w:1,t:'Que tal uma pausa para um gole? Você merece essa pausa.'},
+  {id:'a05',c:'agua',w:1,t:'Hidratar é um gesto pequeno que se repete.'},
+  {id:'a06',c:'agua',w:1,t:'Você já bebeu um pouco hoje. Isso conta.'},
+  {id:'a07',c:'agua',w:1,t:'Água não precisa de pressa. Um gole de cada vez.'},
+  {id:'a08',c:'agua',w:1,t:'Lembre-se de beber também nos dias corridos.'},
+  {id:'a10',c:'agua',w:1,t:'Um copo d’água pode ser o começo de um dia melhor.'},
+  {id:'a11',c:'agua',w:1,t:'Não é sobre bater a meta. É sobre se cuidar.'},
+  {id:'a12',c:'agua',w:1,t:'Beba água. Sem cobrança, sem culpa.'},
+  {id:'m01',c:'movimento',t:'Qualquer movimento conta. Uma caminhada curta já é vitória.'},
+  {id:'m02',c:'movimento',t:'Seu corpo não precisa de perfeição. Precisa de presença.'},
+  {id:'m03',c:'movimento',t:'Movimente-se no seu ritmo. O importante é continuar.'},
+  {id:'m04',c:'movimento',t:'Hoje pode ser um dia de alongar. Descanso também é treino.'},
+  {id:'m05',c:'movimento',t:'Você não precisa se exaurir para se cuidar.'},
+  {id:'m06',c:'movimento',t:'Um treino curto ainda é um treino. Comece pequeno.'},
+  {id:'m07',c:'movimento',t:'Mova o corpo com gentileza. Ele é seu aliado.'},
+  {id:'m08',c:'movimento',t:'Cada passo conta, mesmo os que parecem pequenos.'},
+  {id:'m09',c:'movimento',t:'Seu ritmo é válido. Não compare seu caminho com o de ninguém.'},
+  {id:'m10',c:'movimento',t:'Que tal 5 minutos de movimento agora? Só 5.'},
+  {id:'m11',c:'movimento',t:'Treinar é cuidar de você, não punir seu corpo.'},
+  {id:'m12',c:'movimento',t:'O melhor exercício é aquele que você consegue fazer hoje.'},
+  {id:'c01',c:'alimentacao',t:'Comida é energia e prazer. Sem culpa no prato.'},
+  {id:'c02',c:'alimentacao',t:'Variedade importa mais que perfeição.'},
+  {id:'c03',c:'alimentacao',t:'Um alimento novo por dia já é uma conquista.'},
+  {id:'c04',c:'alimentacao',t:'Seu prato não precisa ser exemplar. Precisa ser seu.'},
+  {id:'c05',c:'alimentacao',t:'Comer com atenção também é cuidar de você.'},
+  {id:'c07',c:'alimentacao',t:'Que tal incluir uma fruta hoje? Do jeito que você gosta.'},
+  {id:'c08',c:'alimentacao',t:'Comida boa é comida que te faz bem e te dá prazer.'},
+  {id:'c09',c:'alimentacao',t:'Você não precisa contar tudo. Só precisa se alimentar.'},
+  {id:'c10',c:'alimentacao',t:'Experimente um grupo novo esta semana. Sem pressão.'},
+  {id:'c12',c:'alimentacao',t:'Alimentar-se é um ato de cuidado, não de controle.'},
+  {id:'d01',c:'descanso',t:'Descansar também é parte do processo. Você pode parar.'},
+  {id:'d02',c:'descanso',t:'Constância importa mais que intensidade. Vá com calma.'},
+  {id:'d03',c:'descanso',t:'Um dia mais devagar não apaga o que você já fez.'},
+  {id:'d04',c:'descanso',t:'Seu corpo pede pausa? Ouça. Descanso não é desistência.'},
+  {id:'d05',c:'descanso',t:'Você não precisa dar conta de tudo todos os dias.'},
+  {id:'d06',c:'descanso',t:'Recomeçar faz parte. Sempre fez.'},
+  {id:'d08',c:'descanso',t:'Progresso não é linear. Confie no seu ritmo.'},
+  {id:'d09',c:'descanso',t:'Hoje, talvez o maior cuidado seja descansar.'},
+  {id:'d10',c:'descanso',t:'Você está fazendo o possível. Isso é suficiente.'},
+  {id:'d11',c:'descanso',t:'Constância gentil vence pressa cruel.'},
+  {id:'d12',c:'descanso',t:'Voltar depois de uma pausa também é vitória.'},
+  {id:'h01',c:'dia_dificil',t:'Hoje não deu. Tudo bem. Amanhã é outra chance.'},
+  {id:'h02',c:'dia_dificil',t:'Você não falhou. Só teve um dia difícil.'},
+  {id:'h03',c:'dia_dificil',t:'Um dia fora da meta não define sua jornada.'},
+  {id:'h04',c:'dia_dificil',t:'Seja gentil consigo. Dias ruins acontecem com todo mundo.'},
+  {id:'h05',c:'dia_dificil',t:'Não é sobre recomeçar do zero. É sobre continuar de onde parou.'},
+  {id:'h06',c:'dia_dificil',t:'Você ainda está aqui. Isso já é muito.'},
+  {id:'h07',c:'dia_dificil',t:'Respire fundo. O cuidado com você não tem prazo.'},
+  {id:'h08',c:'dia_dificil',t:'Nem todo dia precisa ser produtivo. Alguns só precisam ser vividos.'},
+  {id:'h10',c:'dia_dificil',t:'Sua sequência pode ter quebrado, mas seu cuidado não.'},
+  {id:'h11',c:'dia_dificil',t:'Amanhã você pode tentar de novo. Sem pressa.'},
+  {id:'h12',c:'dia_dificil',t:'Você não precisa compensar nada. Só seguir com gentileza.'}
+];
+function dayScore(k){
+  var g = goal(), pw = (hasGoal() && !blocked() && g) ? Math.min(totalOf(k) / g, 1) : 0;
+  return (pw + Math.min(sumVals(exTotals(k)) / 30, 1) + Math.min(Object.keys(fdTotals(k)).length / FOOD.length, 1)) / 3;
+}
+function anyAct(k){ return totalOf(k) > 0 || sumVals(exTotals(k)) > 0 || Object.keys(fdTotals(k)).length > 0; }
+function dailyMsg(){
+  if(dash.mantra) return {t: dash.mantra, mine: true};
+  if(dash.msgOff) return null;
+  var noWater = blocked() || getStatus().s === 'over';
+  var cats = ['movimento', 'alimentacao', 'descanso'].concat(noWater ? [] : ['agua']);
+  var sc = streakCount(), recent = false, i, h = new Date().getHours();
+  for(i = 1; i <= 14; i++) if(anyAct(key(daysBack(i)))) recent = true;
+  var cat;
+  if(sc === 0 && recent && !anyAct(key())) cat = 'dia_dificil';
+  else if(!noWater && hasGoal() && h >= 11 && totalOf(key()) / goal() < 0.3) cat = 'agua';
+  else if(recent && !series(function(kk){ return sumVals(exTotals(kk)); }, 3, 0).some(function(x){ return x.v > 0; })) cat = 'movimento';
+  else if(h >= 14 && Object.keys(fdTotals(key())).length < 3 && recent) cat = 'alimentacao';
+  else if(sc >= 5) cat = 'descanso';
+  else cat = cats[Math.floor(Date.now() / 86400000) % cats.length];
+  var pool = MSGS.filter(function(m){ return m.c === cat && !(noWater && m.w); });
+  if(!pool.length) pool = MSGS.filter(function(m){ return m.c === 'descanso'; });
+  var dn = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+  return pool[(dn * 7) % pool.length];
+}
+var WDEF = {
+  msg: {n: 'Mensagem do dia', e: '✨', cls: 'w-ind'},
+  agua: {n: 'Água', e: '💧', go: 'agua', hc: '--c-agua'},
+  ex: {n: 'Exercício', e: '💪', go: 'ex', hc: '--c-ex'},
+  comida: {n: 'Comida', e: '🍎', go: 'comida', hc: '--c-food'},
+  corpo: {n: 'Corpo', e: '🧍', go: 'corpo', hc: '--c-corpo'},
+  semana: {n: 'Sua semana', e: '📈', cls: 'w-ind'},
+  streak: {n: 'Sequência', e: '🔥', go: 'corpo', hc: '--c-ex'},
+  mes: {n: 'Calendário do mês', e: '🗓️', cls: 'w-ind'},
+  musculos: {n: 'Músculos da semana', e: '🏋️', go: 'ex', hc: '--c-ex'},
+  melhor: {n: 'Seu melhor dia', e: '🏆', cls: 'w-ind'},
+  dose: {n: 'Próxima dose', e: '💊', go: 'meds', hc: '--c-meds'},
+  tomados: {n: 'Tomados hoje', e: '✅', go: 'meds', hc: '--c-meds'}
+};
+function cap(x){ return x.charAt(0).toUpperCase() + x.slice(1); }
+function medName(it, idx){ return meds.hide && revealId !== it.id ? 'Item ' + (idx + 1) : it.nome; }
+var revealId = null;
+function homeStreak(){
+  var o = '<svg class="ch" viewBox="0 0 140 24" role="img" aria-label="Últimos 14 dias">', i;
+  for(i = 13; i >= 0; i--){
+    var di = dayInfo(daysBack(i)), cx = 7 + (13 - i) * 10.3;
+    o += '<circle cx="' + cx.toFixed(1) + '" cy="12" r="4.4" ' + (di.active ? 'fill="var(--c-ex)"' : (di.rest ? 'fill="none" stroke="var(--c-ex)" stroke-width="2"' : 'fill="var(--line)"')) + (i === 0 ? ' stroke="var(--text)" stroke-width="1.5"' : '') + '/>';
+  }
+  return o + '</svg>';
+}
+function homeMonth(){
+  var today = new Date(); today.setHours(12, 0, 0, 0);
+  var start = daysBack(today.getDay() + 28), o = '<svg viewBox="0 0 154 138" role="img" aria-label="Calendário das últimas 5 semanas">', c, r;
+  for(c = 0; c < 7; c++) o += '<text x="' + (c * 22 + 9) + '" y="9" text-anchor="middle" font-size="8" fill="var(--muted)">' + WK[c] + '</text>';
+  for(r = 0; r < 5; r++) for(c = 0; c < 7; c++){
+    var d = new Date(start); d.setDate(start.getDate() + r * 7 + c);
+    if(d > today) continue;
+    var k = key(d), di = dayInfo(d), st = di.active ? 'ok' : (anyAct(k) ? 'part' : 'no'), x = c * 22, y = 14 + r * 24;
+    o += '<rect x="' + x + '" y="' + y + '" width="19" height="19" rx="6" ' + (st === 'ok' ? 'fill="var(--c-home)"' : (st === 'part' ? 'fill="var(--c-home)" fill-opacity=".28"' : 'fill="var(--line)"')) + (k === key() ? ' stroke="var(--text)" stroke-width="1.6"' : '') + '/>' +
+         '<text x="' + (x + 9.5) + '" y="' + (y + 13) + '" text-anchor="middle" font-size="10" font-weight="800" fill="' + (st === 'ok' ? 'var(--bg-home)' : 'var(--text)') + '">' + (st === 'ok' ? '✓' : (st === 'part' ? '○' : '·')) + '</text>';
+  }
+  return o + '</svg>';
+}
+function homeMuscles(){
+  var wk = weekTotals(), gs = EX.filter(function(e){ return wk[e.id]; }).sort(function(a, b){ return wk[b.id] - wk[a.id]; }).slice(0, 4);
+  if(!gs.length) return '<div class="hm-s" style="margin:16px 0">Nenhum treino nos últimos 7 dias.</div>';
+  var mx = wk[gs[0].id], o = '<svg viewBox="0 0 150 ' + (gs.length * 22) + '" role="img" aria-label="Minutos por grupo muscular na semana">';
+  gs.forEach(function(e, i){
+    var w = Math.max(6, wk[e.id] / mx * 78), y = i * 22;
+    o += '<text x="0" y="' + (y + 14) + '" font-size="13">' + e.emoji + '</text><rect x="22" y="' + (y + 4) + '" width="' + w.toFixed(0) + '" height="12" rx="6" fill="var(--c-ex)"/>' +
+         '<text x="' + (26 + w) + '" y="' + (y + 14) + '" font-size="9" fill="var(--text)">' + wk[e.id] + ' min</text>';
+  });
+  return o + '</svg>';
+}
+function homeBest(){
+  var sc = series(function(kk){ return dayScore(kk); }, 7, 0), bi = 0;
+  sc.forEach(function(x, i){ if(x.v > sc[bi].v) bi = i; });
+  var o = '<svg viewBox="0 0 140 60" role="img" aria-label="Pontuação dos últimos 7 dias">';
+  sc.forEach(function(x, i){
+    var h = Math.max(4, x.v * 52);
+    o += '<rect x="' + (i * 20 + 2) + '" y="' + (58 - h) + '" width="14" height="' + h + '" rx="6" fill="' + (i === bi && x.v > 0 ? 'var(--c-corpo)' : 'var(--c-corpo)') + '" fill-opacity="' + (i === bi && x.v > 0 ? 1 : .35) + '"/>';
+  });
+  return {svg: o + '</svg>', day: sc[bi].v > 0 ? cap(sc[bi].d.toLocaleDateString('pt-BR', {weekday: 'long'})) : '—', pct: Math.round(sc[bi].v * 100)};
+}
+function homeDose(){
+  var nx = null, sl = slotsFor(new Date());
+  sl.forEach(function(x){ if(!nx && !medReg(x.k).s) nx = x; });
+  return nx;
+}
+function wInner(id){
   var k = key(), hg = hasGoal(), bl = blocked(), g = goal(), t = totalOf(k), pct = hg ? t / g : 0;
-  var minToday = sumVals(exTotals(k)), nf = Object.keys(fdTotals(k)).length;
+  var minToday = sumVals(exTotals(k)), nf = Object.keys(fdTotals(k)).length, ft = fdTotals(k), o = '';
+  if(id === 'agua'){
+    return homeWater(hg ? pct : 0, hg, t, hg ? Math.round(pct * 100) + '%' : '—') +
+      '<div class="hm-v">' + (t >= 1000 ? litros(t) : fmt(t) + ' ml') + '</div><div class="hm-s">' + (hg ? (bl ? 'meta informada: ' : 'de ') + litros(g) : 'informe o peso nos ajustes') + '</div>';
+  }
+  if(id === 'ex'){
+    var ex7 = series(function(kk){ return sumVals(exTotals(kk)); }, 7, 0), act = ex7.filter(function(x){ return x.v > 0; }).length;
+    return '<div class="mini">' + homeBars(ex7.map(function(x){ return x.v; }), ex7.map(function(x){ return WK[x.d.getDay()]; })) + '</div>' +
+      '<div class="hm-v">' + minToday + ' min</div><div class="hm-s">hoje · treinou em ' + act + ' de 7 dias</div>';
+  }
+  if(id === 'comida'){
+    return homeDonut(FOOD.map(function(f){ return !!ft[f.id]; })) + '<div class="hm-v">' + nf + (nf === 1 ? ' grupo' : ' grupos') + '</div><div class="hm-s">' + (nf >= 3 ? 'prato variado hoje' : 'tente chegar a 3 grupos') + '</div>';
+  }
+  if(id === 'corpo'){
+    var sc = streakCount();
+    return homeRings(pct, minToday / 30, nf / FOOD.length, sc) + '<div class="hm-v">' + sc + (sc === 1 ? ' dia' : ' dias') + '</div><div class="hm-s">de sequência · ver tudo</div>';
+  }
+  if(id === 'semana'){
+    var w7 = series(function(kk){ return hg ? totalOf(kk) / g : 0; }, 7, 0), x7 = series(function(kk){ return sumVals(exTotals(kk)) / 30; }, 7, 0), f7 = series(function(kk){ return Object.keys(fdTotals(kk)).length / FOOD.length; }, 7, 0);
+    return homeWeek(w7.map(function(x){ return x.v; }), x7.map(function(x){ return x.v; }), f7.map(function(x){ return x.v; }), w7.map(function(x){ return WK[x.d.getDay()]; })) +
+      '<div class="wk-leg"><span><i style="background:var(--c-agua)"></i>Água</span><span><i style="background:var(--c-ex)"></i>Treino</span><span><i style="background:var(--c-food)"></i>Comida</span></div>' +
+      '<div class="hm-s" style="text-align:center;margin-top:4px">Cada linha mostra quanto da meta do dia você cumpriu.</div>';
+  }
+  if(id === 'streak'){
+    var n = streakCount();
+    return '<div class="mini">' + homeStreak() + '</div><div class="hm-v">' + n + (n === 1 ? ' dia' : ' dias') + '</div><div class="hm-s">de sequência · últimos 14 dias</div>';
+  }
+  if(id === 'mes') return homeMonth() + '<div class="hm-s" style="text-align:center;margin-top:6px">✓ dia ativo · ○ algum registro · · sem registro</div>';
+  if(id === 'musculos') return '<div class="mini">' + homeMuscles() + '</div><div class="hm-s">últimos 7 dias · ver exercícios</div>';
+  if(id === 'melhor'){
+    var b = homeBest();
+    return '<div class="mini">' + b.svg + '</div><div class="hm-v">' + b.day + '</div><div class="hm-s">' + (b.pct ? 'o dia mais completo da semana (' + b.pct + '%)' : 'registre algo para ver aqui') + '</div>';
+  }
+  if(id === 'dose'){
+    var nx = homeDose();
+    if(!meds.items.length) return '<div class="hm-v" style="margin-top:22px">Sem lembretes</div><div class="hm-s">cadastre na aba Lembretes</div>';
+    if(!nx) return '<div class="hm-v" style="margin-top:22px">Tudo em dia ✓</div><div class="hm-s">nada pendente hoje</div>';
+    var it = medItem(nx.id);
+    return '<div class="hm-v" style="margin-top:22px;font-size:1.9rem">' + nx.time + '</div><div class="hm-s">' + medName(it, meds.items.indexOf(it)) + '</div>';
+  }
+  if(id === 'tomados'){
+    var all = slotsFor(new Date()), dn = all.filter(function(x){ return medReg(x.k).s === 't'; }).length;
+    if(!all.length) return '<div class="hm-v" style="margin-top:22px">Nada hoje</div><div class="hm-s">sem horários para hoje</div>';
+    var pc = dn / all.length;
+    return '<svg class="ch" viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--line)" stroke-width="11"/><circle cx="60" cy="60" r="46" fill="none" stroke="var(--c-meds)" stroke-width="11" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="' + (100 - pc * 100).toFixed(1) + '" transform="rotate(-90 60 60)"/><text x="60" y="68" text-anchor="middle" font-size="22" font-weight="800" fill="var(--text)">' + dn + '/' + all.length + '</text></svg><div class="hm-v">' + dn + ' de ' + all.length + '</div><div class="hm-s">tomados hoje</div>';
+  }
+  return o;
+}
+var dashEditing = false;
+function visibleW(){ return dash.order.filter(function(w){ return !dash.hidden[w]; }); }
+function isWide(w){ return !!dash.wide[w]; }
+function renderHome(){
   $('hHead').textContent = $('cHeadline').textContent;
   $('hText').textContent = $('cText').textContent;
-  /* água */
-  var pt = hg ? Math.round(pct * 100) + '%' : '—';
-  $('hmAgua').innerHTML = homeWater(hg ? pct : 0, hg, t, pt);
-  $('hvAgua').textContent = t >= 1000 ? litros(t) : fmt(t) + ' ml';
-  $('hsAgua').textContent = hg ? (bl ? 'meta informada: ' : 'de ') + litros(g) : 'informe o peso nos ajustes';
-  /* exercício */
-  var ex7 = series(function(kk){ return sumVals(exTotals(kk)); }, 7, 0), act = ex7.filter(function(x){ return x.v > 0; }).length;
-  $('hmEx').innerHTML = homeBars(ex7.map(function(x){ return x.v; }), ex7.map(function(x){ return WK[x.d.getDay()]; }));
-  $('hvEx').textContent = minToday + ' min';
-  $('hsEx').textContent = 'hoje · treinou em ' + act + ' de 7 dias';
-  /* comida */
-  var ft = fdTotals(k);
-  $('hmFood').innerHTML = homeDonut(FOOD.map(function(f){ return !!ft[f.id]; }));
-  $('hvFood').textContent = nf + (nf === 1 ? ' grupo' : ' grupos');
-  $('hsFood').textContent = nf >= 3 ? 'prato variado hoje' : 'tente chegar a 3 grupos';
-  /* corpo */
-  var sc = streakCount();
-  $('hmCorpo').innerHTML = homeRings(pct, minToday / 30, nf / FOOD.length, sc);
-  $('hvCorpo').textContent = sc + (sc === 1 ? ' dia' : ' dias');
-  $('hsCorpo').textContent = 'de sequência · ver tudo';
-  /* semana */
-  var w7 = series(function(kk){ return hg ? totalOf(kk) / g : 0; }, 7, 0);
-  var x7 = series(function(kk){ return sumVals(exTotals(kk)) / 30; }, 7, 0);
-  var f7 = series(function(kk){ return Object.keys(fdTotals(kk)).length / FOOD.length; }, 7, 0);
-  $('hmWeek').innerHTML = homeWeek(w7.map(function(x){ return x.v; }), x7.map(function(x){ return x.v; }), f7.map(function(x){ return x.v; }), w7.map(function(x){ return WK[x.d.getDay()]; }));
+  $('tab-inicio').classList.toggle('editing', dashEditing);
+  var host = $('hHost'), html = '';
+  visibleW().forEach(function(w){
+    var d = WDEF[w], inner;
+    if(w === 'msg'){
+      var m = dailyMsg();
+      if(!m){ if(!dashEditing) return; inner = '<div class="msgtx">A mensagem automática está escondida.</div>'; }
+      else inner = '<div class="msgtx">“' + m.t + '”</div>';
+      html += '<div class="hm hw w-ind' + (isWide(w) ? ' wide' : '') + '" data-w="' + w + '" style="--hc:var(--c-home)"><div class="hm-h"><i class="hm-chip">' + d.e + '</i>' + (m && m.mine ? 'Sua frase' : d.n) + '</div>' + (dashEditing ? edBar(w) : '') + inner + '</div>';
+      return;
+    }
+    inner = wInner(w);
+    var cls = 'hm hw' + (d.cls ? ' ' + d.cls : '') + (isWide(w) ? ' wide' : '');
+    var attrs = (d.go && !dashEditing ? ' data-go="' + d.go + '" role="button" tabindex="0" aria-label="Abrir ' + d.n + '"' : (d.go ? ' data-go="' + d.go + '"' : ''));
+    html += '<div class="' + cls + '" data-w="' + w + '"' + attrs + ' style="--hc:var(' + (d.hc || '--c-home') + ')"><div class="hm-h"><i class="hm-chip">' + d.e + '</i>' + d.n + '</div>' + (dashEditing ? edBar(w) : '') + inner + '</div>';
+  });
+  host.innerHTML = html;
+  var hid = $('hHidden');
+  if(dashEditing){
+    var hs = dash.order.filter(function(w){ return dash.hidden[w]; });
+    hid.hidden = false;
+    hid.innerHTML = '<div class="kicker">Widgets escondidos</div>' + (hs.length ? hs.map(function(w){ return '<button type="button" data-show="' + w + '">＋ ' + WDEF[w].e + ' ' + WDEF[w].n + '</button>'; }).join('') : '<span class="hm-s">Todos estão no painel.</span>');
+  } else hid.hidden = true;
+  $('dashPanel').hidden = !dashEditing;
+  $('dashEdit').hidden = dashEditing;
+  var pr = $('palRow');
+  if(dashEditing){
+    pr.innerHTML = Object.keys(PALS).map(function(k){
+      var p = PALS[k], bg = k === 'padrao' ? 'linear-gradient(135deg,#92c6ff,#ffab84 40%,#92dfa6 70%,#b79fff)' : 'linear-gradient(135deg,' + p.l[0][1] + ',' + p.l[1][1] + ',' + p.l[2][1] + ')';
+      return '<button type="button" data-pal="' + k + '" class="' + (dash.pal === k ? 'sel' : '') + '" style="background:' + bg + '" aria-label="Paleta ' + p.n + '" title="' + p.n + '"></button>';
+    }).join('');
+  }
+}
+function edBar(w){
+  var vis = visibleW(), i = vis.indexOf(w);
+  return '<div class="etb"><button type="button" data-ed="up" data-w="' + w + '" aria-label="Mover para cima"' + (i === 0 ? ' disabled' : '') + '>↑</button><button type="button" data-ed="down" data-w="' + w + '" aria-label="Mover para baixo"' + (i === vis.length - 1 ? ' disabled' : '') + '>↓</button><button type="button" data-ed="wide" data-w="' + w + '" aria-label="Mudar tamanho">⇔</button><button type="button" data-ed="hide" data-w="' + w + '" aria-label="Esconder">🙈</button></div>';
+}
+function moveW(w, dir){
+  var vis = visibleW(), i = vis.indexOf(w), j = i + dir;
+  if(i < 0 || j < 0 || j >= vis.length) return;
+  var a = dash.order.indexOf(vis[i]), b = dash.order.indexOf(vis[j]), t = dash.order[a]; dash.order[a] = dash.order[b]; dash.order[b] = t;
+}
+function applyPal(){
+  var p = PALS[dash.pal] || PALS.padrao;
+  document.body.setAttribute('data-pal', dash.pal);
+  if(!p.l){ $('palStyle').textContent = ''; return; }
+  function rules(arr, pre){
+    var o = '';
+    for(var i = 0; i < 6; i++){
+      o += pre + 'body[data-pal] #hHost>.hw:nth-child(6n+' + (i + 1) + '){--tb1:' + arr[i][0] + ';--tb2:' + arr[i][1] + '}';
+    }
+    return o;
+  }
+  $('palStyle').textContent = rules(p.l, '') +
+    '@media (prefers-color-scheme: dark){' + rules(p.d, ':root:not([data-theme="light"]) ') + '}' + rules(p.d, ':root[data-theme="dark"] ');
 }
 (function(){
-  var b = document.querySelectorAll('[data-go]');
-  for(var i = 0; i < b.length; i++){ (function(el){ el.onclick = function(){ showTab(el.getAttribute('data-go')); }; })(b[i]); }
+  var host = $('hHost');
+  host.onclick = function(ev){
+    var t = ev.target.closest ? ev.target.closest('[data-ed],[data-go]') : null;
+    if(!t) return;
+    if(t.hasAttribute('data-ed')){
+      var w = t.getAttribute('data-w'), a = t.getAttribute('data-ed');
+      if(a === 'up') moveW(w, -1); else if(a === 'down') moveW(w, 1);
+      else if(a === 'wide'){ if(dash.wide[w]) delete dash.wide[w]; else dash.wide[w] = true; }
+      else if(a === 'hide') dash.hidden[w] = true;
+      saveDash(); renderHome(); return;
+    }
+    if(!dashEditing) showTab(t.getAttribute('data-go'));
+  };
+  host.onkeydown = function(ev){
+    if((ev.key === 'Enter' || ev.key === ' ') && ev.target.hasAttribute && ev.target.hasAttribute('data-go') && !dashEditing){ ev.preventDefault(); showTab(ev.target.getAttribute('data-go')); }
+  };
+  $('hHidden').onclick = function(ev){
+    var w = ev.target.getAttribute && ev.target.getAttribute('data-show');
+    if(!w) return;
+    delete dash.hidden[w]; saveDash(); renderHome();
+  };
+  $('palRow').onclick = function(ev){
+    var p = ev.target.getAttribute && ev.target.getAttribute('data-pal');
+    if(!p) return;
+    dash.pal = p; saveDash(); applyPal(); renderHome();
+  };
+  $('dashEdit').onclick = function(){ dashEditing = true; $('mantraInput').value = dash.mantra; $('msgOff').checked = dash.msgOff; renderHome(); };
+  $('dashDone').onclick = function(){ dashEditing = false; renderHome(); };
+  $('mantraInput').oninput = function(){ dash.mantra = String(this.value).replace(/[<>]/g, '').slice(0, 110); saveDash(); renderHome(); };
+  $('msgOff').onchange = function(){ dash.msgOff = this.checked; saveDash(); renderHome(); };
+  $('dashReset').onclick = function(){
+    confirmBox('Restaurar o painel?', 'A ordem, os tamanhos e as cores voltam ao padrão. Seus registros de água, exercício e comida não são afetados.', 'Restaurar', function(){
+      dash = cleanDash(null); saveDash(); applyPal(); $('mantraInput').value = ''; $('msgOff').checked = false; renderHome(); toast('Painel restaurado.');
+    });
+  };
   $('goSettings').onclick = function(){ openSettings(false); };
+  applyPal();
+})();
+
+/* ---------- lembretes de medicamentos e suplementos ---------- */
+function medItem(id){ for(var i = 0; i < meds.items.length; i++) if(meds.items[i].id === id) return meds.items[i]; return null; }
+function medReg(k){ return meds.regs[k] || {}; }
+function slotsFor(d){
+  var dk = key(d), wd = d.getDay(), out = [];
+  meds.items.forEach(function(it){
+    if(it.ini > dk || (it.fim && it.fim < dk) || it.dias.indexOf(wd) < 0) return;
+    it.horarios.forEach(function(h){ out.push({id: it.id, time: h, k: dk + '|' + it.id + '|' + h}); });
+  });
+  return out.sort(function(a, b){ return a.time < b.time ? -1 : (a.time > b.time ? 1 : 0); });
+}
+function slotDue(x){ var r = medReg(x.k); return r.sn || at(toMin(x.time)); }
+function slotState(x){
+  var r = medReg(x.k);
+  if(r.s) return r.s === 't' ? 'done' : 'skip';
+  var dif = Date.now() - slotDue(x);
+  return dif < 0 ? 'wait' : (dif <= 30 * MS_MIN ? 'now' : 'late');
+}
+function medCounts(){
+  var sl = slotsFor(new Date()), c = {total: sl.length, done: 0, late: 0, now: 0};
+  sl.forEach(function(x){ var s = slotState(x); if(s === 'done') c.done++; else if(s === 'late') c.late++; else if(s === 'now') c.now++; });
+  return c;
+}
+function renderMeds(){
+  var c = medCounts(), sl = slotsFor(new Date()), i;
+  var bd = $('medBd'), nb = c.late + c.now;
+  bd.hidden = !nb; bd.textContent = nb;
+  $('medHide').checked = meds.hide;
+  if(tab !== 'meds') return;
+  $('medSum').textContent = c.total ? c.done + ' de ' + c.total + (c.total === 1 ? ' tomado hoje' : ' tomados hoje') : 'Nenhum horário para hoje';
+  var h = '';
+  sl.forEach(function(x){
+    var it = medItem(x.id), idx = meds.items.indexOf(it), st = slotState(x), r = medReg(x.k);
+    var chip = st === 'late' ? '<span class="mst late">Atrasado</span>' : (st === 'now' ? '<span class="mst now">Agora</span>' : (st === 'skip' ? '<span class="mst">Pulado</span>' : ''));
+    var sub = x.time + (r.sn && !r.s ? ' → ' + hhmm(r.sn) : '') + (it.dose ? ' · ' + it.dose : '') + (st === 'done' && r.at ? ' · tomado às ' + hhmm(r.at) : '');
+    h += '<div class="mrow" style="--mc:' + it.cor + '"><button type="button" class="mck ' + (st === 'done' ? 'done' : (st === 'skip' ? 'skip' : '')) + '" data-ma="take" data-k="' + x.k + '" aria-label="' + (st === 'done' ? 'Desmarcar ' : 'Marcar como tomado: ') + medName(it, idx) + '">' + (st === 'done' ? '✓' : (st === 'skip' ? '—' : '')) + '</button>' +
+         '<div class="mmain"><div class="mname" data-reveal="' + it.id + '">' + medName(it, idx) + chip + '</div><div class="msub">' + sub + '</div>' +
+         ((st === 'wait' || st === 'now' || st === 'late') ? '<div class="macts"><button type="button" data-ma="snooze" data-k="' + x.k + '">Adiar 15 min</button><button type="button" data-ma="skip" data-k="' + x.k + '">Pular</button></div>' : (st === 'skip' ? '<div class="macts"><button type="button" data-ma="undo" data-k="' + x.k + '">Desfazer</button></div>' : '')) + '</div></div>';
+  });
+  $('medToday').innerHTML = h || '<p class="hint" style="margin:6px 0">Nada marcado para hoje. Toque em “Novo lembrete” para começar.</p>';
+  var li = '';
+  meds.items.forEach(function(it, ix){
+    li += '<div class="mitem"><span class="mdot" style="background:' + it.cor + '"></span><div class="mmain"><div class="mname">' + medName(it, ix) + '</div><div class="msub">' + it.horarios.join(' · ') + ' · ' + (it.dias.length === 7 ? 'todos os dias' : it.dias.map(function(d){ return ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'][d]; }).join(', ')) + (it.dose ? ' · ' + it.dose : '') + '</div></div>' +
+          '<div class="macts" style="margin:0"><button type="button" data-ma="edit" data-id="' + it.id + '">Editar</button><button type="button" data-ma="del" data-id="' + it.id + '">Apagar</button></div></div>';
+  });
+  $('medItems').innerHTML = li || '<p class="hint" style="margin:6px 0">Você ainda não cadastrou nada.</p>';
+  /* últimos 7 dias */
+  var days = series(function(kk){ return kk; }, 7, 0), tot = 0, okd = 0;
+  var g = '<div class="mgrid" style="grid-template-columns:minmax(70px,1.4fr) repeat(7,1fr)"><div></div>' + days.map(function(x){ return '<div class="h">' + WK[x.d.getDay()] + '</div>'; }).join('');
+  meds.items.forEach(function(it, ix){
+    g += '<div class="l">' + medName(it, ix) + '</div>';
+    days.forEach(function(x){
+      var sl2 = slotsFor(x.d).filter(function(y){ return y.id === it.id; });
+      if(!sl2.length){ g += '<div class="c" aria-label="sem horário">·</div>'; return; }
+      var n = sl2.filter(function(y){ return medReg(y.k).s === 't'; }).length;
+      tot += sl2.length; okd += n;
+      g += n === sl2.length ? '<div class="c ok" aria-label="tomado">✓</div>' : (n ? '<div class="c part" aria-label="parcial">○</div>' : '<div class="c" aria-label="não marcado">–</div>');
+    });
+  });
+  $('medWeek').innerHTML = meds.items.length ? g + '</div><p class="hint" style="margin-top:8px">✓ tudo marcado · ○ parte · – nada marcado · · sem horário</p>' : '<p class="hint" style="margin:6px 0">Cadastre um lembrete para ver o histórico.</p>';
+  $('medWeekTxt').textContent = tot ? 'Você marcou ' + okd + ' de ' + tot + ' horários nos últimos 7 dias.' : '';
+}
+var medAlerted = {};
+function medTick(fire){
+  if(!fire) return;
+  slotsFor(new Date()).forEach(function(x){
+    if(medAlerted[x.k + (medReg(x.k).sn || '')]) return;
+    if(slotState(x) === 'now'){
+      medAlerted[x.k + (medReg(x.k).sn || '')] = true;
+      var it = medItem(x.id), idx = meds.items.indexOf(it);
+      alertUser('💊 Hora do seu lembrete', meds.hide ? 'Abra o app para ver.' : medName(it, idx) + (it.dose ? ' · ' + it.dose : ''));
+    }
+  });
+  renderMeds();
+}
+var medEdit = null, mdType = 'suplemento';
+function mdTimeRow(v){
+  var d = document.createElement('div'); d.className = 'row'; d.style.marginTop = '6px';
+  d.innerHTML = '<input type="time" value="' + (v || '08:00') + '" aria-label="Horário"><button type="button" class="btn" style="flex:none;width:52px" aria-label="Remover horário">✕</button>';
+  d.querySelector('button').onclick = function(){ if($('mdTimes').children.length > 1) d.remove(); };
+  $('mdTimes').appendChild(d);
+}
+function openMed(id){
+  var it = id ? medItem(id) : null;
+  medEdit = it ? it.id : null;
+  $('mdTitle').textContent = it ? 'Editar lembrete' : 'Novo lembrete';
+  $('mdName').value = it ? it.nome : ''; $('mdDose').value = it ? it.dose : ''; $('mdNote').value = it ? it.obs : ''; $('mdEnd').value = (it && it.fim) ? it.fim : '';
+  mdType = it ? it.tipo : 'suplemento';
+  $('mdTimes').innerHTML = '';
+  (it ? it.horarios : ['08:00']).forEach(mdTimeRow);
+  var dd = it ? it.dias : [0, 1, 2, 3, 4, 5, 6];
+  $('mdDays').innerHTML = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'].map(function(n, i){ return '<button type="button" data-d="' + i + '" class="' + (dd.indexOf(i) >= 0 ? 'sel' : '') + '">' + n + '</button>'; }).join('');
+  var tb = $('mdType').querySelectorAll('button');
+  for(var i = 0; i < tb.length; i++) tb[i].classList.toggle('sel', tb[i].getAttribute('data-t') === mdType);
+  $('mdErr').textContent = '';
+  open('mMed');
+}
+function saveMed(){
+  var nome = String($('mdName').value).replace(/[<>]/g, '').trim();
+  if(!nome){ $('mdErr').textContent = 'Digite o nome.'; return; }
+  var hs = [], inputs = $('mdTimes').querySelectorAll('input');
+  for(var i = 0; i < inputs.length; i++) if(/^([01]\d|2[0-3]):[0-5]\d$/.test(inputs[i].value) && hs.indexOf(inputs[i].value) < 0) hs.push(inputs[i].value);
+  if(!hs.length){ $('mdErr').textContent = 'Escolha pelo menos um horário.'; return; }
+  var dias = [], db = $('mdDays').querySelectorAll('button.sel');
+  for(var j = 0; j < db.length; j++) dias.push(parseInt(db[j].getAttribute('data-d'), 10));
+  if(!dias.length){ $('mdErr').textContent = 'Escolha pelo menos um dia da semana.'; return; }
+  var fim = $('mdEnd').value || null;
+  if(fim && fim < key()){ $('mdErr').textContent = 'A data final já passou.'; return; }
+  var it = medEdit ? medItem(medEdit) : null;
+  if(!it){
+    if(meds.items.length >= 30){ $('mdErr').textContent = 'Limite de 30 itens.'; return; }
+    it = {id: 'm' + Date.now().toString(36) + Math.floor(Math.random() * 1000), ini: key(), cor: MED_COLORS[meds.items.length % MED_COLORS.length]};
+    meds.items.push(it);
+  }
+  it.nome = nome.slice(0, 40); it.tipo = mdType; it.dose = String($('mdDose').value).replace(/[<>]/g, '').trim().slice(0, 40);
+  it.horarios = hs.sort(); it.dias = dias.sort(); it.obs = String($('mdNote').value).replace(/[<>]/g, '').trim().slice(0, 80); it.fim = fim;
+  persist(); close('mMed'); renderAll();
+  toast('Lembrete salvo ✅');
+}
+function medAct(a, k, id){
+  if(a === 'edit'){ openMed(id); return; }
+  if(a === 'del'){
+    var it = medItem(id);
+    confirmBox('Apagar este lembrete?', (meds.hide ? 'O item' : it.nome) + ' e o histórico dele serão apagados deste aparelho.', 'Apagar', function(){
+      meds.items = meds.items.filter(function(x){ return x.id !== id; });
+      Object.keys(meds.regs).forEach(function(kk){ if(kk.split('|')[1] === id) delete meds.regs[kk]; });
+      persist(); renderAll(); toast('Lembrete apagado.');
+    });
+    return;
+  }
+  var r = meds.regs[k] || {};
+  if(a === 'take'){ if(r.s === 't') delete meds.regs[k]; else meds.regs[k] = {s: 't', at: Date.now()}; }
+  else if(a === 'skip') meds.regs[k] = {s: 'p', at: Date.now()};
+  else if(a === 'undo') delete meds.regs[k];
+  else if(a === 'snooze') meds.regs[k] = {sn: Math.max(Date.now(), slotDue({k: k, time: k.split('|')[2]})) + 15 * MS_MIN};
+  persist(); renderAll();
+}
+function icsEsc(t){ return String(t).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+function icsFold(l){
+  var out = [], enc = new TextEncoder(), cur = '';
+  Array.from(l).forEach(function(ch){
+    if(enc.encode(cur + ch).length > 73){ out.push(cur); cur = ' ' + ch; } else cur += ch;
+  });
+  out.push(cur);
+  return out.join('\r\n');
+}
+function icsDate(d){ return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); }
+function buildICS(){
+  var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Beba Agua//Lembretes//PT-BR', 'CALSCALE:GREGORIAN'];
+  var stamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z', bd = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+  meds.items.forEach(function(it){
+    var st = new Date(Math.max(new Date(it.ini + 'T12:00:00').getTime(), new Date().setHours(12, 0, 0, 0)));
+    for(var s = 0; s < 7 && it.dias.indexOf(st.getDay()) < 0; s++) st.setDate(st.getDate() + 1);
+    it.horarios.forEach(function(h){
+      var hh = h.slice(0, 2), mm = h.slice(3), end = new Date(st); 
+      var rule = it.dias.length === 7 ? 'FREQ=DAILY' : 'FREQ=WEEKLY;BYDAY=' + it.dias.map(function(d){ return bd[d]; }).join(',');
+      if(it.fim) rule += ';UNTIL=' + it.fim.replace(/-/g, '') + 'T235959';
+      L.push('BEGIN:VEVENT', 'UID:' + it.id + '-' + hh + mm + '@bebaagua.local', 'DTSTAMP:' + stamp,
+        'DTSTART:' + icsDate(st) + 'T' + hh + mm + '00', 'DTEND:' + icsDate(st) + 'T' + hh + mm + '00', 'RRULE:' + rule,
+        'SUMMARY:' + icsEsc('Lembrete: ' + it.nome), 'DESCRIPTION:' + icsEsc((it.dose ? it.dose + '. ' : '') + 'Lembrete pessoal do app Beba Água. Não é orientação médica.'),
+        'BEGIN:VALARM', 'TRIGGER:PT0S', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsEsc('Lembrete: ' + it.nome), 'END:VALARM', 'END:VEVENT');
+    });
+  });
+  L.push('END:VCALENDAR');
+  return L.map(icsFold).join('\r\n') + '\r\n';
+}
+(function(){
+  $('medNew').onclick = function(){ openMed(null); };
+  $('mdCancel').onclick = function(){ close('mMed'); };
+  $('mdSave').onclick = saveMed;
+  $('mdAddTime').onclick = function(){ if($('mdTimes').children.length < 6) mdTimeRow('12:00'); };
+  $('mdType').onclick = function(ev){
+    var t = ev.target.getAttribute && ev.target.getAttribute('data-t');
+    if(!t) return;
+    mdType = t;
+    var tb = $('mdType').querySelectorAll('button');
+    for(var i = 0; i < tb.length; i++) tb[i].classList.toggle('sel', tb[i].getAttribute('data-t') === t);
+  };
+  $('mdDays').onclick = function(ev){ var b = ev.target; if(b && b.getAttribute && b.getAttribute('data-d') !== null) b.classList.toggle('sel'); };
+  var tb = $('tab-meds');
+  tb.onclick = function(ev){
+    var t = ev.target, a = t.getAttribute && t.getAttribute('data-ma');
+    if(a){ medAct(a, t.getAttribute('data-k'), t.getAttribute('data-id')); return; }
+    var rv = t.getAttribute && t.getAttribute('data-reveal');
+    if(rv && meds.hide){ revealId = rv; renderMeds(); setTimeout(function(){ revealId = null; renderMeds(); }, 4000); }
+  };
+  $('medHide').onchange = function(){ meds.hide = this.checked; persist(); renderAll(); };
+  $('medIcs').onclick = function(){
+    if(!meds.items.length){ toast('Cadastre um lembrete primeiro.'); return; }
+    try{
+      var blob = new Blob([buildICS()], {type: 'text/calendar;charset=utf-8'}), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'lembretes-beba-agua.ics';
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ try{ URL.revokeObjectURL(a.href); }catch(e){} a.remove(); }, 1500);
+      toast('Arquivo gerado. Abra-o para adicionar ao calendário. 📅');
+    }catch(e){ toast('Não consegui gerar o arquivo neste aparelho.'); }
+  };
+  $('medWipe').onclick = function(){
+    confirmBox('Apagar todos os lembretes?', 'Todos os itens e o histórico de tomadas serão apagados deste aparelho. Isso não pode ser desfeito.', 'Apagar tudo', function(){
+      meds = cleanMeds(null); persist(); renderAll(); toast('Lembretes apagados.');
+    });
+  };
 })();
 
 /* ---------- avisos ---------- */
@@ -2116,6 +2780,7 @@ function tick(fire){
     else if(st.s === 'late') alertUser('⚠️ Muito tempo sem beber!', 'Seu corpo pode estar ficando desidratado. Beba um copo agora.');
   }
   lastState = st.s;
+  medTick(fire);
 }
 
 /* ---------- efeitos ---------- */
@@ -2475,7 +3140,7 @@ $('copyPix').onclick = function(){
   } else { fallback(); }
 };
 
-['mWeight', 'mOther', 'mDonate', 'mEx', 'mFd', 'mHist', 'mAdd'].forEach(function(id){
+['mWeight', 'mOther', 'mDonate', 'mEx', 'mFd', 'mHist', 'mAdd', 'mMed'].forEach(function(id){
   $(id).addEventListener('click', function(e){
     if(e.target !== $(id)) return;
     if(id === 'mWeight' && weightLocked) return;
@@ -2552,7 +3217,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'beba-agua', versao: 5, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'beba-agua', versao: 6, meds: meds, dash: dash, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -2581,6 +3246,8 @@ function importData(file){
     prof = cleanProf(d.prof || {age: null, cond: [], water: null, level: 'regular', done: !!weight});
     prof.done = true;
     log = cleanLog(d.log); ex = cleanEx(d.ex); fd = cleanFd(d.fd); rest = cleanRest(d.rest);
+    if(d.meds) meds = cleanMeds(d.meds);
+    if(d.dash){ dash = cleanDash(d.dash); saveDash(); applyPal(); }
     if(['auto', 'light', 'dark'].indexOf(d.theme) >= 0) theme = d.theme;
     save('weight', weight); save('cfg', cfg); save('prof', prof); save('theme', theme);
     persist(); applyTheme();
@@ -2597,7 +3264,7 @@ $('fileImport').onchange = function(){ var f = this.files && this.files[0]; if(f
 
 /* ---------- tema ---------- */
 var THEME_NAMES = {auto: 'automático', light: 'claro', dark: 'escuro'};
-var META = {inicio: ['#4f46e5', '#0f0b2a'], agua: ['#0a6fb8', '#08141d'], ex: ['#c2410c', '#150f0a'], comida: ['#2e7d32', '#09150d'], corpo: ['#6d3fc0', '#110c1b']};
+var META = {meds: ['#be185d', '#200a1e'], inicio: ['#4f46e5', '#0f0b2a'], agua: ['#0a6fb8', '#08141d'], ex: ['#c2410c', '#150f0a'], comida: ['#2e7d32', '#09150d'], corpo: ['#6d3fc0', '#110c1b']};
 function setMeta(){
   var dark = theme === 'dark' || (theme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
   $('metaTheme').setAttribute('content', (META[tab] || META.agua)[dark ? 1 : 0]);
@@ -2608,6 +3275,7 @@ function applyTheme(){
   setMeta();
   $('btnTheme').textContent = theme === 'dark' ? '🌙' : (theme === 'light' ? '☀️' : '🌓');
   $('themeInput').value = theme;
+  if(typeof renderHome === 'function') renderHome();
 }
 function setTheme(t){ theme = t; save('theme', t); applyTheme(); }
 $('btnTheme').onclick = function(){
@@ -2626,7 +3294,7 @@ if(window.matchMedia){
 }
 
 /* ---------- abas ---------- */
-var TITLES = {inicio: '🏠 Início', agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
+var TITLES = {meds: '💊 Lembretes', inicio: '🏠 Início', agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
 function showTab(t){
   tab = t; save('tab', t);
   document.body.setAttribute('data-tab', t);
@@ -2640,7 +3308,7 @@ function showTab(t){
   try{ window.scrollTo(0, 0); }catch(e){}
   renderAll();
 }
-$('nav-add').onclick = function(){ openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
+$('nav-add').onclick = function(){ if(tab === 'meds'){ openMed(null); return; } openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
 (function(){
   ['agua', 'ex', 'comida', 'corpo'].forEach(function(id){
     var m = $('tab-' + id), L = document.createElement('div'), R = document.createElement('div'), inL = true;
