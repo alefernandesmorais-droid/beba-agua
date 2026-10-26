@@ -869,15 +869,16 @@ details[open]>summary::after{content:" ▴"}
 @keyframes breathe{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.012,1.008) translateY(-1.5px)}}
 @media (prefers-reduced-motion: reduce){.breath,.m-cardio{animation:none !important}}
 .nav button span.av{filter:none;opacity:1}
-.m{stroke-opacity:.14}.absline{stroke-opacity:.2}
+.m{stroke-opacity:0}.absline{display:none}
+.stage svg{--bodyfill:color-mix(in srgb,var(--card) 88%,var(--accent));--ink:color-mix(in srgb,var(--text) 82%,transparent)}
 .stage .bt-gear{position:absolute;top:0;right:-16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);box-shadow:var(--sh);cursor:pointer;font-size:1.05rem;line-height:1;z-index:2;padding:0}
 .stage .bt-gear:active{transform:scale(.92)}
 .bt-sex{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
 .bt-sex button{border:2px solid var(--line);background:var(--bg);color:var(--text);border-radius:18px;padding:10px 6px 8px;font:inherit;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
 .bt-sex button.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--bg))}
 .bt-sex .bt-pv{width:112px}
-.bt-sex .bt-pv svg{--shape:color-mix(in srgb,var(--accent) 38%,var(--card));--water2:var(--accent)}
-.bt-sex button.sel .bt-pv svg{--shape:color-mix(in srgb,var(--accent) 78%,var(--card))}
+.bt-sex .bt-pv svg{--bodyfill:color-mix(in srgb,var(--accent) 10%,var(--card));--ink:var(--accent)}
+.bt-sex button.sel .bt-pv svg{--bodyfill:color-mix(in srgb,var(--accent) 24%,var(--card))}
 .bt-sex button{padding:12px 6px 10px;font-size:1rem}
 .bt-sex .bt-pv svg{width:100%;height:auto;display:block}
 .pl{transform-box:view-box;transform-origin:50% 50%}
@@ -1268,7 +1269,7 @@ details[open]>summary::after{content:" ▴"}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 20.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 21.</p>
   </footer>
 </div>
 
@@ -2015,21 +2016,23 @@ function plateSVG(){
 var SILP = [[96.9,4.0],[89.5,7.1],[85.7,10.8],[83.3,17.6],[81.4,34.4],[83.3,38.1],[85.7,40.0],[87.6,45.6],[87.6,58.6],[84.5,61.7],[73.3,67.3],[54.7,74.1],[51.0,77.8],[47.9,83.4],[46.7,90.8],[46.7,107.6],[44.2,117.5],[43.6,132.4],[40.5,138.0],[38.0,146.7],[36.1,166.5],[32.4,189.5],[21.8,202.5],[16.9,213.6],[21.2,211.2],[23.7,207.4],[25.6,208.1],[24.3,221.7],[23.1,226.1],[23.7,228.5],[25.6,226.7],[26.2,220.5],[28.7,213.0],[30.5,213.6],[29.9,222.9],[28.7,227.3],[29.3,229.8],[30.5,229.8],[32.4,222.9],[34.3,223.6],[34.3,229.8],[36.1,228.5],[37.4,219.2],[39.2,219.8],[39.2,224.8],[39.8,225.4],[41.1,224.2],[42.3,212.4],[41.7,190.7],[44.8,180.2],[51.6,165.9],[57.2,148.5],[57.2,139.8],[62.8,113.8],[65.3,113.2],[67.7,121.8],[70.2,136.7],[69.0,164.0],[65.3,179.5],[62.8,198.1],[64.0,234.1],[65.9,249.6],[68.4,260.2],[68.4,280.6],[66.5,296.1],[66.5,312.3],[74.6,359.4],[73.3,361.9],[73.3,371.8],[61.5,387.3],[61.5,389.8],[65.3,393.5],[67.7,393.5],[69.0,394.8],[73.3,394.1],[74.6,395.4],[78.3,395.4],[82.0,391.0],[83.9,381.7],[86.4,377.4],[86.4,371.8],[84.5,363.1],[84.5,345.8],[90.1,311.6],[90.1,270.1],[95.7,233.5],[97.5,204.3],[98.8,203.1],[100.6,203.1],[103.7,238.5],[108.1,263.9],[109.3,276.9],[108.7,311.6],[114.9,352.6],[112.4,377.4],[114.9,381.1],[115.5,387.3],[117.4,392.3],[120.5,395.4],[124.2,395.4],[125.4,393.5],[127.9,394.8],[133.5,393.5],[137.2,389.8],[136.6,386.1],[125.4,371.8],[125.4,362.5],[124.2,358.2],[132.3,311.6],[132.3,294.3],[131.0,289.3],[130.4,260.2],[132.3,254.0],[134.7,234.1],[136.0,198.8],[134.1,182.6],[129.8,162.8],[128.5,138.0],[132.9,113.8],[134.1,112.5],[136.0,113.2],[141.6,139.8],[142.2,151.0],[157.1,189.5],[157.7,193.8],[156.4,196.3],[156.4,211.2],[157.7,224.2],[158.9,225.4],[159.5,224.8],[158.9,215.5],[160.8,214.9],[162.0,218.0],[162.6,227.9],[164.5,229.8],[163.9,217.4],[165.7,216.7],[167.6,227.9],[169.5,229.8],[170.1,226.1],[168.8,222.3],[168.8,215.5],[170.7,214.9],[171.9,217.4],[173.2,226.7],[175.1,228.5],[175.7,225.4],[174.4,221.1],[173.2,207.4],[175.1,206.8],[180.0,213.0],[182.5,213.6],[176.3,201.2],[170.1,193.2],[167.0,191.3],[163.3,171.5],[161.4,149.1],[158.9,139.2],[155.2,132.4],[155.2,122.5],[152.1,106.3],[152.1,89.0],[150.9,82.8],[146.5,75.9],[144.0,74.1],[122.9,66.0],[115.5,62.3],[111.2,58.6],[111.2,46.2],[113.0,40.6],[116.7,36.3],[118.0,31.9],[118.0,29.4],[116.1,27.6],[115.5,17.0],[113.6,12.1],[108.7,6.5],[101.9,4.0]];
 var MUSP = {"ombros":[[[72.1,82.2],[71.2,86.6],[68.8,90.5],[65.0,93.4],[60.3,95.0],[55.3,95.0],[50.7,93.4],[46.9,90.5],[44.4,86.6],[43.6,82.2],[44.4,77.7],[46.9,73.8],[50.7,70.9],[55.3,69.3],[60.3,69.3],[65.0,70.9],[68.8,73.8],[71.2,77.7]],[[127.9,82.2],[128.8,86.6],[131.2,90.5],[135.0,93.4],[139.7,95.0],[144.7,95.0],[149.3,93.4],[153.1,90.5],[155.6,86.6],[156.4,82.2],[155.6,77.7],[153.1,73.8],[149.3,70.9],[144.7,69.3],[139.7,69.3],[135.0,70.9],[131.2,73.8],[128.8,77.7]]],"peito":[[[98.1,103.2],[97.2,107.7],[94.7,111.6],[90.7,114.5],[85.8,116.1],[80.7,116.1],[75.8,114.5],[71.8,111.6],[69.3,107.7],[68.4,103.2],[69.3,98.8],[71.8,94.9],[75.8,92.0],[80.7,90.4],[85.8,90.4],[90.7,92.0],[94.7,94.9],[97.2,98.8]],[[101.9,103.2],[102.8,107.7],[105.3,111.6],[109.3,114.5],[114.2,116.1],[119.3,116.1],[124.2,114.5],[128.2,111.6],[130.7,107.7],[131.6,103.2],[130.7,98.8],[128.2,94.9],[124.2,92.0],[119.3,90.4],[114.2,90.4],[109.3,92.0],[105.3,94.9],[102.8,98.8]]],"abdomen":[[[115.5,159.7],[114.5,169.9],[111.7,178.8],[107.4,185.5],[102.2,189.0],[96.6,189.0],[91.3,185.5],[87.0,178.8],[84.2,169.9],[83.3,159.7],[84.2,149.5],[87.0,140.5],[91.3,133.9],[96.6,130.4],[102.2,130.4],[107.4,133.9],[111.7,140.5],[114.5,149.5]]],"costas":[[[73.9,136.7],[73.6,145.2],[72.6,152.7],[71.2,158.2],[69.3,161.2],[67.4,161.2],[65.6,158.2],[64.1,152.7],[63.1,145.2],[62.8,136.7],[63.1,128.2],[64.1,120.8],[65.6,115.2],[67.4,112.3],[69.3,112.3],[71.2,115.2],[72.6,120.8],[73.6,128.2]],[[126.1,136.7],[126.4,145.2],[127.4,152.7],[128.8,158.2],[130.7,161.2],[132.6,161.2],[134.4,158.2],[135.9,152.7],[136.9,145.2],[137.2,136.7],[136.9,128.2],[135.9,120.8],[134.4,115.2],[132.6,112.3],[130.7,112.3],[128.8,115.2],[127.4,120.8],[126.4,128.2]]],"bracos":[[[34.3,72.8],[62.8,79.7],[65.3,114.4],[62.8,156.6],[59.1,206.2],[10.7,238.5],[10.7,72.8]],[[165.7,72.8],[137.2,79.7],[134.7,114.4],[137.2,156.6],[140.9,206.2],[189.3,238.5],[189.3,72.8]]],"pernas":[[[59.1,201.2],[98.8,201.2],[98.8,404.7],[59.1,404.7]],[[140.9,201.2],[101.2,201.2],[101.2,404.7],[140.9,404.7]]]};
 var HEART0 = [109.9,109.4];
+var DETP = {"m":[[[94.4,71.6],[82.6,72.2],[69.0,78.4]],[[105.6,71.6],[117.4,72.2],[131.0,78.4]],[[69.6,116.9],[83.3,123.7],[97.5,118.1]],[[130.4,116.9],[116.7,123.7],[102.5,118.1]],[[99.4,87.1],[99.4,124.3]],[[99.4,133.0],[99.4,178.9]],[[88.8,139.2],[99.4,141.1],[109.9,139.2]],[[88.8,154.1],[99.4,156.0],[109.9,154.1]],[[88.8,169.0],[99.4,170.8],[109.9,169.0]],[[96.3,182.6],[99.4,185.7],[102.5,182.6]],[[70.2,188.8],[83.9,202.5],[98.8,208.7]],[[129.8,188.8],[116.1,202.5],[101.2,208.7]],[[73.9,284.4],[80.8,288.7],[88.8,285.0]],[[126.1,284.4],[119.2,288.7],[111.2,285.0]]],"f":[[[94.4,71.6],[82.6,72.2],[69.0,78.4]],[[105.6,71.6],[117.4,72.2],[131.0,78.4]],[[96.3,172.7],[99.4,175.8],[102.5,172.7]],[[70.8,113.2],[78.9,126.8],[93.8,118.1]],[[129.2,113.2],[121.1,126.8],[106.2,118.1]],[[73.9,284.4],[80.8,288.7],[88.8,285.0]],[[126.1,284.4],[119.2,288.7],[111.2,285.0]]]};
 var BT = {
   m: {n: 'Masculino', def: 'trap', types: [
-    {id: 'tri-inv', n: 'Triângulo invertido (ombros largos, cintura fina)', sh: 1.1, ch: 1.05, wa: .88, hi: .94},
+    {id: 'tri-inv', n: 'Triângulo invertido (ombros largos, cintura fina)', sh: 1.14, ch: 1.08, wa: .82, hi: .9},
     {id: 'trap', n: 'Trapézio (atlético)', sh: 1, ch: 1, wa: 1, hi: 1},
-    {id: 'ret', n: 'Retângulo', sh: .94, ch: .97, wa: 1.08, hi: 1.02},
-    {id: 'red', n: 'Redondo (barriga mais cheia)', sh: .98, ch: 1.05, wa: 1.3, hi: 1.08},
-    {id: 'amp', n: 'Ampulheta', sh: 1, ch: 1, wa: .88, hi: 1.12},
-    {id: 'tri', n: 'Triângulo (quadril mais largo)', sh: .9, ch: .95, wa: 1.12, hi: 1.22}]},
+    {id: 'ret', n: 'Retângulo', sh: .92, ch: .95, wa: 1.12, hi: 1.04},
+    {id: 'red', n: 'Redondo (barriga mais cheia)', sh: .98, ch: 1.08, wa: 1.45, hi: 1.12},
+    {id: 'amp', n: 'Ampulheta', sh: 1, ch: 1, wa: .84, hi: 1.16},
+    {id: 'tri', n: 'Triângulo (quadril mais largo)', sh: .86, ch: .92, wa: 1.2, hi: 1.3}]},
   f: {n: 'Feminino', def: 'amp', types: [
-    {id: 'amp', n: 'Ampulheta', sh: .86, ch: .9, wa: .72, hi: 1.05},
-    {id: 'ret', n: 'Retângulo', sh: .86, ch: .88, wa: .9, hi: .98},
-    {id: 'pera', n: 'Pera (triângulo)', sh: .82, ch: .84, wa: .76, hi: 1.18},
-    {id: 'tri-inv', n: 'Triângulo invertido', sh: .98, ch: .92, wa: .76, hi: .9},
-    {id: 'red', n: 'Redondo (maçã)', sh: .88, ch: .95, wa: 1.1, hi: 1.02},
-    {id: 'dia', n: 'Diamante', sh: .86, ch: .9, wa: 1.05, hi: .95}]}
+    {id: 'red', n: 'Redondo', sh: .88, ch: .98, wa: 1.22, hi: 1.05},
+    {id: 'dia', n: 'Diamante', sh: .84, ch: .9, wa: 1.15, hi: .92},
+    {id: 'tri', n: 'Triângulo', sh: .78, ch: .8, wa: .92, hi: 1.25},
+    {id: 'amp', n: 'Ampulheta', sh: .84, ch: .9, wa: .66, hi: 1.08},
+    {id: 'ret', n: 'Retângulo', sh: .84, ch: .86, wa: .88, hi: .96},
+    {id: 'pera', n: 'Pera', sh: .8, ch: .82, wa: .7, hi: 1.22},
+    {id: 'tri-inv', n: 'Triângulo invertido', sh: 1, ch: .94, wa: .74, hi: .88}]}
 };
 function btClean(o){
   var r = {sex: 'm', m: BT.m.def, f: BT.f.def};
@@ -2049,6 +2052,16 @@ function spl(pts){
     d += ' C' + r1(p1[0] + (p2[0] - p0[0]) / 6) + ' ' + r1(p1[1] + (p2[1] - p0[1]) / 6) + ' ' + r1(p2[0] - (p3[0] - p1[0]) / 6) + ' ' + r1(p2[1] - (p3[1] - p1[1]) / 6) + ' ' + r1(p2[0]) + ' ' + r1(p2[1]);
   }
   return d + ' Z';
+}
+/* spline aberta (linhas de detalhe) */
+function splo(pts){
+  var n = pts.length, d = 'M' + r1(pts[0][0]) + ' ' + r1(pts[0][1]);
+  if(n === 2) return d + ' L' + r1(pts[1][0]) + ' ' + r1(pts[1][1]);
+  for(var i = 0; i < n - 1; i++){
+    var p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(n - 1, i + 2)];
+    d += ' C' + r1(p1[0] + (p2[0] - p0[0]) / 6) + ' ' + r1(p1[1] + (p2[1] - p0[1]) / 6) + ' ' + r1(p2[0] - (p3[0] - p1[0]) / 6) + ' ' + r1(p2[1] - (p3[1] - p1[1]) / 6) + ' ' + r1(p2[0]) + ' ' + r1(p2[1]);
+  }
+  return d;
 }
 function buildItems(sex, typeId){
   var T = btType(sex, typeId);
@@ -2076,6 +2089,8 @@ function buildItems(sex, typeId){
   var y1 = bnd[2] + (bnd[3] - bnd[2]) * .38, y2 = bnd[2] + (bnd[3] - bnd[2]) * .66;
   items.abs = 'M100 ' + r1(bnd[2] + 8) + ' V' + r1(bnd[3] - 8) + ' M' + r1(bnd[0] + 5) + ' ' + r1(y1) + ' H' + r1(bnd[1] - 5) + ' M' + r1(bnd[0] + 5) + ' ' + r1(y2) + ' H' + r1(bnd[1] - 5);
   items.fx = fx;
+  var dl = DETP[sex === 'f' ? 'f' : 'm'];
+  items.det = dl.map(function(l){ return splo(warp(l)); });
   return items;
 }
 var ITEMS = buildItems(bt.sex, bt[bt.sex]);
@@ -2101,25 +2116,23 @@ function bodySVG(p, mode, its){
   var plain = sil.map(function(it){ return layer(it, ''); }).join('');
   var clip = sil.map(clipShape).join('');
   var mus = its.filter(function(it){ return it.g; }).map(function(it){ return layer(it, 'm m-' + it.g); }).join('');
-  var shade = '<g fill="url(#sh-' + p + ')" opacity=".12" pointer-events="none">' + plain + '</g>';
+  var det = (its.det || []).map(function(d){ return '<path d="' + d + '"/>'; }).join('');
   var s = '<svg viewBox="0 0 200 400" role="img" aria-label="Corpo humano">';
   s += '<defs><clipPath id="cp-' + p + '">' + clip + '</clipPath>' +
        '<linearGradient id="wg-' + p + '" x1="0" y1="0" x2="0" y2="1">' +
-       '<stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient>' +
-       '<linearGradient id="sh-' + p + '" gradientUnits="userSpaceOnUse" x1="30" y1="40" x2="170" y2="140">' +
-       '<stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#8a8a8a"/><stop offset="1" stop-color="#000"/></linearGradient></defs>';
-  s += '<ellipse cx="100" cy="396" rx="46" ry="4" fill="#000" opacity=".12"/>';
+       '<stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient></defs>';
+  s += '<ellipse cx="100" cy="396" rx="44" ry="3.5" fill="#000" opacity=".1"/>';
   s += '<g class="breath">';
-  s += '<g fill="none" stroke="var(--water2)" stroke-opacity=".55" stroke-width="3">' + plain + '</g>';
-  s += '<g fill="var(--shape)">' + plain + '</g>' + shade;
+  s += '<g class="bfill" fill="var(--bodyfill)">' + plain + '</g>';
   if(mode !== 'muscle' && mode !== 'plain'){
     s += '<g clip-path="url(#cp-' + p + ')"><g class="water" id="water-' + p + '" style="transform:translateY(410px)">' +
          '<rect x="-100" y="2" width="500" height="420" fill="url(#wg-' + p + ')"/>' +
          '<g class="wave b" opacity=".55"><path fill="var(--water1)" d="' + WAVE + '"/></g>' +
-         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g>' + shade + '</g>';
+         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g></g>';
   }
-  if(mode !== 'water' && mode !== 'plain') s += '<path class="absline" d="' + its.abs + '"/>';
   if(mode !== 'water' && mode !== 'plain') s += '<g class="mus" clip-path="url(#cp-' + p + ')">' + mus + '</g>';
+  s += '<g class="bline" fill="none" stroke="var(--ink)" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">' + plain + '</g>';
+  s += '<g class="bdet" fill="none" stroke="var(--ink)" stroke-opacity=".55" stroke-width="1" stroke-linecap="round">' + det + '</g>';
   s += '</g><g id="fx-' + p + '"></g></svg>';
   return s;
 }
