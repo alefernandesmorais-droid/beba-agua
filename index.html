@@ -875,7 +875,10 @@ details[open]>summary::after{content:" ▴"}
 .bt-sex{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
 .bt-sex button{border:2px solid var(--line);background:var(--bg);color:var(--text);border-radius:18px;padding:10px 6px 8px;font:inherit;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
 .bt-sex button.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--bg))}
-.bt-sex .bt-pv{width:84px}
+.bt-sex .bt-pv{width:112px}
+.bt-sex .bt-pv svg{--shape:color-mix(in srgb,var(--accent) 38%,var(--card));--water2:var(--accent)}
+.bt-sex button.sel .bt-pv svg{--shape:color-mix(in srgb,var(--accent) 78%,var(--card))}
+.bt-sex button{padding:12px 6px 10px;font-size:1rem}
 .bt-sex .bt-pv svg{width:100%;height:auto;display:block}
 .pl{transform-box:view-box;transform-origin:50% 50%}
 .pl.lv3{filter:drop-shadow(0 0 3px var(--fd2))}
@@ -1265,7 +1268,7 @@ details[open]>summary::after{content:" ▴"}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 19.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 20.</p>
   </footer>
 </div>
 
@@ -2098,7 +2101,7 @@ function bodySVG(p, mode, its){
   var plain = sil.map(function(it){ return layer(it, ''); }).join('');
   var clip = sil.map(clipShape).join('');
   var mus = its.filter(function(it){ return it.g; }).map(function(it){ return layer(it, 'm m-' + it.g); }).join('');
-  var shade = '<g fill="url(#sh-' + p + ')" opacity=".2" pointer-events="none">' + plain + '</g>';
+  var shade = '<g fill="url(#sh-' + p + ')" opacity=".12" pointer-events="none">' + plain + '</g>';
   var s = '<svg viewBox="0 0 200 400" role="img" aria-label="Corpo humano">';
   s += '<defs><clipPath id="cp-' + p + '">' + clip + '</clipPath>' +
        '<linearGradient id="wg-' + p + '" x1="0" y1="0" x2="0" y2="1">' +
