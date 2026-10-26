@@ -867,7 +867,16 @@ details[open]>summary::after{content:" ▴"}
 }
 .breath{transform-box:view-box;transform-origin:50% 60%;animation:breathe 4.6s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.012,1.008) translateY(-1.5px)}}
-@media (prefers-reduced-motion: reduce){.breath,.wave,.m-cardio{animation:none !important}}
+@media (prefers-reduced-motion: reduce){.breath,.m-cardio{animation:none !important}}
+.nav button span.av{filter:none;opacity:1}
+.m{stroke-opacity:.14}.absline{stroke-opacity:.2}
+.stage .bt-gear{position:absolute;top:0;right:-16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);box-shadow:var(--sh);cursor:pointer;font-size:1.05rem;line-height:1;z-index:2;padding:0}
+.stage .bt-gear:active{transform:scale(.92)}
+.bt-sex{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.bt-sex button{border:2px solid var(--line);background:var(--bg);color:var(--text);border-radius:18px;padding:10px 6px 8px;font:inherit;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bt-sex button.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--bg))}
+.bt-sex .bt-pv{width:84px}
+.bt-sex .bt-pv svg{width:100%;height:auto;display:block}
 .pl{transform-box:view-box;transform-origin:50% 50%}
 .pl.lv3{filter:drop-shadow(0 0 3px var(--fd2))}
 .pl.grow{animation:plgrow .6s cubic-bezier(.22,1,.36,1)}
@@ -1256,7 +1265,7 @@ details[open]>summary::after{content:" ▴"}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 17.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 18.</p>
   </footer>
 </div>
 
@@ -1348,6 +1357,20 @@ details[open]>summary::after{content:" ▴"}
       <button class="btn" id="oCancel" type="button">Cancelar</button>
       <button class="btn primary" id="oSave" type="button">Adicionar</button>
     </div>
+  </div>
+</div>
+
+<div class="overlay" id="mBody">
+  <div class="modal">
+    <h3>Tipo de corpo</h3>
+    <p>Escolha o desenho que mais se parece com você. É só visual: não muda sua meta nem nenhum cálculo.</p>
+    <div class="bt-sex" id="btSex">
+      <button type="button" data-sex="m"><span class="bt-pv" id="btPvM"></span>Masculino</button>
+      <button type="button" data-sex="f"><span class="bt-pv" id="btPvF"></span>Feminino</button>
+    </div>
+    <label class="lbl" for="btType">Tipo de corpo</label>
+    <select class="dd" id="btType"></select>
+    <div class="row"><button class="btn fx" id="btOk" type="button">Concluir</button></div>
   </div>
 </div>
 
@@ -1984,29 +2007,99 @@ function plateSVG(){
 
 /* ---------- o corpo (desenho) ----------
    g = grupo muscular (null = silhueta); m = tem lado espelhado; rot = [graus, x, y] */
-/* geometria desenhada em 200x420; xf() converte para o viewBox 200x400 (e espelha se preciso) */
-function xf(d, mir){
-  var out = '', n = 0, last = '';
-  d.replace(/([MLCQZ])|(-?\d+\.?\d*)/g, function(m, cmd, num){
-    if(cmd){ out += (out ? ' ' : '') + cmd; n = 0; return ''; }
-    var v = parseFloat(num);
-    if(n % 2 === 0) v = mir ? 200 - v : v; else v = v * 400 / 420;
-    out += ' ' + (Math.round(v * 10) / 10); n++; return '';
-  });
-  return out;
+/* ---------- corpo paramétrico: sexo + tipo de corpo ----------
+   tudo desenhado em 200x400; medidas = meia-largura (px) a partir do centro x=100 */
+var BT = {
+  m: {n: 'Masculino', def: 'trap', neck: 8, head: 13.5, aw: 7.5, legk: .62, types: [
+    {id: 'tri-inv', n: 'Triângulo invertido (ombros largos, cintura fina)', sh: 47, ch: 41, wa: 28, hi: 29, bl: 0},
+    {id: 'trap', n: 'Trapézio (atlético)', sh: 44, ch: 39, wa: 31, hi: 30, bl: 0},
+    {id: 'ret', n: 'Retângulo', sh: 40, ch: 37, wa: 36, hi: 34, bl: 0},
+    {id: 'red', n: 'Redondo (barriga mais cheia)', sh: 41, ch: 42, wa: 45, hi: 38, bl: 5},
+    {id: 'amp', n: 'Ampulheta', sh: 42, ch: 39, wa: 29, hi: 39, bl: 0},
+    {id: 'tri', n: 'Triângulo (quadril mais largo)', sh: 36, ch: 36, wa: 37, hi: 43, bl: 2}]},
+  f: {n: 'Feminino', def: 'amp', neck: 6.5, head: 12.5, aw: 6, legk: .58, types: [
+    {id: 'amp', n: 'Ampulheta', sh: 37, ch: 34, wa: 24, hi: 38, bl: 0},
+    {id: 'ret', n: 'Retângulo', sh: 36, ch: 33, wa: 31, hi: 34, bl: 0},
+    {id: 'pera', n: 'Pera (triângulo)', sh: 32, ch: 30, wa: 25, hi: 42, bl: 0},
+    {id: 'tri-inv', n: 'Triângulo invertido', sh: 42, ch: 36, wa: 28, hi: 31, bl: 0},
+    {id: 'red', n: 'Redondo (maçã)', sh: 36, ch: 36, wa: 39, hi: 36, bl: 5},
+    {id: 'dia', n: 'Diamante', sh: 34, ch: 33, wa: 37, hi: 33, bl: 4}]}
+};
+function btClean(o){
+  var r = {sex: 'm', m: BT.m.def, f: BT.f.def};
+  if(!o || typeof o !== 'object') return r;
+  if(o.sex === 'f') r.sex = 'f';
+  ['m', 'f'].forEach(function(x){ if(BT[x].types.some(function(t){ return t.id === o[x]; })) r[x] = o[x]; });
+  return r;
 }
-function xp(d, both){ var a = xf(d, false); return both ? a + ' ' + xf(d, true) : a; }
-var SIL = 'M 100 18 C 117 18, 126 32, 126 48 C 126 65, 115 77, 109 81 L 109 91 C 128 93, 148 99, 156 114 C 163 128, 167 162, 171 195 C 174 212, 177 228, 172 235 C 167 241, 158 237, 155 225 C 151 202, 147 168, 141 142 L 136 195 C 141 218, 143 245, 139 282 C 136 318, 134 358, 133 386 C 133 398, 125 404, 116 404 C 108 404, 105 397, 105 385 L 103 262 L 97 262 L 95 385 C 95 397, 92 404, 84 404 C 75 404, 67 398, 67 386 C 66 358, 64 318, 61 282 C 57 245, 59 218, 64 195 L 59 142 C 53 168, 49 202, 45 225 C 42 237, 33 241, 28 235 C 23 228, 26 212, 29 195 C 33 162, 37 128, 44 114 C 52 99, 72 93, 91 91 L 91 81 C 85 77, 74 65, 74 48 C 74 32, 83 18, 100 18 Z';
-var ITEMS = [
-  {g:null,      s:'<path d="' + xp(SIL) + '"/>'},
-  {g:'costas',  s:'<path d="' + xp('M 64 120 Q 70 116 74 121 L 72 172 Q 66 170 62 162 Q 60 140 64 120 Z', true) + '"/>'},
-  {g:'peito',   s:'<path d="' + xp('M 72 107 Q 86 101 98 106 L 98 138 Q 84 143 75 136 Q 69 123 72 107 Z', true) + '"/>'},
-  {g:'abdomen', s:'<path d="' + xp('M 81 146 Q 100 141 119 146 L 117 206 Q 100 214 83 206 Z') + '"/>'},
-  {g:'ombros',  s:'<path d="' + xp('M 44 114 C 48 97, 68 92, 76 104 C 72 119, 58 128, 44 114 Z', true) + '"/>'},
-  {g:'bracos',  s:'<path d="' + xp('M 42 124 Q 49 116 58 124 L 52 178 Q 46 218 34 214 Q 28 200 31 190 Q 36 150 42 124 Z', true) + '"/>'},
-  {g:'pernas',  s:'<path d="' + xp('M 66 224 Q 80 215 95 224 L 92 368 Q 80 374 69 368 Z', true) + '"/>'},
-  {g:'cardio',  s:'<path d="' + xp('M 121 119 C 121 114, 115 111, 112 116 C 109 111, 103 114, 103 119 C 103 126, 112 132, 112 132 C 112 132, 121 126, 121 119 Z') + '"/>'}
-];
+var bt = btClean(load('bt', null));
+function btType(sex, id){ var l = BT[sex].types; for(var i = 0; i < l.length; i++) if(l[i].id === id) return l[i]; return l[0]; }
+function r1(v){ return Math.round(v * 10) / 10; }
+/* spline suave fechada (Catmull-Rom) passando pelos pontos */
+function spl(pts){
+  var n = pts.length, d = 'M' + r1(pts[0][0]) + ' ' + r1(pts[0][1]), i, p0, p1, p2, p3;
+  for(i = 0; i < n; i++){
+    p0 = pts[(i - 1 + n) % n]; p1 = pts[i]; p2 = pts[(i + 1) % n]; p3 = pts[(i + 2) % n];
+    d += ' C' + r1(p1[0] + (p2[0] - p0[0]) / 6) + ' ' + r1(p1[1] + (p2[1] - p0[1]) / 6) + ' ' + r1(p2[0] - (p3[0] - p1[0]) / 6) + ' ' + r1(p2[1] - (p3[1] - p1[1]) / 6) + ' ' + r1(p2[0]) + ' ' + r1(p2[1]);
+  }
+  return d + ' Z';
+}
+function mirP(pts){ return pts.map(function(p){ return [200 - p[0], p[1]]; }); }
+function ell(cx, cy, rx, ry){ return 'M' + r1(cx - rx) + ' ' + cy + ' A' + rx + ' ' + ry + ' 0 1 0 ' + r1(cx + rx) + ' ' + cy + ' A' + rx + ' ' + ry + ' 0 1 0 ' + r1(cx - rx) + ' ' + cy + ' Z'; }
+function buildItems(sex, typeId){
+  var S = BT[sex], T = btType(sex, typeId), X = 100, sh = T.sh, ch = T.ch, wa = T.wa, hi = T.hi, bl = T.bl, nw = S.neck, aw = S.aw;
+  var sil = [], mus = [];
+  /* cabeça */
+  sil.push(ell(X, 28, S.head, S.head * 1.25));
+  /* tronco (lado direito de cima para baixo + espelho) */
+  var R = [[nw, 44], [nw + 1, 54], [nw + 5, 60], [sh * .55, 65], [sh - 3, 71], [sh, 81], [sh - 1, 96], [ch, 115], [(ch + wa) / 2 + bl * .4, 135], [wa + bl, 155], [(wa + hi) / 2 + bl * .3, 175], [hi, 196], [hi - 1, 212], [hi * .45, 219]];
+  var tr = [[X, 42]].concat(R.map(function(p){ return [X + p[0], p[1]]; }), [[X, 221]], mirP(R.map(function(p){ return [X + p[0], p[1]]; })).reverse());
+  sil.push(spl(tr));
+  /* braços */
+  var ay = [[74, 1], [86, 1.25], [110, 1.1], [150, .82], [180, .74], [205, .52], [220, .78], [238, .3]];
+  var ac = function(y){ return y <= 82 ? sh - 4 : (y <= 150 ? sh - 4 + 7 * (y - 82) / 68 : sh + 3 + 5 * (y - 150) / 55) + (y > 205 ? 1 * (y - 205) / 33 : 0); };
+  var ao = [], ai = [];
+  ay.forEach(function(a){ var c = ac(a[0]), w = aw * a[1]; ao.push([X + c + w, a[0]]); ai.push([X + c - w, a[0]]); });
+  ai.reverse();
+  var arm = ao.concat(ai);
+  sil.push(spl(arm)); sil.push(spl(mirP(arm)));
+  /* pernas */
+  var cl = hi * .52, wt = hi * .5 - .4, wk = wt * S.legk, wc = wt * (S.legk - .02);
+  var lo = [[cl + wt * .9, 206], [cl + wt, 240], [cl + wk, 290], [cl + wc, 322], [cl + 4.6, 366], [cl + 6, 381], [cl + 9, 391], [cl + 3, 396], [cl - 6, 395], [cl - 6.5, 385], [cl - 4.6, 366], [cl - wc * .9, 322], [cl - wk * .9, 290], [cl - wt, 240], [cl - wt * .96, 212]];
+  var leg = lo.map(function(p){ return [X + p[0], p[1]]; });
+  sil.push(spl(leg)); sil.push(spl(mirP(leg)));
+  /* músculos */
+  var a = wa - 9 + bl * .5;
+  mus.push(['costas', spl([[X + ch - 9, 106], [X + ch - 2, 112], [X + ch - 1, 135], [X + ch - 6, 150], [X + ch - 11, 132]]), 1]);
+  mus.push(['peito', spl([[X + 3, 94], [X + ch * .55, 92], [X + ch - 5, 100], [X + ch - 5, 114], [X + ch * .5, 125], [X + 3, 121]]), 1]);
+  mus.push(['abdomen', spl([[X - a, 134], [X + a, 134], [X + a + 1, 160], [X + a - 2, 182], [X, 189], [X - a + 2, 182], [X - a - 1, 160]]), 0]);
+  mus.push(['ombros', ell(X + sh - 5, 82, 10, 9), 1]);
+  mus.push(['bracos', arm.length ? spl(arm.map(function(p){ return [p[0], p[1]]; })) : '', 1]);
+  mus.push(['pernas', spl(leg), 1]);
+  var hx = X + ch * .3 + 3, hy = 110;
+  mus.push(['cardio', 'M' + hx + ' ' + (hy + 7) + ' C' + hx + ' ' + (hy + 7) + ' ' + (hx - 8) + ' ' + (hy + 2) + ' ' + (hx - 8) + ' ' + (hy - 3) + ' C' + (hx - 8) + ' ' + (hy - 8) + ' ' + (hx - 2) + ' ' + (hy - 9) + ' ' + hx + ' ' + (hy - 4) + ' C' + (hx + 2) + ' ' + (hy - 9) + ' ' + (hx + 8) + ' ' + (hy - 8) + ' ' + (hx + 8) + ' ' + (hy - 3) + ' C' + (hx + 8) + ' ' + (hy + 2) + ' ' + hx + ' ' + (hy + 7) + ' ' + hx + ' ' + (hy + 7) + ' Z', 0]);
+  var items = [];
+  sil.forEach(function(d){ items.push({g: null, s: '<path d="' + d + '"/>'}); });
+  mus.forEach(function(m){
+    var d = m[1];
+    if(m[2]){ items.push({g: m[0], s: '<path d="' + d + '"/>'}); items.push({g: m[0], s: '<path d="' + spl(mirP(parsePts(d))) + '"/>'}); }
+    else items.push({g: m[0], s: '<path d="' + d + '"/>'});
+  });
+  items.abs = 'M100 138 V' + (186) + ' M' + r1(X - a + 3) + ' 152 H' + r1(X + a - 3) + ' M' + r1(X - a + 3) + ' 168 H' + r1(X + a - 3);
+  items.fx = {
+    bracos: [[X - sh - 5, 150], [X + sh + 5, 150]], peito: [[X, 108]], costas: [[X - ch + 4, 130], [X + ch - 4, 130]], ombros: [[X - sh + 5, 84], [X + sh - 5, 84]],
+    abdomen: [[X, 162]], pernas: [[X - cl, 270], [X + cl, 270]], cardio: [[hx, hy]]
+  };
+  return items;
+}
+/* lê de volta os pontos de um spl() (usado só para espelhar) */
+function parsePts(d){
+  var nums = d.match(/-?\d+\.?\d*/g).map(parseFloat), pts = [[nums[0], nums[1]]], i;
+  for(i = 2; i + 5 < nums.length + 0; i += 6) pts.push([nums[i + 4], nums[i + 5]]);
+  pts.pop();
+  return pts;
+}
+var ITEMS = buildItems(bt.sex, bt[bt.sex]);
 function addAttr(s, attr){ return s.replace(/^<(\w+)/, '<$1 ' + attr); }
 /* com wrappers <g> (para desenhar) */
 function layer(it, cls){
@@ -2023,35 +2116,42 @@ function clipShape(it){
 }
 var WAVE = 'M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z';
 
-function bodySVG(p, mode){
-  var sil = ITEMS.filter(function(it){ return !it.g; });
+function bodySVG(p, mode, its){
+  its = its || ITEMS;
+  var sil = its.filter(function(it){ return !it.g; });
   var plain = sil.map(function(it){ return layer(it, ''); }).join('');
   var clip = sil.map(clipShape).join('');
-  var mus = ITEMS.filter(function(it){ return it.g; }).map(function(it){ return layer(it, 'm m-' + it.g); }).join('');
-  var sd = xp(SIL);
+  var mus = its.filter(function(it){ return it.g; }).map(function(it){ return layer(it, 'm m-' + it.g); }).join('');
+  var shade = '<g fill="url(#sh-' + p + ')" opacity=".2" pointer-events="none">' + plain + '</g>';
   var s = '<svg viewBox="0 0 200 400" role="img" aria-label="Corpo humano">';
   s += '<defs><clipPath id="cp-' + p + '">' + clip + '</clipPath>' +
        '<linearGradient id="wg-' + p + '" x1="0" y1="0" x2="0" y2="1">' +
        '<stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient>' +
-       '<linearGradient id="sh-' + p + '" x1="0" y1="0" x2="1" y2="0.25">' +
-       '<stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs>';
-  s += '<ellipse cx="100" cy="391" rx="44" ry="5" fill="#000" opacity=".13"/>';
+       '<linearGradient id="sh-' + p + '" gradientUnits="userSpaceOnUse" x1="30" y1="40" x2="170" y2="140">' +
+       '<stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#8a8a8a"/><stop offset="1" stop-color="#000"/></linearGradient></defs>';
+  s += '<ellipse cx="100" cy="396" rx="46" ry="4" fill="#000" opacity=".12"/>';
   s += '<g class="breath">';
-  s += '<g fill="var(--shape)">' + plain + '</g>';
-  s += '<path d="' + sd + '" fill="url(#sh-' + p + ')" pointer-events="none"/>';
-  if(mode !== 'muscle'){
+  s += '<g fill="none" stroke="var(--water2)" stroke-opacity=".55" stroke-width="3">' + plain + '</g>';
+  s += '<g fill="var(--shape)">' + plain + '</g>' + shade;
+  if(mode !== 'muscle' && mode !== 'plain'){
     s += '<g clip-path="url(#cp-' + p + ')"><g class="water" id="water-' + p + '" style="transform:translateY(410px)">' +
          '<rect x="-100" y="2" width="500" height="420" fill="url(#wg-' + p + ')"/>' +
          '<g class="wave b" opacity=".55"><path fill="var(--water1)" d="' + WAVE + '"/></g>' +
-         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g>' +
-         '<path d="' + sd + '" fill="url(#sh-' + p + ')" opacity=".55" pointer-events="none"/></g>';
+         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g>' + shade + '</g>';
   }
-  s += '<g fill="none" stroke="var(--water2)" stroke-opacity=".4" stroke-width="2">' + plain + '</g>';
-  s += '<path d="' + sd + '" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1" pointer-events="none" transform="translate(-.6 -.6)"/>';
-  if(mode !== 'water') s += '<path class="absline" d="M100 141 V194 M87 158 H113 M87 176 H113"/>';
-  if(mode !== 'water') s += '<g class="mus" clip-path="url(#cp-' + p + ')">' + mus + '</g>';
+  if(mode !== 'water' && mode !== 'plain') s += '<path class="absline" d="' + its.abs + '"/>';
+  if(mode !== 'water' && mode !== 'plain') s += '<g class="mus" clip-path="url(#cp-' + p + ')">' + mus + '</g>';
   s += '</g><g id="fx-' + p + '"></g></svg>';
   return s;
+}
+var BT_GEAR = '<button type="button" class="bt-gear" aria-label="Alterar o tipo de corpo" title="Alterar o tipo de corpo">⚙️</button>';
+function rebuildBodies(re){
+  ITEMS = buildItems(bt.sex, bt[bt.sex]);
+  FX_POS = ITEMS.fx;
+  $('stageW').innerHTML = bodySVG('w', 'water') + BT_GEAR;
+  $('stageX').innerHTML = bodySVG('x', 'muscle') + BT_GEAR;
+  $('stageC').innerHTML = bodySVG('c', 'both') + BT_GEAR;
+  if(re) renderAll();
 }
 
 /* ---------- utilidades ---------- */
@@ -2416,7 +2516,7 @@ function headline(pct, t, g){
 function setWater(pct){
   ['w', 'c'].forEach(function(p){
     var el = $('water-' + p);
-    if(el) el.style.transform = 'translateY(' + (392 - Math.min(pct, 1) * 376) + 'px)';
+    if(el) el.style.transform = 'translateY(' + (398 - Math.min(pct, 1) * 390) + 'px)';
   });
 }
 
@@ -4370,7 +4470,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'beba-agua', versao: 6, avatar: avatar, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'beba-agua', versao: 6, avatar: avatar, bt: bt, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -4406,6 +4506,7 @@ function importData(file){
     if(d.wlog) wlog = cleanWlog(d.wlog);
     if(d.wcfg) wcfg = {hide: d.wcfg.hide === true};
     if(d.foto){ foto = cleanFoto(d.foto); save('foto', foto); }
+    if(d.bt){ bt = btClean(d.bt); save('bt', bt); rebuildBodies(false); }
     if(d.avatar){ avatar = cleanAvatar(d.avatar); save('avatar', avatar); }
     if(d.dash){ dash = cleanDash(d.dash); saveDash(); applyPal(); }
     if(['auto', 'light', 'dark'].indexOf(d.theme) >= 0) theme = d.theme;
@@ -4527,6 +4628,27 @@ avIn.onchange = function(){
   im.onerror = function(){ toast('Não consegui abrir essa foto.'); URL.revokeObjectURL(url); };
   im.src = url;
 };
+function btRefresh(){
+  $('btPvM').innerHTML = bodySVG('pvm', 'plain', buildItems('m', bt.m));
+  $('btPvF').innerHTML = bodySVG('pvf', 'plain', buildItems('f', bt.f));
+  var bs = $('btSex').querySelectorAll('button');
+  for(var i = 0; i < bs.length; i++) bs[i].classList.toggle('sel', bs[i].getAttribute('data-sex') === bt.sex);
+  var sel = $('btType');
+  sel.innerHTML = BT[bt.sex].types.map(function(t){ return '<option value="' + t.id + '">' + t.n + '</option>'; }).join('');
+  sel.value = bt[bt.sex];
+}
+function btApply(){ save('bt', bt); rebuildBodies(true); btRefresh(); }
+document.addEventListener('click', function(ev){
+  var g = ev.target.closest ? ev.target.closest('.bt-gear') : null;
+  if(g){ btRefresh(); open('mBody'); }
+});
+$('btSex').addEventListener('click', function(ev){
+  var b = ev.target.closest ? ev.target.closest('button[data-sex]') : null;
+  if(!b) return;
+  bt.sex = b.getAttribute('data-sex'); btApply();
+});
+$('btType').onchange = function(){ bt[bt.sex] = this.value; btApply(); };
+$('btOk').onclick = function(){ close('mBody'); };
 function setGreet(){
   var h = new Date().getHours();
   var g = h >= 5 && h < 12 ? 'Bom dia' : (h >= 12 && h < 18 ? 'Boa tarde' : 'Boa noite');
@@ -4901,9 +5023,7 @@ $('addOk').onclick = function(){
 };
 
 /* ---------- início ---------- */
-$('stageW').innerHTML = bodySVG('w', 'water');
-$('stageX').innerHTML = bodySVG('x', 'muscle');
-$('stageC').innerHTML = bodySVG('c', 'both');
+rebuildBodies(false);
 $('stageF').innerHTML = plateSVG();
 $('drinkSel').innerHTML = DRINKS.map(function(d){ return '<option value="' + d.id + '">' + d.emoji + ' ' + d.nome + (d.c ? '' : ' (não conta)') + '</option>'; }).join('');
 $('drinkSel').onchange = renderDrinkNote;
