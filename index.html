@@ -453,7 +453,7 @@ body[data-tab] .custom .custom-ic{background:rgba(255,255,255,.7)}
   .nav-in{flex-direction:column;align-items:stretch;padding:16px 10px;gap:6px;max-width:none}
   .nav-in::before{content:"💧 Beba Água";font-weight:800;font-size:1.15rem;padding:6px 14px 16px;color:var(--text)}
   .nav button{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;font-size:.95rem;padding:12px 14px;min-height:48px;border-radius:18px;text-align:left}
-  .nav button span{font-size:1.3rem}
+  .nav button span:not(.av){font-size:1.3rem}
   .app{max-width:1020px;margin:0 0 0 calc(var(--sbL) + 240px);padding:24px 8px 56px}
   button.fab{right:32px;bottom:32px}
   .corposec{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);column-gap:28px;align-items:start;grid-column:1/-1}
@@ -721,6 +721,185 @@ details>summary{list-style:none}
 details>summary::-webkit-details-marker{display:none}
 details>summary::after{content:" ▾"}
 details[open]>summary::after{content:" ▴"}
+
+/* ===== v17: animações do Argon (fx) + corpo/prato + dropdown + desktop + perfil ===== */
+/* Ondulação (Ripple) ao selecionar */
+.fx-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background-color: currentColor;
+  opacity: 0.22;
+  transform: scale(0);
+  animation: fx-ripple-expand 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes fx-ripple-expand {
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* Checkbox customizado que desenha o ✓ */
+.fx-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+  user-select: none;
+}
+
+.fx-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--muted, #64748b);
+  border-radius: 7px;
+  background-color: var(--card, #ffffff);
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  margin: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fx-checkbox::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background-color: #ffffff;
+  /* Máscara SVG do traço do check */
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.fx-checkbox:checked {
+  background-color: var(--accent, #0a6fb8);
+  border-color: var(--accent, #0a6fb8);
+  transform: scale(1.06);
+}
+
+.fx-checkbox:checked::before {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Camada Flutuante para Gota d'Água e Confetes */
+.fx-overlay-item {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform, opacity;
+}
+
+.fx-water-drop {
+  width: 24px;
+  height: 32px;
+  margin-left: -12px;
+  margin-top: -16px;
+  animation: fx-drop-fall 0.72s cubic-bezier(0.32, 0, 0.67, 0) forwards;
+}
+
+.fx-water-splash {
+  width: 36px;
+  height: 14px;
+  margin-left: -18px;
+  margin-top: 12px;
+  border: 2px solid var(--water-color, #0a6fb8);
+  border-radius: 50%;
+  opacity: 0;
+  animation: fx-splash-ring 0.65s ease-out 0.32s forwards;
+}
+
+@keyframes fx-drop-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-22px) scale(0.5);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0px) scale(1.08, 0.92);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(20px) scale(0.88, 1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.4);
+  }
+}
+
+@keyframes fx-splash-ring {
+  0% {
+    opacity: 0.85;
+    transform: scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+/* Acessibilidade: Redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  .fx-chip,
+  .fx-btn,
+  .fx-checkbox,
+  .fx-checkbox::before {
+    transition-duration: 0.08s !important;
+  }
+  .fx-ripple-wave {
+    animation-duration: 0.15s !important;
+  }
+  .fx-water-drop,
+  .fx-water-splash {
+    animation-duration: 0.2s !important;
+  }
+}
+.breath{transform-box:view-box;transform-origin:50% 60%;animation:breathe 4.6s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.012,1.008) translateY(-1.5px)}}
+@media (prefers-reduced-motion: reduce){.breath,.wave,.m-cardio{animation:none !important}}
+.pl{transform-box:view-box;transform-origin:50% 50%}
+.pl.lv3{filter:drop-shadow(0 0 3px var(--fd2))}
+.pl.grow{animation:plgrow .6s cubic-bezier(.22,1,.36,1)}
+@keyframes plgrow{0%{transform:scale(1)}45%{transform:scale(1.07)}100%{transform:scale(1)}}
+.dd{width:100%;appearance:none;-webkit-appearance:none;margin:6px 0 4px;padding:13px 40px 13px 14px;font:inherit;font-size:1rem;color:var(--text);border:1px solid var(--line);border-radius:14px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5l6 6 6-6' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;cursor:pointer}
+.dd:focus{outline:2px solid var(--accent);outline-offset:1px}
+.modal select.dd{padding:13px 40px 13px 14px;background-color:var(--bg)}
+/* perfil estilo Google */
+.av{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--c-home),var(--c-agua));color:#fff;font-weight:800;font-size:1.05rem;overflow:hidden;flex:none;border:2px solid var(--card);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.av-btn{padding:0;border:0;background:none;border-radius:50%;cursor:pointer;line-height:0}
+.av-btn:active{transform:scale(.94)}
+#nav-acc{display:none}
+.av-set{display:flex;align-items:center;gap:12px;margin:6px 0 4px}
+.av-set .av{width:64px;height:64px;font-size:1.6rem}
+.av-set button{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:12px;padding:8px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+@media (min-width:1000px){
+  #nav-agua{order:1}#nav-comida{order:2}#nav-inicio{order:3}#nav-ex{order:4}#nav-meds{order:5}
+  #nav-acc{order:9}
+  .nav-in{height:100%}
+  body[data-pal] .nav{box-shadow:0 12px 34px rgba(20,30,70,.22),0 2px 8px rgba(20,30,70,.14);border:1px solid var(--gline)}
+  #nav-inicio{background:color-mix(in srgb,var(--c-home) 12%,transparent);border:1px solid color-mix(in srgb,var(--c-home) 35%,transparent)}
+  .nav button#nav-acc{display:flex;margin-top:auto;border-top:1px solid var(--line);border-radius:18px;padding:10px 12px;gap:12px;align-items:center}
+  #nav-acc .av{width:40px;height:40px}
+  #nav-acc .acc-t{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+  #nav-acc .acc-t b{font-size:.95rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #nav-acc .acc-t small{font-size:.75rem;color:var(--muted);font-weight:600}
+  #nav-acc:hover{background:var(--line)}
+  .av-btn.hdr{display:none}
+}
+@media (min-width:1000px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]) body[data-pal] .nav{box-shadow:0 12px 34px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.1)}}
+@media (min-width:1000px){:root[data-theme="dark"] body[data-pal] .nav{box-shadow:0 12px 34px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.1)}}
 </style>
 <style id="palStyle"></style>
 </head>
@@ -733,6 +912,7 @@ details[open]>summary::after{content:" ▴"}
       <div class="sub" id="dateTxt"></div>
     </div>
     <div class="hbtns">
+      <button class="av-btn hdr" id="btnAcc" type="button" aria-label="Minha conta e configurações"><span class="av" id="avHdr"></span></button>
       <button class="icon-btn" id="btnTheme" type="button" aria-label="Alternar tema claro e escuro">🌓</button>
       <button class="icon-btn" id="btnWeight" type="button" aria-label="Ajustes">⚙️ <span id="wLabel">Ajustes</span></button>
     </div>
@@ -1076,7 +1256,7 @@ details[open]>summary::after{content:" ▴"}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 16.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 17.</p>
   </footer>
 </div>
 
@@ -1087,6 +1267,7 @@ details[open]>summary::after{content:" ▴"}
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
     <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
     <button type="button" id="nav-meds" data-tab="meds"><span>💊</span>Rotina<b class="bd" id="medBd" hidden></b></button>
+    <button type="button" id="nav-acc" aria-label="Minha conta e configurações"><span class="av" id="avSide"></span><span class="acc-t"><b id="accName">Minha conta</b><small>Configurações</small></span></button>
   </div>
 </nav>
 
@@ -1099,6 +1280,8 @@ details[open]>summary::after{content:" ▴"}
     <p>Calculamos sua meta de água (cerca de 35 ml por kg) e dividimos ao longo do dia, entre a hora em que você acorda e a hora em que dorme. A meta é uma referência: se você não está com sede, não precisa forçar. Se tem alguma condição de saúde, siga a orientação do seu médico.</p>
     <label class="lbl" for="nameInput">Seu nome (opcional)</label>
     <input id="nameInput" type="text" maxlength="20" autocomplete="given-name" placeholder="Como você quer ser chamado?">
+    <label class="lbl">Foto de perfil (opcional)</label>
+    <div class="av-set"><span class="av" id="avPrev"></span><button type="button" id="avPick">📷 Escolher foto</button><button type="button" id="avDel">Remover</button></div>
     <label class="lbl" for="weightInput">Seu peso (kg)</label>
     <input id="weightInput" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Ex.: 80">
     <label class="lbl" for="ageInput">Sua idade (opcional)</label>
@@ -1173,7 +1356,7 @@ details[open]>summary::after{content:" ▴"}
     <h3 id="exModalTitle">Quanto tempo?</h3>
     <p id="exModalHint"></p>
     <label class="lbl">Qual exercício? (opcional)</label>
-    <div class="subs" id="exSubs"></div>
+    <select class="dd" id="exSubSel" aria-label="Qual exercício?"></select>
     <div id="exSets">
       <label class="lbl">Séries, repetições e carga (opcional)</label>
       <div class="sets3">
@@ -1296,9 +1479,9 @@ details[open]>summary::after{content:" ▴"}
 <div class="overlay" id="mFd">
   <div class="modal">
     <h3 id="fdModalTitle">Qual tipo?</h3>
-    <p>Escolha o tipo (opcional). Cada toque registra uma porção.</p>
-    <div class="subs col" id="fdSubs"></div>
-    <div class="row"><button class="btn" id="fdCancel" type="button">Cancelar</button></div>
+    <p>Escolha o tipo (opcional). Cada registro conta uma porção.</p>
+    <select class="dd" id="fdSubSel" aria-label="Qual tipo de alimento?"></select>
+    <div class="row"><button class="btn" id="fdCancel" type="button">Cancelar</button><button class="btn fx" id="fdAdd" type="button">Adicionar</button></div>
   </div>
 </div>
 
@@ -1382,6 +1565,188 @@ details[open]>summary::after{content:" ▴"}
   </div>
 </div>
 
+<script>
+/**
+ * fx.js
+ * Microanimações imperativas (window.FX): ripple(el), drop(x, y) e confetti(el).
+ * Respeita prefers-reduced-motion e document.hidden.
+ */
+(function (global) {
+  'use strict';
+
+  function isMotionReduced() {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function createSVGElement(tag, attrs) {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const key in attrs) {
+      if (Object.prototype.hasOwnProperty.call(attrs, key)) {
+        el.setAttribute(key, attrs[key]);
+      }
+    }
+    return el;
+  }
+
+  const FX = {
+    /**
+     * Cria efeito de ondulação (ripple) e leve pulso dentro do elemento alvo.
+     * @param {HTMLElement} el
+     */
+    ripple: function (el) {
+      if (!el || document.hidden) return;
+
+      const style = window.getComputedStyle(el);
+      if (style.position === 'static') {
+        el.style.position = 'relative';
+      }
+      if (style.overflow !== 'hidden') {
+        el.style.overflow = 'hidden';
+      }
+
+      const rect = el.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const wave = document.createElement('span');
+      wave.className = 'fx-ripple-wave';
+      wave.style.width = size + 'px';
+      wave.style.height = size + 'px';
+      wave.style.left = (rect.width / 2 - size / 2) + 'px';
+      wave.style.top = (rect.height / 2 - size / 2) + 'px';
+
+      el.appendChild(wave);
+      setTimeout(function () {
+        if (wave.parentNode) wave.parentNode.removeChild(wave);
+      }, 600);
+    },
+
+    /**
+     * Desenha uma gota de água caindo com splash nas coordenadas (x, y) da janela.
+     * @param {number} x
+     * @param {number} y
+     */
+    drop: function (x, y) {
+      if (document.hidden) return;
+      const posX = Number(x) || window.innerWidth / 2;
+      const posY = Number(y) || window.innerHeight / 2;
+
+      const dropContainer = document.createElement('div');
+      dropContainer.className = 'fx-overlay-item fx-water-drop';
+      dropContainer.style.left = posX + 'px';
+      dropContainer.style.top = posY + 'px';
+
+      const svg = createSVGElement('svg', { viewBox: '0 0 24 32', width: '24', height: '32' });
+      const path = createSVGElement('path', {
+        d: 'M12 2 C12 2, 22 14, 22 21 C22 26.5, 17.5 30, 12 30 C6.5 30, 2 26.5, 2 21 C2 14, 12 2, 12 2 Z',
+        fill: '#0a6fb8'
+      });
+      const shine = createSVGElement('path', {
+        d: 'M8 18 C7 21, 8 24, 10 25',
+        stroke: '#ffffff',
+        'stroke-width': '2',
+        'stroke-linecap': 'round',
+        fill: 'none',
+        opacity: '0.7'
+      });
+
+      svg.appendChild(path);
+      svg.appendChild(shine);
+      dropContainer.appendChild(svg);
+
+      const splash = document.createElement('div');
+      splash.className = 'fx-overlay-item fx-water-splash';
+      splash.style.left = posX + 'px';
+      splash.style.top = posY + 'px';
+
+      document.body.appendChild(dropContainer);
+      document.body.appendChild(splash);
+
+      setTimeout(function () {
+        if (dropContainer.parentNode) dropContainer.parentNode.removeChild(dropContainer);
+        if (splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 1000);
+    },
+
+    /**
+     * Dispara confete discreto e elegante a partir do elemento informado.
+     * @param {HTMLElement} el
+     */
+    confetti: function (el) {
+      if (!el || document.hidden) return;
+
+      const rect = el.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+
+      const colors = ['#0a6fb8', '#38bdf8', '#c2410c', '#ffb26b', '#2e7d32', '#8fe39b'];
+      const count = isMotionReduced() ? 6 : 22;
+
+      const canvas = document.createElement('canvas');
+      canvas.className = 'fx-overlay-item';
+      canvas.style.left = '0px';
+      canvas.style.top = '0px';
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      document.body.appendChild(canvas);
+
+      const ctx = canvas.getContext('2d');
+      const particles = [];
+
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+        const speed = isMotionReduced() ? 2 : (3.5 + Math.random() * 5.5);
+        particles.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 3.2,
+          w: 6 + Math.random() * 4,
+          h: 4 + Math.random() * 3,
+          rot: Math.random() * Math.PI,
+          vRot: (Math.random() - 0.5) * 0.2,
+          color: colors[i % colors.length],
+          alpha: 1
+        });
+      }
+
+      let frame = 0;
+      const maxFrames = isMotionReduced() ? 18 : 55;
+
+      function renderConfetti() {
+        frame++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.22; // Gravidade leve
+          p.vx *= 0.98; // Resistência do ar
+          p.rot += p.vRot;
+          p.alpha = Math.max(0, 1 - frame / maxFrames);
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        }
+
+        if (frame < maxFrames && !document.hidden) {
+          requestAnimationFrame(renderConfetti);
+        } else if (canvas.parentNode) {
+          canvas.parentNode.removeChild(canvas);
+        }
+      }
+
+      requestAnimationFrame(renderConfetti);
+    }
+  };
+
+  global.FX = FX;
+})(window);
+</script>
 <script>
 (function(){
 'use strict';
@@ -1619,21 +1984,28 @@ function plateSVG(){
 
 /* ---------- o corpo (desenho) ----------
    g = grupo muscular (null = silhueta); m = tem lado espelhado; rot = [graus, x, y] */
+/* geometria desenhada em 200x420; xf() converte para o viewBox 200x400 (e espelha se preciso) */
+function xf(d, mir){
+  var out = '', n = 0, last = '';
+  d.replace(/([MLCQZ])|(-?\d+\.?\d*)/g, function(m, cmd, num){
+    if(cmd){ out += (out ? ' ' : '') + cmd; n = 0; return ''; }
+    var v = parseFloat(num);
+    if(n % 2 === 0) v = mir ? 200 - v : v; else v = v * 400 / 420;
+    out += ' ' + (Math.round(v * 10) / 10); n++; return '';
+  });
+  return out;
+}
+function xp(d, both){ var a = xf(d, false); return both ? a + ' ' + xf(d, true) : a; }
+var SIL = 'M 100 18 C 117 18, 126 32, 126 48 C 126 65, 115 77, 109 81 L 109 91 C 128 93, 148 99, 156 114 C 163 128, 167 162, 171 195 C 174 212, 177 228, 172 235 C 167 241, 158 237, 155 225 C 151 202, 147 168, 141 142 L 136 195 C 141 218, 143 245, 139 282 C 136 318, 134 358, 133 386 C 133 398, 125 404, 116 404 C 108 404, 105 397, 105 385 L 103 262 L 97 262 L 95 385 C 95 397, 92 404, 84 404 C 75 404, 67 398, 67 386 C 66 358, 64 318, 61 282 C 57 245, 59 218, 64 195 L 59 142 C 53 168, 49 202, 45 225 C 42 237, 33 241, 28 235 C 23 228, 26 212, 29 195 C 33 162, 37 128, 44 114 C 52 99, 72 93, 91 91 L 91 81 C 85 77, 74 65, 74 48 C 74 32, 83 18, 100 18 Z';
 var ITEMS = [
-  {g:null,      s:'<circle cx="100" cy="36" r="22"/>'},
-  {g:null,      s:'<rect x="93" y="54" width="14" height="18" rx="6"/>'},
-  {g:null,      s:'<path d="M60 84 Q100 70 140 84 Q134 146 127 202 L73 202 Q66 146 60 84 Z"/>'},
-  {g:null,      s:'<rect x="71" y="190" width="58" height="26" rx="13"/>'},
-  {g:null,      s:'<rect x="66" y="378" width="30" height="12" rx="6"/>', m:true},
-  {g:'costas',  s:'<rect x="68" y="118" width="11" height="60" rx="5.5"/>', m:true},
-  {g:'peito',   s:'<rect x="66" y="84" width="33" height="42" rx="16"/>', m:true},
-  {g:'abdomen', s:'<rect x="82" y="128" width="36" height="66" rx="12"/>'},
-  {g:'ombros',  s:'<ellipse cx="57" cy="90" rx="15" ry="14"/>', m:true},
-  {g:'bracos',  s:'<rect x="40" y="98" width="19" height="56" rx="9.5"/>', rot:[9, 49, 98], m:true},
-  {g:'bracos',  s:'<rect x="41" y="152" width="17" height="58" rx="8.5"/>', rot:[9, 49, 98], m:true},
-  {g:'pernas',  s:'<rect x="68" y="200" width="30" height="98" rx="15"/>', m:true},
-  {g:'pernas',  s:'<rect x="71" y="296" width="23" height="84" rx="11.5"/>', m:true},
-  {g:'cardio',  s:'<path d="M112 120 C98 109 97 97 105 94 C109 92.5 112 95 112 98 C112 95 115 92.5 119 94 C127 97 126 109 112 120 Z"/>'}
+  {g:null,      s:'<path d="' + xp(SIL) + '"/>'},
+  {g:'costas',  s:'<path d="' + xp('M 64 120 Q 70 116 74 121 L 72 172 Q 66 170 62 162 Q 60 140 64 120 Z', true) + '"/>'},
+  {g:'peito',   s:'<path d="' + xp('M 72 107 Q 86 101 98 106 L 98 138 Q 84 143 75 136 Q 69 123 72 107 Z', true) + '"/>'},
+  {g:'abdomen', s:'<path d="' + xp('M 81 146 Q 100 141 119 146 L 117 206 Q 100 214 83 206 Z') + '"/>'},
+  {g:'ombros',  s:'<path d="' + xp('M 44 114 C 48 97, 68 92, 76 104 C 72 119, 58 128, 44 114 Z', true) + '"/>'},
+  {g:'bracos',  s:'<path d="' + xp('M 42 124 Q 49 116 58 124 L 52 178 Q 46 218 34 214 Q 28 200 31 190 Q 36 150 42 124 Z', true) + '"/>'},
+  {g:'pernas',  s:'<path d="' + xp('M 66 224 Q 80 215 95 224 L 92 368 Q 80 374 69 368 Z', true) + '"/>'},
+  {g:'cardio',  s:'<path d="' + xp('M 121 119 C 121 114, 115 111, 112 116 C 109 111, 103 114, 103 119 C 103 126, 112 132, 112 132 C 112 132, 121 126, 121 119 Z') + '"/>'}
 ];
 function addAttr(s, attr){ return s.replace(/^<(\w+)/, '<$1 ' + attr); }
 /* com wrappers <g> (para desenhar) */
@@ -1652,28 +2024,33 @@ function clipShape(it){
 var WAVE = 'M-100 0 Q-75 -9 -50 0 T0 0 T50 0 T100 0 T150 0 T200 0 T250 0 T300 0 T350 0 T400 0 V30 H-100 Z';
 
 function bodySVG(p, mode){
-  var plain = ITEMS.map(function(it){ return layer(it, ''); }).join('');
-  var clip = ITEMS.map(clipShape).join('');
+  var sil = ITEMS.filter(function(it){ return !it.g; });
+  var plain = sil.map(function(it){ return layer(it, ''); }).join('');
+  var clip = sil.map(clipShape).join('');
   var mus = ITEMS.filter(function(it){ return it.g; }).map(function(it){ return layer(it, 'm m-' + it.g); }).join('');
+  var sd = xp(SIL);
   var s = '<svg viewBox="0 0 200 400" role="img" aria-label="Corpo humano">';
   s += '<defs><clipPath id="cp-' + p + '">' + clip + '</clipPath>' +
        '<linearGradient id="wg-' + p + '" x1="0" y1="0" x2="0" y2="1">' +
-       '<stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient></defs>';
+       '<stop offset="0" style="stop-color:var(--water1)"/><stop offset="1" style="stop-color:var(--water2)"/></linearGradient>' +
+       '<linearGradient id="sh-' + p + '" x1="0" y1="0" x2="1" y2="0.25">' +
+       '<stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs>';
+  s += '<ellipse cx="100" cy="391" rx="44" ry="5" fill="#000" opacity=".13"/>';
+  s += '<g class="breath">';
   s += '<g fill="var(--shape)">' + plain + '</g>';
+  s += '<path d="' + sd + '" fill="url(#sh-' + p + ')" pointer-events="none"/>';
   if(mode !== 'muscle'){
     s += '<g clip-path="url(#cp-' + p + ')"><g class="water" id="water-' + p + '" style="transform:translateY(410px)">' +
          '<rect x="-100" y="2" width="500" height="420" fill="url(#wg-' + p + ')"/>' +
          '<g class="wave b" opacity=".55"><path fill="var(--water1)" d="' + WAVE + '"/></g>' +
-         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g></g>';
+         '<g class="wave"><path fill="url(#wg-' + p + ')" d="' + WAVE + '"/></g></g>' +
+         '<path d="' + sd + '" fill="url(#sh-' + p + ')" opacity=".55" pointer-events="none"/></g>';
   }
-  /* no modo água o contorno é só da silhueta, braços e pernas (sem os músculos do tronco) */
-  var outline = mode === 'water'
-    ? ITEMS.filter(function(it){ return !it.g || it.g === 'bracos' || it.g === 'pernas'; }).map(function(it){ return layer(it, ''); }).join('')
-    : plain;
-  s += '<g fill="none" stroke="var(--water2)" stroke-opacity=".35" stroke-width="2">' + outline + '</g>';
-  if(mode !== 'water') s += '<path class="absline" d="M100 132 V190 M86 152 H114 M86 172 H114"/>';
-  if(mode !== 'water') s += '<g class="mus">' + mus + '</g>';
-  s += '<g id="fx-' + p + '"></g></svg>';
+  s += '<g fill="none" stroke="var(--water2)" stroke-opacity=".4" stroke-width="2">' + plain + '</g>';
+  s += '<path d="' + sd + '" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1" pointer-events="none" transform="translate(-.6 -.6)"/>';
+  if(mode !== 'water') s += '<path class="absline" d="M100 141 V194 M87 158 H113 M87 176 H113"/>';
+  if(mode !== 'water') s += '<g class="mus" clip-path="url(#cp-' + p + ')">' + mus + '</g>';
+  s += '</g><g id="fx-' + p + '"></g></svg>';
   return s;
 }
 
@@ -1779,6 +2156,12 @@ function cleanFoto(o){
   return {src: o.src, cap: String(o.cap || '').replace(/[<>]/g, '').trim().slice(0, 40)};
 }
 var foto = cleanFoto(load('foto', null));
+function cleanAvatar(o){
+  if(!o || typeof o !== 'object' || typeof o.src !== 'string') return {src: ''};
+  if(!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(o.src) || o.src.length > 150000) return {src: ''};
+  return {src: o.src};
+}
+var avatar = cleanAvatar(load('avatar', null));
 var meds = cleanMeds(load('meds', null));
 var TK_COLORS = ['#0f766e', '#1d5fd1', '#c2410c', '#6741d9', '#be185d', '#277a38'];
 function tkTxt(x, n){ return String(x == null ? '' : x).replace(/[<>]/g, '').trim().slice(0, n); }
@@ -2033,7 +2416,7 @@ function headline(pct, t, g){
 function setWater(pct){
   ['w', 'c'].forEach(function(p){
     var el = $('water-' + p);
-    if(el) el.style.transform = 'translateY(' + (410 - Math.min(pct, 1) * 400) + 'px)';
+    if(el) el.style.transform = 'translateY(' + (392 - Math.min(pct, 1) * 376) + 'px)';
   });
 }
 
@@ -2208,7 +2591,10 @@ function renderFood(){
   var st = $('stageF');
   FOOD.forEach(function(f){
     var el = st.querySelector('.pl-' + f.id);
-    if(el) el.setAttribute('class', 'pl pl-' + f.id + ' lv' + lvFood(tot[f.id] || 0) + (avoid[f.id] ? ' off' : ''));
+    if(el){
+      var nl = lvFood(tot[f.id] || 0), pv = parseInt((el.getAttribute('class').match(/lv(\d)/) || [0, 0])[1], 10);
+      el.setAttribute('class', 'pl pl-' + f.id + ' lv' + nl + (avoid[f.id] ? ' off' : '') + (nl > pv ? ' grow' : ''));
+    }
   });
   $('fdTotal').textContent = n; $('fdOf').textContent = ' de ' + FA().length + (FA().length === 1 ? ' grupo hoje' : ' grupos hoje'); renderAvoid();
   var eaten = FA().filter(function(f){ return tot[f.id]; });
@@ -2281,18 +2667,19 @@ function foodEffects(g){
   }
 }
 
+var fdGroup = null;
 function openFood(g){
   var f = foodById(g);
   $('fdModalTitle').textContent = f.emoji + ' ' + f.nome + ': qual tipo?';
-  var box = $('fdSubs');
-  box.innerHTML = '<button type="button" data-s="">Só o grupo (sem detalhar)</button>' +
-    f.subs.map(function(x){ return '<button type="button" data-s="' + x.id + '">' + x.nome + '</button>'; }).join('');
-  var bs = box.querySelectorAll('button');
-  for(var i = 0; i < bs.length; i++){
-    (function(b){ b.onclick = function(){ close('mFd'); addFood(g, b.getAttribute('data-s') || null); }; })(bs[i]);
-  }
+  var sel = $('fdSubSel');
+  sel.innerHTML = '<option value="">Só o grupo (sem detalhar)</option>' +
+    f.subs.map(function(x){ return '<option value="' + x.id + '">' + x.nome + '</option>'; }).join('');
+  sel.value = '';
+  fdGroup = g;
   open('mFd');
 }
+$('fdAdd').onclick = function(){ var g = fdGroup, v = $('fdSubSel').value || null; close('mFd'); if(g) addFood(g, v); };
+$('fdCancel').onclick = function(){ close('mFd'); };
 function addFood(g, sub){
   var k = key(), f = foodById(g), before = fdTotals(k)[g] || 0, nb = nG(k);
   var entry = {g: g, t: Date.now()};
@@ -3593,8 +3980,8 @@ function waterEffects(ml){
 }
 
 var FX_POS = {
-  bracos:[[36,128],[164,128]], peito:[[100,104]], costas:[[73,148],[127,148]], ombros:[[57,90],[143,90]],
-  abdomen:[[100,162]], pernas:[[83,250],[117,250]], cardio:[[112,104]]
+  bracos:[[42,150],[158,150]], peito:[[100,116]], costas:[[67,140],[133,140]], ombros:[[58,106],[142,106]],
+  abdomen:[[100,168]], pernas:[[80,280],[120,280]], cardio:[[112,118]]
 };
 function muscleEffects(g, lv){
   var stage = $('stageX'), e = exById(g);
@@ -3632,6 +4019,7 @@ function muscleEffects(g, lv){
 function celebrate(stageId, em){
   if(!Element.prototype.animate) return;
   var stage = $(stageId);
+  try{ if(window.FX) FX.confetti(stage); }catch(e){}
   for(var i = 0; i < 18; i++){
     (function(i){
       var s = document.createElement('span');
@@ -3721,22 +4109,16 @@ function openEx(g){
   $('exLast').textContent = ls ? 'Última vez: ' + setsText(ls) + '. Comece com uma carga que permita boa técnica.' : 'Comece com uma carga que permita boa técnica. Dor aguda, tontura ou falta de ar: pare.';
   if(ls){ $('exSer').placeholder = ls.ser; $('exRep').placeholder = ls.rep; if(ls.kg) $('exKg').placeholder = ls.kg; }
   exSub = null;
-  var box = $('exSubs');
-  var hs = '', last = '';
+  var sel = $('exSubSel'), last = '', og = null;
+  sel.innerHTML = '';
+  var o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'Não detalhar (só o grupo)'; sel.appendChild(o0);
   e.subs.forEach(function(x){
-    if(x.sec && x.sec !== last){ hs += '<div class="sec">' + x.sec + '</div>'; last = x.sec; }
-    hs += '<button type="button" data-s="' + x.id + '">' + x.nome + '</button>';
+    var par = sel;
+    if(x.sec){ if(x.sec !== last){ og = document.createElement('optgroup'); og.label = x.sec; sel.appendChild(og); last = x.sec; } par = og; }
+    var op = document.createElement('option'); op.value = x.id; op.textContent = x.nome; par.appendChild(op);
   });
-  box.innerHTML = hs;
-  var bs = box.querySelectorAll('button');
-  for(var i = 0; i < bs.length; i++){
-    (function(b){
-      b.onclick = function(){
-        exSub = (exSub === b.getAttribute('data-s')) ? null : b.getAttribute('data-s');
-        for(var j = 0; j < bs.length; j++) bs[j].classList.toggle('sel', bs[j].getAttribute('data-s') === exSub);
-      };
-    })(bs[i]);
-  }
+  sel.value = '';
+  sel.onchange = function(){ exSub = sel.value || null; };
   open('mEx');
 }
 function addEx(g, min, sub, sets){
@@ -3988,7 +4370,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'beba-agua', versao: 6, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'beba-agua', versao: 6, avatar: avatar, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -4024,6 +4406,7 @@ function importData(file){
     if(d.wlog) wlog = cleanWlog(d.wlog);
     if(d.wcfg) wcfg = {hide: d.wcfg.hide === true};
     if(d.foto){ foto = cleanFoto(d.foto); save('foto', foto); }
+    if(d.avatar){ avatar = cleanAvatar(d.avatar); save('avatar', avatar); }
     if(d.dash){ dash = cleanDash(d.dash); saveDash(); applyPal(); }
     if(['auto', 'light', 'dark'].indexOf(d.theme) >= 0) theme = d.theme;
     save('weight', weight); save('cfg', cfg); save('prof', prof); save('theme', theme);
@@ -4088,6 +4471,10 @@ function showTab(t){
   renderAll();
   if(secId){ var wk2 = secId === 'tab-corpo' ? 'sec_corpo' : 'sec_tasks'; if(dash.hidden[wk2]){ delete dash.hidden[wk2]; saveDash(); renderHome(); } try{ $(secId).scrollIntoView({behavior: 'smooth', block: 'start'}); }catch(e){} }
 }
+document.addEventListener('click', function(ev){
+  var b = ev.target.closest ? ev.target.closest('.add, .tile, .mins button, .btn, .subs button, .seg button') : null;
+  if(b && window.FX){ try{ FX.ripple(b); }catch(e){} }
+}, true);
 $('nav-add').onclick = function(){ if(tab === 'meds'){ openMed(null); return; }  openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
 (function(){
   ['agua', 'ex', 'comida', 'corpo'].forEach(function(id){
@@ -4104,10 +4491,47 @@ TABS.forEach(function(id){
   $('nav-' + id).onclick = function(){ showTab(id); };
 });
 
+function avHTML(){
+  if(avatar.src) return '<img src="' + avatar.src + '" alt="">';
+  var n = (prof.name || '').trim();
+  return n ? n.charAt(0).toUpperCase() : '💧';
+}
+function renderAvatar(){
+  ['avHdr', 'avSide', 'avPrev'].forEach(function(id){ var el = $(id); if(el) el.innerHTML = avHTML(); });
+  if($('accName')) $('accName').textContent = prof.name || 'Minha conta';
+  if($('avDel')) $('avDel').style.visibility = avatar.src ? 'visible' : 'hidden';
+}
+var avIn = document.createElement('input');
+avIn.type = 'file'; avIn.accept = 'image/*'; avIn.hidden = true; document.body.appendChild(avIn);
+$('avPick').onclick = function(){ avIn.value = ''; avIn.click(); };
+$('avDel').onclick = function(){ avatar = {src: ''}; save('avatar', avatar); renderAvatar(); };
+$('btnAcc').onclick = function(){ openSettings(false); };
+$('nav-acc').onclick = function(){ openSettings(false); };
+avIn.onchange = function(){
+  var f = avIn.files && avIn.files[0];
+  if(!f) return;
+  if(!/^image\//.test(f.type)){ toast('Escolha um arquivo de imagem.'); return; }
+  var url = URL.createObjectURL(f), im = new Image();
+  im.onload = function(){
+    try{
+      var sz = Math.min(im.width, im.height), cv = document.createElement('canvas'); cv.width = 256; cv.height = 256;
+      var cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, 256, 256);
+      cx.drawImage(im, (im.width - sz) / 2, (im.height - sz) / 2, sz, sz, 0, 0, 256, 256);
+      var a = cleanAvatar({src: cv.toDataURL('image/jpeg', 0.85)});
+      if(!a.src){ toast('A foto ficou grande demais. Tente outra.'); }
+      else { avatar = a; if(!save('avatar', avatar)) toast('Sem espaço para guardar a foto.'); else toast('Foto de perfil atualizada 🙂'); }
+      renderAvatar();
+    }catch(e){ toast('Não consegui usar essa foto.'); }
+    URL.revokeObjectURL(url);
+  };
+  im.onerror = function(){ toast('Não consegui abrir essa foto.'); URL.revokeObjectURL(url); };
+  im.src = url;
+};
 function setGreet(){
   var h = new Date().getHours();
   var g = h >= 5 && h < 12 ? 'Bom dia' : (h >= 12 && h < 18 ? 'Boa tarde' : 'Boa noite');
   $('greetTxt').textContent = g + (prof.name ? ', ' + prof.name : '') + '!';
+  renderAvatar();
 }
 function setDate(){
   setGreet();
