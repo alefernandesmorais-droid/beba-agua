@@ -994,6 +994,8 @@ html:has(body[data-pal="padrao"])::before{background:radial-gradient(70% 55% at 
 .dd>summary small{margin-left:auto;font-weight:600;color:var(--muted);font-size:.8rem}
 .dd .conds{padding:0 10px 10px}
 
+/* v38: porcentagem da água legível nos cards coloridos (contorno escuro em vez do claro) */
+:root:not([data-theme="x"]) body[data-pal][data-tab] .hm .ch text{fill:#fff!important;stroke:rgba(8,30,50,.55)!important;stroke-width:3.5px!important;paint-order:stroke;stroke-linejoin:round;font-weight:800}
 :root:not([data-theme="x"]) body[data-pal="padrao"][data-tab] .hm svg text,:root:not([data-theme="x"]) body[data-pal="padrao"][data-tab] .hm svg tspan,:root:not([data-theme="x"]) body[data-pal="padrao"][data-tab] .hm .mini span{fill:rgba(255,255,255,.88);color:rgba(255,255,255,.88)}
 :root:not([data-theme="x"]) body[data-pal="padrao"][data-tab] .hm .msgtx,:root:not([data-theme="x"]) body[data-pal="padrao"][data-tab] .hm .rt{color:#fff}
 
@@ -1503,7 +1505,7 @@ main#tab-dm .card{margin-top:14px}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
-    <p class="note">Gratuito e sem anúncios. Versão 38.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 39.</p>
   </footer>
 </div>
 
