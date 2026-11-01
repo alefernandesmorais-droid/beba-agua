@@ -1513,7 +1513,7 @@ main#tab-dm .card{margin-top:14px}
     <button type="button" id="nav-agua" data-tab="agua"><span>💧</span>Água</button>
     <button type="button" id="nav-ex" data-tab="ex"><span>💪</span>Exercício</button>
     <button type="button" id="nav-comida" data-tab="comida"><span>🍎</span>Comida</button>
-    <button type="button" id="nav-dm" data-tab="dm" hidden><span>🩸</span>Diabetes</button>
+    <button type="button" id="nav-dm" data-tab="dm"><span>🩸</span>Diabetes</button>
     <button type="button" id="nav-meds" data-tab="meds" hidden><span>💊</span>Rotina<b class="bd" id="medBd" hidden></b></button>
     <button type="button" id="nav-acc" aria-label="Minha conta e configurações"><span class="av" id="avSide"></span><span class="acc-t"><b id="accName">Minha conta</b><small>Configurações</small></span></button>
   </div>
@@ -1552,7 +1552,7 @@ main#tab-dm .card{margin-top:14px}
     </select>
     <details class="dd" id="condDD"><summary><span>Condições de saúde</span><small id="condCount">Nenhuma selecionada</small></summary>
     <div class="conds" id="condBox"></div></details>
-    <label class="chk" style="margin-top:6px"><input type="checkbox" id="dmOnChk"> Mostrar a aba Diabetes (glicemia)</label>
+    <label class="chk" style="margin-top:6px" hidden><input type="checkbox" id="dmOnChk"> Mostrar a aba Diabetes (glicemia)</label>
     <p class="hint">Isso só adapta as mensagens e os avisos do app. Não é diagnóstico e fica salvo apenas neste aparelho.</p>
     <details class="adv" id="manualDet"><summary>Tenho uma meta de água indicada pelo médico</summary>
     <label class="lbl" for="manualInput">Meta de água indicada pelo seu médico (ml por dia, opcional)</label>
@@ -3589,7 +3589,7 @@ function cleanDm(o){
 var dm = cleanDm(load('dm', null));
 var dmRange = 14, dmTimer = null, dmSelT = null;
 function saveDm(){ save('dm', dm); }
-function dmOn(){ return dm.on || hasCond('dm1') || hasCond('dm2'); }
+function dmOn(){ return true; }
 function dmPlain(){ return hasCond('gest') || (prof.age !== null && prof.age < 18); }
 var DM_MOM = [
   ['jejum', ['Jejum', 'Ayunas', 'Fasting'], ['80–130', '80–130', '80–130']],
