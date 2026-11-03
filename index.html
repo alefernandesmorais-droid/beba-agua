@@ -1177,8 +1177,22 @@ main#tab-dm .card{margin-top:14px}
 .editing .hw.sz-r{margin-bottom:92px}
 .editing .hw.sz-r .etb{position:absolute;top:calc(100% + 10px);left:0;right:0;justify-content:center;margin:0}
 .editing .hw.sz-r .etb button{min-width:36px;min-height:36px}
+body[data-foc="has"]{--c-dm:#6d4fd6;--bg-dm:#f6f3ff;--bg2-dm:#e6deff;--ln-dm:#ddd3f7;--cd-dm:#fff;--shp-dm:#e3dafb}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body[data-foc="has"]{--c-dm:#b9a6ff;--bg-dm:#0d0a1c;--bg2-dm:#241a4a;--ln-dm:rgba(255,255,255,.14);--cd-dm:#171230;--shp-dm:#2b1f5c}}
+:root[data-theme="dark"] body[data-foc="has"]{--c-dm:#b9a6ff;--bg-dm:#0d0a1c;--bg2-dm:#241a4a;--ln-dm:rgba(255,255,255,.14);--cd-dm:#171230;--shp-dm:#2b1f5c}
+body[data-tab="dm"][data-foc="has"]{--t1:#8a6df0;--t2:#6d4fd6}
+.dm-foc{margin-bottom:12px}
+.bp-num{display:flex;justify-content:center;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums;line-height:1;margin:8px 0 2px}
+.bp-num b{font-size:3.6rem;font-weight:800;letter-spacing:-.02em}
+.bp-num i{font-size:2.4rem;font-style:normal;opacity:.4;font-weight:300}
+.bp-scale{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:340px;margin:12px auto 4px}
+.bp-scale span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.64rem;font-weight:700;color:var(--muted);opacity:.55}
+.bp-scale span i{display:block;height:8px;width:100%;border-radius:6px}
+.bp-scale span.on{opacity:1;color:var(--text)}
+.bp-scale span.on i{height:12px}
 </style>
-<style id="palStyle"></style>
+<style id="palStyle">
+</style>
 </head>
 <body data-tab="inicio">
 
@@ -1326,7 +1340,7 @@ main#tab-dm .card{margin-top:14px}
 
   <!-- ================= LEMBRETES ================= -->
   <main id="tab-dm" hidden>
-    <div class="colL"><section class="card dm-hero" id="dmHero"></section></div>
+    <div class="colL"><div id="dmFoc"></div><section class="card dm-hero" id="dmHero"></section></div>
     <div class="colR">
       <section class="card" id="dmDash"></section>
       <section class="card" id="dmChartC"></section>
@@ -1549,7 +1563,7 @@ main#tab-dm .card{margin-top:14px}
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
     <p class="note"><b>Zelar</b> · <i>Cuidar de você, todo dia.</i></p>
-    <p class="note">Gratuito e sem anúncios. Versão 41.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 43.</p>
   </footer>
 </div>
 
@@ -4018,7 +4032,10 @@ function dmToolsHtml(){
     '<button type="button" class="link" id="dmWipe" style="margin-top:12px">' + T3(['Apagar todos os registros (glicemia e insulina)', 'Borrar todos los registros (glucemia e insulina)', 'Delete all entries (glucose and insulin)']) + '</button>';
 }
 function renderDm(){
+  focSync();
   if(tab !== 'dm') return;
+  $('dmFoc').innerHTML = focHtml();
+  if(curFoc() === 'has'){ renderBp(); return; }
   var arr = dmPeriod(dmRange), st = dmStats(arr), ins = dmInsPeriod(dmRange);
   $('dmHero').innerHTML = dmHero();
   var hero = $('dmHero'), last = dm.recs.length ? dmCls(dm.recs[dm.recs.length - 1].v) : null;
@@ -4310,7 +4327,18 @@ function dmMakePdf(){
     }
   });
 })();
+function bpWidget(){
+  var last = bp.recs.length ? bp.recs[bp.recs.length - 1] : null;
+  if(!last) return '<div class="hm-v" style="margin-top:14px">—</div><div class="hm-s">' + T3(['Toque para registrar sua primeira pressão', 'Toca para registrar tu primera presión', 'Tap to log your first reading']) + '</div>';
+  var c = bpCls(last.s, last.d), pts = bpPeriod(7).slice(-14), bars = '';
+  if(pts.length > 1){
+    var W = 120, H = 34, mn = Math.min.apply(null, pts.map(function(x){ return x.s; })) - 10, mx = Math.max.apply(null, pts.map(function(x){ return x.s; })) + 10;
+    bars = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="dm-spark"><polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".85" points="' + pts.map(function(x, i){ return (i * W / (pts.length - 1)).toFixed(1) + ',' + (H - (x.s - mn) / (mx - mn) * H).toFixed(1); }).join(' ') + '"/></svg>';
+  }
+  return '<div class="hm-v" style="font-size:2.1rem;margin-top:8px">' + last.s + '/' + last.d + ' <small style="font-size:.8rem;font-weight:700">mmHg</small></div><div style="margin:4px 0">' + bpPill(c) + '</div>' + bars + '<div class="hm-s">' + dmAgo(last.t) + '</div>';
+}
 function dmWidget(){
+  if(curFoc() === 'has') return bpWidget();
   var last = dm.recs.length ? dm.recs[dm.recs.length - 1] : null;
   if(!last) return '<div class="hm-v" style="margin-top:14px">—</div><div class="hm-s">' + T3(['Toque para registrar sua primeira glicemia', 'Toca para registrar tu primera glucemia', 'Tap to log your first reading']) + '</div>';
   var c = dmCls(last.v), arr = dmPeriod(7), st = dmStats(arr), bars = '';
@@ -4321,6 +4349,398 @@ function dmWidget(){
   }
   return '<div class="hm-v" style="font-size:2.3rem;margin-top:8px">' + dmV(last.v, true) + ' <small style="font-size:.8rem;font-weight:700">' + dmU() + '</small></div><div style="margin:4px 0">' + dmPill(c) + '</div>' + bars + '<div class="hm-s">' + (dm.ins.length ? '💉 ' + insU(dm.ins[dm.ins.length - 1].u) + ' · ' : '') + dmAgo(last.t) + (st.n >= 3 ? ' · ' + T3(['na faixa ', 'en rango ', 'in range ']) + pctTxt(pct(st.ok, st.n)) + ' (7' + T3(['d', 'd', 'd']) + ')' : '') + '</div>';
 }
+
+
+/* ===== v42: foco da aba (Diabetes / Pressão alta) ===== */
+var foc = load('foc', null);
+function focList(){ var l = ['dm']; if(hasCond('has')) l.push('has'); return l; }
+function curFoc(){
+  var l = focList();
+  if(foc && l.indexOf(foc) >= 0) return foc;
+  if(hasCond('has') && !hasCond('dm1') && !hasCond('dm2') && !hasCond('pre')) return 'has';
+  return 'dm';
+}
+function focSync(){
+  var f = curFoc(), nb = $('nav-dm');
+  document.body.setAttribute('data-foc', f);
+  TITLES.dm = f === 'has' ? '🫀 ' + T3(['Pressão', 'Presión', 'Blood pressure']) : '🩸 Diabetes';
+  if(nb){
+    var h = '<span>' + (f === 'has' ? '🫀' : '🩸') + '</span>' + (f === 'has' ? T3(['Pressão', 'Presión', 'Pressure']) : 'Diabetes');
+    if(nb.getAttribute('data-foc-h') !== h){ nb.innerHTML = h; nb.setAttribute('data-foc-h', h); }
+  }
+  if(tab === 'dm' && $('pageTitle')) $('pageTitle').textContent = TITLES.dm;
+}
+function focHtml(){
+  var l = focList(); if(l.length < 2) return '';
+  var f = curFoc();
+  return '<div class="seg dm-foc" id="focSeg" role="group" aria-label="' + T3(['Foco da aba', 'Foco de la pestaña', 'Tab focus']) + '">' +
+    '<button type="button" data-foc="dm" class="' + (f === 'dm' ? 'on' : '') + '">🩸 Diabetes</button>' +
+    '<button type="button" data-foc="has" class="' + (f === 'has' ? 'on' : '') + '">🫀 ' + T3(['Pressão', 'Presión', 'Pressure']) + '</button></div>';
+}
+
+/* ===== v42: modo Pressão alta (Diretriz Brasileira de Hipertensão Arterial 2025, SBC/SBN/SBH) ===== */
+function cleanBp(o){
+  var r = {recs: []};
+  if(!o || typeof o !== 'object') return r;
+  var MOMS = ['manha', 'noite', 'sintoma', 'outro'], now = Date.now() + 86400000;
+  (Array.isArray(o.recs) ? o.recs : []).slice(-3000).forEach(function(x){
+    if(!x || typeof x.t !== 'number' || typeof x.s !== 'number' || typeof x.d !== 'number') return;
+    if(x.t < 946684800000 || x.t > now) return;
+    if(x.s < 60 || x.s > 300 || x.d < 30 || x.d > 200 || x.d >= x.s) return;
+    var p = (typeof x.p === 'number' && x.p >= 25 && x.p <= 250) ? Math.round(x.p) : null;
+    r.recs.push({t: Math.round(x.t), s: Math.round(x.s), d: Math.round(x.d), p: p, m: MOMS.indexOf(x.m) >= 0 ? x.m : 'outro', n: typeof x.n === 'string' ? x.n.replace(/[<>]/g, '').trim().slice(0, 80) : ''});
+  });
+  r.recs.sort(function(a, b){ return a.t - b.t; });
+  return r;
+}
+var bp = cleanBp(load('bp', null));
+function saveBp(){ save('bp', bp); }
+var BP_MOM = [
+  ['manha', ['Manhã', 'Mañana', 'Morning']],
+  ['noite', ['Noite', 'Noche', 'Evening']],
+  ['sintoma', ['Com sintomas', 'Con síntomas', 'With symptoms']],
+  ['outro', ['Outro', 'Otro', 'Other']]
+];
+function bpMomName(id){ for(var i = 0; i < BP_MOM.length; i++) if(BP_MOM[i][0] === id) return T3(BP_MOM[i][1]); return id; }
+var BP_C = {
+  baixa:  {k: 'baixa',  c: '#0ea5e9', fg: '#fff',    ic: '▽',  t: ['Baixa', 'Baja', 'Low']},
+  normal: {k: 'normal', c: '#16a34a', fg: '#fff',    ic: '✓',  t: ['Normal', 'Normal', 'Normal']},
+  pre:    {k: 'pre',    c: '#f59e0b', fg: '#2b1700', ic: '▲',  t: ['Pré-hipertensão', 'Prehipertensión', 'Pre-hypertension']},
+  e1:     {k: 'e1',     c: '#f97316', fg: '#2b1200', ic: '▲',  t: ['Estágio 1', 'Estadio 1', 'Stage 1']},
+  e2:     {k: 'e2',     c: '#e11d48', fg: '#fff',    ic: '▲▲', t: ['Estágio 2', 'Estadio 2', 'Stage 2']},
+  e3:     {k: 'e3',     c: '#9f1239', fg: '#fff',    ic: '▲▲▲', t: ['Estágio 3', 'Estadio 3', 'Stage 3']},
+  plain:  {k: 'plain',  c: '#64748b', fg: '#fff',    ic: '•',  t: ['Registrada', 'Registrada', 'Logged']}
+};
+var BP_SCALE = ['normal', 'pre', 'e1', 'e2', 'e3'];
+function bpCls(s, d){
+  if(dmPlain()) return BP_C.plain;
+  if(s >= 180 || d >= 110) return BP_C.e3;
+  if(s >= 160 || d >= 100) return BP_C.e2;
+  if(s >= 140 || d >= 90) return BP_C.e1;
+  if(s >= 120 || d >= 80) return BP_C.pre;
+  if(s < 90 || d < 60) return BP_C.baixa;
+  return BP_C.normal;
+}
+function bpMsg(k){
+  var M = {
+    normal: ['Sua pressão está na faixa considerada normal (abaixo de 120/80). Uma medida isolada não define nada: continue medindo do jeito certo e siga a orientação do seu médico.',
+             'Tu presión está en el rango considerado normal (menos de 120/80). Una medida aislada no define nada: sigue midiendo de la forma correcta y la orientación de tu médico.',
+             'Your blood pressure is in the range considered normal (below 120/80). A single reading does not define anything: keep measuring the right way and follow your doctor\'s guidance.'],
+    pre: ['Pressão um pouco acima do normal (pré-hipertensão: 120–139 / 80–89). Uma medida isolada não é diagnóstico. Meça de novo em outro momento, em repouso, e converse com seu médico se isso se repetir.',
+          'Presión un poco por encima de lo normal (prehipertensión: 120–139 / 80–89). Una medida aislada no es un diagnóstico. Mide de nuevo en otro momento, en reposo, y habla con tu médico si se repite.',
+          'Blood pressure slightly above normal (pre-hypertension: 120–139 / 80–89). A single reading is not a diagnosis. Measure again at another time, at rest, and talk to your doctor if it keeps happening.'],
+    e1: ['Pressão elevada (estágio 1: 140–159 / 90–99). Uma medida isolada não confirma hipertensão: quem confirma é o médico, com várias medidas. Descanse 5 minutos, meça de novo e leve seus registros à consulta.',
+         'Presión elevada (estadio 1: 140–159 / 90–99). Una medida aislada no confirma hipertensión: la confirma el médico, con varias medidas. Descansa 5 minutos, mide de nuevo y lleva tus registros a la consulta.',
+         'Elevated pressure (stage 1: 140–159 / 90–99). A single reading does not confirm hypertension: your doctor confirms it with several readings. Rest for 5 minutes, measure again and bring your log to your appointment.'],
+    e2: ['Pressão alta (estágio 2: 160–179 / 100–109). Descanse 5 minutos e meça de novo. Procure seu médico para avaliar, e o quanto antes se tiver sintomas. Não ajuste remédios por conta própria.',
+         'Presión alta (estadio 2: 160–179 / 100–109). Descansa 5 minutos y mide de nuevo. Busca a tu médico para evaluarlo, y cuanto antes si tienes síntomas. No ajustes medicamentos por tu cuenta.',
+         'High blood pressure (stage 2: 160–179 / 100–109). Rest for 5 minutes and measure again. See your doctor for an evaluation, and sooner if you have symptoms. Do not adjust medication on your own.'],
+    e3: ['Pressão muito alta (estágio 3: 180/110 ou mais). Sente-se, descanse 5 minutos e meça de novo. Se continuar assim, procure atendimento hoje. Se houver dor no peito, falta de ar, dor de cabeça forte, fraqueza ou dormência de um lado do corpo, fala enrolada ou alteração da visão, ligue 192 (SAMU).',
+         'Presión muy alta (estadio 3: 180/110 o más). Siéntate, descansa 5 minutos y mide de nuevo. Si sigue así, busca atención hoy. Si hay dolor en el pecho, falta de aire, dolor de cabeza fuerte, debilidad o adormecimiento de un lado del cuerpo, habla arrastrada o cambios en la visión, llama a emergencias (192 en Brasil).',
+         'Very high blood pressure (stage 3: 180/110 or more). Sit down, rest for 5 minutes and measure again. If it stays this way, seek care today. If you have chest pain, shortness of breath, a severe headache, weakness or numbness on one side, slurred speech or vision changes, call emergency services (192 in Brazil).'],
+    baixa: ['Valor baixo (menos de 90/60). Isso não faz parte da classificação da diretriz de hipertensão. Se sentir tontura, desmaio ou mal-estar, sente-se ou deite-se e procure orientação médica.',
+            'Valor bajo (menos de 90/60). Esto no forma parte de la clasificación de la guía de hipertensión. Si sientes mareo, desmayo o malestar, siéntate o acuéstate y busca orientación médica.',
+            'Low value (below 90/60). This is not part of the hypertension guideline classification. If you feel dizzy, faint or unwell, sit or lie down and seek medical advice.'],
+    plain: ['Registro salvo. Para crianças, adolescentes e gestantes, os valores de referência são diferentes e individuais: siga a orientação do seu médico ou do pré-natal. Se tiver dor de cabeça forte, visão turva, inchaço repentino ou mal-estar, procure atendimento.',
+            'Registro guardado. Para niños, adolescentes y embarazadas, los valores de referencia son distintos e individuales: sigue la orientación de tu médico o del control prenatal. Si tienes dolor de cabeza fuerte, visión borrosa, hinchazón repentina o malestar, busca atención.',
+            'Entry saved. For children, teens and pregnant people, reference values are different and individual: follow your doctor\'s or prenatal care guidance. If you have a severe headache, blurred vision, sudden swelling or feel unwell, seek care.']
+  };
+  return T3(M[k] || M.plain);
+}
+function bpPeriod(days, endT){ var end = endT || Date.now(), from = end - days * 86400000; return bp.recs.filter(function(x){ return x.t >= from && x.t <= end; }); }
+function bpAvg(a, f){ return a.length ? a.reduce(function(p, x){ return p + x[f]; }, 0) / a.length : null; }
+function bpStats(arr){
+  var o = {n: arr.length, ms: null, md: null, mp: null, minS: null, maxS: null, minD: null, maxD: null, by: {baixa: 0, normal: 0, pre: 0, e1: 0, e2: 0, e3: 0, plain: 0}, hi: 0};
+  if(!o.n) return o;
+  o.ms = bpAvg(arr, 's'); o.md = bpAvg(arr, 'd');
+  var pl = arr.filter(function(x){ return x.p; }); o.mp = pl.length ? bpAvg(pl, 'p') : null;
+  arr.forEach(function(x){
+    if(o.minS === null || x.s < o.minS) o.minS = x.s; if(o.maxS === null || x.s > o.maxS) o.maxS = x.s;
+    if(o.minD === null || x.d < o.minD) o.minD = x.d; if(o.maxD === null || x.d > o.maxD) o.maxD = x.d;
+    var c = bpCls(x.s, x.d); o.by[c.k]++; if(c.k === 'e1' || c.k === 'e2' || c.k === 'e3') o.hi++;
+  });
+  return o;
+}
+function bpPill(c, big){ return '<span class="dm-pill' + (big ? ' big' : '') + '" style="background:' + c.c + ';color:' + c.fg + '"><b aria-hidden="true">' + c.ic + '</b> ' + T3(c.t) + '</span>'; }
+function bpScaleHtml(c){
+  if(!c || c.k === 'plain' || c.k === 'baixa') return '';
+  var lb = ['Normal', 'Pré', '1', '2', '3'];
+  return '<div class="bp-scale" role="img" aria-label="' + T3(['Escala da pressão', 'Escala de la presión', 'Pressure scale']) + '">' + BP_SCALE.map(function(k, i){
+    var cc = BP_C[k]; return '<span class="' + (cc.k === c.k ? 'on' : '') + '" style="--mc:' + cc.c + '"><i style="background:' + cc.c + '"></i>' + (i === 0 ? T3(['Normal', 'Normal', 'Normal']) : (i === 1 ? T3(['Pré', 'Pre', 'Pre']) : T3(['Est. ', 'Est. ', 'St. ']) + lb[i])) + '</span>';
+  }).join('') + '</div>';
+}
+function bpHero(){
+  var last = bp.recs.length ? bp.recs[bp.recs.length - 1] : null, c = last ? bpCls(last.s, last.d) : null;
+  var h = '<div class="bp-num" style="' + (c && c.k !== 'plain' ? 'color:' + c.c : '') + '"><b>' + (last ? last.s : '—') + '</b><i>/</i><b>' + (last ? last.d : '—') + '</b></div>' +
+    '<div class="dm-unit">mmHg' + (last && last.p ? ' · ♥ ' + last.p + ' bpm' : '') + '</div>';
+  if(last){
+    h += bpScaleHtml(c);
+    h += '<div class="dm-hrow">' + bpPill(c, true) + '<span class="dm-when">' + dmAgo(last.t) + ' · ' + bpMomName(last.m) + '</span></div>';
+    if(c.k === 'e3') h += '<p class="dm-alert" style="--ac:' + c.c + '">⚠ ' + bpMsg('e3').split('. ').slice(0, 2).join('. ') + '.</p>';
+  } else {
+    h += '<p class="hint" style="text-align:center;margin:10px 0 0">' + T3(['Registre sua primeira medida para ver o painel e o gráfico.', 'Registra tu primera medida para ver el panel y el gráfico.', 'Log your first reading to see the dashboard and chart.']) + '</p>';
+  }
+  h += '<button type="button" class="dm-add" id="bpAdd">＋ ' + T3(['Registrar pressão', 'Registrar presión', 'Log blood pressure']) + '</button>';
+  return h;
+}
+function bpKpis(arr, st){
+  function tile(l, v, sub, col){ return '<div class="dm-k"' + (col ? ' style="--kc:' + col + '"' : '') + '><small>' + l + '</small><b>' + v + '</b><span>' + (sub || '') + '</span></div>'; }
+  var avgC = st.n ? bpCls(Math.round(st.ms), Math.round(st.md)) : null, h = '';
+  h += tile(T3(['Média', 'Promedio', 'Average']), st.n ? Math.round(st.ms) + '/' + Math.round(st.md) : '—', 'mmHg', avgC && avgC.k !== 'plain' ? avgC.c : '');
+  h += tile(T3(['Medidas', 'Medidas', 'Readings']), String(st.n), T3(['no período', 'en el período', 'in the period']));
+  h += tile(T3(['Sistólica mín. / máx.', 'Sistólica mín. / máx.', 'Systolic min / max']), st.n ? st.minS + ' / ' + st.maxS : '—', 'mmHg');
+  h += tile(T3(['Diastólica mín. / máx.', 'Diastólica mín. / máx.', 'Diastolic min / max']), st.n ? st.minD + ' / ' + st.maxD : '—', 'mmHg');
+  h += tile(T3(['Elevadas (≥ 140/90)', 'Elevadas (≥ 140/90)', 'Elevated (≥ 140/90)']), String(st.hi), st.n ? pctTxt(pct(st.hi, st.n)) : '', st.hi && !dmPlain() ? BP_C.e1.c : '');
+  h += tile(T3(['Pulso médio', 'Pulso medio', 'Average pulse']), st.mp !== null ? String(Math.round(st.mp)) : '—', st.mp !== null ? 'bpm' : T3(['não informado', 'no informado', 'not logged']));
+  var bar = '', leg = '';
+  if(st.n && !dmPlain()){
+    ['baixa', 'normal', 'pre', 'e1', 'e2', 'e3'].forEach(function(k){
+      if(!st.by[k]) return; var p = st.by[k] / st.n * 100, c = BP_C[k];
+      bar += '<i style="width:' + p.toFixed(2) + '%;background:' + c.c + '"></i>';
+      leg += '<span><i style="background:' + c.c + '"></i>' + c.ic + ' ' + T3(c.t) + ' ' + pctTxt(p) + '</span>';
+    });
+    bar = '<div class="dm-tir" role="img" aria-label="' + T3(['Distribuição das medidas', 'Distribución de las medidas', 'Readings distribution']) + '">' + bar + '</div><div class="dm-leg">' + leg + '</div>';
+  }
+  return '<div class="dm-kg">' + h + '</div>' + bar + (st.n && st.n < 14 ? '<p class="hint" style="margin:8px 0 0">' + T3(['Poucas medidas: use como observação. Para o médico, o ideal é medir 3 vezes pela manhã e 3 à noite por 5 a 7 dias.', 'Pocas medidas: úsalo como observación. Para el médico, lo ideal es medir 3 veces por la mañana y 3 por la noche durante 5 a 7 días.', 'Few readings: use as an observation. For your doctor, the ideal is 3 readings in the morning and 3 in the evening for 5 to 7 days.']) + '</p>' : '');
+}
+function bpChart(arr, days){
+  if(arr.length < 2) return '<p class="hint">' + T3(['Com pelo menos 2 medidas no período, o gráfico aparece aqui.', 'Con al menos 2 medidas en el período, el gráfico aparece aquí.', 'With at least 2 readings in the period, the chart appears here.']) + '</p>';
+  var W = 340, H = 230, L = 34, R = 8, Tp = 12, B = 26, pw = W - L - R, ph = H - Tp - B, end = Date.now(), from = end - days * 86400000;
+  var mxS = Math.max.apply(null, arr.map(function(x){ return x.s; })), mnD = Math.min.apply(null, arr.map(function(x){ return x.d; }));
+  var y0 = Math.min(50, Math.floor((mnD - 10) / 10) * 10), y1 = Math.max(160, Math.ceil((mxS + 10) / 10) * 10);
+  var X = function(t){ return L + (t - from) / (end - from) * pw; }, Y = function(v){ return Tp + (y1 - v) / (y1 - y0) * ph; };
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="dm-chart" role="img" aria-label="' + T3(['Gráfico da pressão arterial', 'Gráfico de la presión arterial', 'Blood pressure chart']) + '">';
+  if(!dmPlain()) s += '<rect x="' + L + '" y="' + Tp + '" width="' + pw + '" height="' + (Y(140) - Tp).toFixed(1) + '" fill="' + BP_C.e1.c + '" opacity=".09"/>';
+  [80, 90, 120, 140].forEach(function(v){
+    if(v < y0 || v > y1) return;
+    s += '<line x1="' + L + '" y1="' + Y(v).toFixed(1) + '" x2="' + (W - R) + '" y2="' + Y(v).toFixed(1) + '" stroke="var(--line)" stroke-dasharray="3 4"/><text x="' + (L - 4) + '" y="' + (Y(v) + 3).toFixed(1) + '" font-size="9" text-anchor="end" fill="var(--muted)">' + v + '</text>';
+  });
+  function path(f){ return arr.map(function(x, i){ return (i ? 'L' : 'M') + X(x.t).toFixed(1) + ' ' + Y(x[f]).toFixed(1); }).join(' '); }
+  s += '<path d="' + path('s') + '" fill="none" stroke="var(--c-dm)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" opacity=".75"/>';
+  s += '<path d="' + path('d') + '" fill="none" stroke="var(--text)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 4" opacity=".45"/>';
+  arr.forEach(function(x){
+    var c = bpCls(x.s, x.d), sel = dmSelT === x.t;
+    s += '<circle cx="' + X(x.t).toFixed(1) + '" cy="' + Y(x.s).toFixed(1) + '" r="' + (sel ? 7 : 4.6) + '" fill="' + c.c + '" stroke="var(--card)" stroke-width="2" data-t="' + x.t + '" class="dm-pt"><title>' + x.s + '/' + x.d + ' · ' + dmDT(x.t) + '</title></circle>';
+    s += '<circle cx="' + X(x.t).toFixed(1) + '" cy="' + Y(x.d).toFixed(1) + '" r="' + (sel ? 6 : 3.6) + '" fill="var(--card)" stroke="' + c.c + '" stroke-width="2" data-t="' + x.t + '" class="dm-pt"><title>' + x.s + '/' + x.d + ' · ' + dmDT(x.t) + '</title></circle>';
+  });
+  for(var i = 0; i <= 4; i++){
+    var tt = from + (end - from) * i / 4, d = new Date(tt);
+    s += '<text x="' + X(tt).toFixed(1) + '" y="' + (H - 8) + '" font-size="9" text-anchor="' + (i === 0 ? 'start' : (i === 4 ? 'end' : 'middle')) + '" fill="var(--muted)">' + String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '</text>';
+  }
+  s += '</svg>';
+  var sel2 = arr.filter(function(x){ return x.t === dmSelT; })[0];
+  var cap = sel2 ? (function(){ var c = bpCls(sel2.s, sel2.d); return bpPill(c) + ' <b>' + sel2.s + '/' + sel2.d + ' mmHg</b>' + (sel2.p ? ' · ♥ ' + sel2.p : '') + ' · ' + dmDT(sel2.t) + ' · ' + bpMomName(sel2.m) + (sel2.n ? ' · ' + eh(sel2.n) : ''); })() : T3(['Toque em um ponto para ver os detalhes.', 'Toca un punto para ver los detalles.', 'Tap a point to see the details.']);
+  return s + '<div class="dm-leg"><span><i style="background:var(--c-dm)"></i>' + T3(['Sistólica (máxima)', 'Sistólica (máxima)', 'Systolic (top)']) + '</span><span><i style="background:var(--text);opacity:.45"></i>' + T3(['Diastólica (mínima)', 'Diastólica (mínima)', 'Diastolic (bottom)']) + '</span></div><div class="dm-cap" id="dmSel">' + cap + '</div>';
+}
+function bpPatterns(arr){
+  if(arr.length < 5) return '<p class="hint">' + T3(['Com pelo menos 5 medidas no período, os padrões aparecem aqui.', 'Con al menos 5 medidas en el período, los patrones aparecen aquí.', 'With at least 5 readings in the period, patterns appear here.']) + '</p>';
+  var blocks = [[0, 6, T3(['Madrugada', 'Madrugada', 'Overnight'])], [6, 12, T3(['Manhã', 'Mañana', 'Morning'])], [12, 18, T3(['Tarde', 'Tarde', 'Afternoon'])], [18, 24, T3(['Noite', 'Noche', 'Evening'])]];
+  var h = '<div class="dm-sub">' + T3(['Média por período do dia', 'Promedio por parte del día', 'Average by time of day']) + '</div>', worst = null;
+  blocks.forEach(function(b){
+    var sub = arr.filter(function(x){ var hh = new Date(x.t).getHours(); return hh >= b[0] && hh < b[1]; });
+    if(!sub.length) return;
+    var ms = Math.round(bpAvg(sub, 's')), md = Math.round(bpAvg(sub, 'd')), c = bpCls(ms, md);
+    h += '<div class="dm-mrow"><span>' + b[2] + '</span><div class="dm-mb"><i style="width:' + Math.min(100, ms / 200 * 100).toFixed(0) + '%;background:' + c.c + '"></i></div><b>' + ms + '/' + md + '</b><em>' + sub.length + '×</em></div>';
+    if(sub.length >= 3 && (!worst || ms > worst.s)) worst = {s: ms, n: b[2]};
+  });
+  if(worst && !dmPlain()) h += '<div class="dm-ins"><p>' + T3(['Maior média de máxima: ' + worst.n.toLowerCase() + '.', 'Mayor promedio de máxima: ' + worst.n.toLowerCase() + '.', 'Highest top-number average: ' + worst.n.toLowerCase() + '.']) + '</p><p class="hint" style="margin:6px 0 0">' + T3(['Só observação dos seus registros. Converse com seu médico sobre o que isso significa para você.', 'Solo observación de tus registros. Habla con tu médico sobre lo que significa para ti.', 'Just an observation of your log. Talk to your doctor about what it means for you.']) + '</p></div>';
+  return h;
+}
+function bpListHtml(arr){
+  if(!arr.length) return '<p class="hint">' + T3(['Nenhum registro neste período.', 'Ningún registro en este período.', 'No entries in this period.']) + '</p>';
+  return '<div class="dm-list">' + arr.slice().reverse().slice(0, 60).map(function(x){
+    var c = bpCls(x.s, x.d);
+    return '<div class="dm-li"><span class="dm-dot" style="background:' + c.c + ';color:' + c.fg + '">' + c.ic + '</span><div><b>' + x.s + '/' + x.d + ' mmHg</b>' + (x.p ? ' <small>♥ ' + x.p + '</small>' : '') + ' <small>' + T3(c.t) + '</small><div class="dm-ls">' + dmDT(x.t) + ' · ' + bpMomName(x.m) + (x.n ? ' · ' + eh(x.n) : '') + '</div></div><button type="button" class="dm-x" data-bpdel="' + x.t + '" aria-label="' + T3(['Apagar', 'Borrar', 'Delete']) + '">✕</button></div>';
+  }).join('') + '</div>';
+}
+function bpToolsHtml(){
+  var tips = [
+    T3(['Sente-se com as costas apoiadas e os pés no chão, sem cruzar as pernas.', 'Siéntate con la espalda apoyada y los pies en el suelo, sin cruzar las piernas.', 'Sit with your back supported and feet flat on the floor, legs uncrossed.']),
+    T3(['Descanse 5 minutos em silêncio antes de medir.', 'Descansa 5 minutos en silencio antes de medir.', 'Rest quietly for 5 minutes before measuring.']),
+    T3(['Braço apoiado na altura do coração, com o manguito direto na pele.', 'Brazo apoyado a la altura del corazón, con el manguito directo sobre la piel.', 'Rest your arm at heart level, with the cuff directly on the skin.']),
+    T3(['Não fale durante a medida. Evite café, cigarro e exercício nos 30 minutos antes.', 'No hables durante la medida. Evita café, cigarrillo y ejercicio en los 30 minutos previos.', 'Do not talk during the reading. Avoid coffee, smoking and exercise for 30 minutes before.']),
+    T3(['Prefira aparelho automático de braço e validado (os de pulso erram mais).', 'Prefiere un aparato automático de brazo y validado (los de muñeca fallan más).', 'Prefer a validated automatic upper-arm monitor (wrist monitors are less accurate).']),
+    T3(['Para levar ao médico (MRPA): 3 medidas pela manhã e 3 à noite, por 5 a 7 dias.', 'Para llevar al médico (MRPA): 3 medidas por la mañana y 3 por la noche, durante 5 a 7 días.', 'To bring to your doctor (home monitoring): 3 readings in the morning and 3 in the evening, for 5 to 7 days.'])
+  ];
+  return '<details class="dm-dt"><summary>📋 ' + T3(['Como medir direito', 'Cómo medir bien', 'How to measure properly']) + '</summary><ul class="list" style="margin-top:8px">' + tips.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>' +
+    '<details class="dm-dt"><summary>🚨 ' + T3(['Quando procurar ajuda', 'Cuándo buscar ayuda', 'When to get help']) + '</summary><p class="latest" style="margin-top:8px">' + T3(['Pressão de 180/110 ou mais que não baixa depois de descansar, junto com dor no peito, falta de ar, dor de cabeça forte, fraqueza ou dormência de um lado do corpo, fala enrolada ou alteração da visão: ligue 192 (SAMU).', 'Presión de 180/110 o más que no baja tras descansar, junto con dolor en el pecho, falta de aire, dolor de cabeza fuerte, debilidad o adormecimiento de un lado del cuerpo, habla arrastrada o cambios en la visión: llama a emergencias (192 en Brasil).', 'Pressure of 180/110 or more that does not drop after resting, together with chest pain, shortness of breath, a severe headache, weakness or numbness on one side, slurred speech or vision changes: call emergency services (192 in Brazil).']) + '</p></details>' +
+    '<div class="dm-sub">' + T3(['Relatório para o médico', 'Informe para el médico', 'Report for your doctor']) + '</div>' +
+    '<div class="dm-rep"><select id="bpRepDays" aria-label="' + T3(['Período', 'Período', 'Period']) + '">' + [7, 14, 30, 90].map(function(d){ return '<option value="' + d + '"' + (d === dmRange ? ' selected' : '') + '>' + T3([d + ' dias', d + ' días', d + ' days']) + '</option>'; }).join('') + '</select><button type="button" class="btn primary" id="bpPdf">📄 ' + T3(['Gerar PDF', 'Generar PDF', 'Create PDF']) + '</button></div><div id="dmPdfOut"></div>' +
+    '<button type="button" class="link" id="bpWipe" style="margin-top:12px">' + T3(['Apagar todos os registros de pressão', 'Borrar todos los registros de presión', 'Delete all blood pressure entries']) + '</button>';
+}
+function renderBp(){
+  var arr = bpPeriod(dmRange), st = bpStats(arr);
+  var last = bp.recs.length ? bpCls(bp.recs[bp.recs.length - 1].s, bp.recs[bp.recs.length - 1].d) : null;
+  var hero = $('dmHero'); hero.innerHTML = bpHero(); hero.style.setProperty('--glow', last && last.k !== 'plain' ? last.c : 'transparent');
+  $('dmDash').innerHTML = '<div class="kicker">' + T3(['Painel', 'Panel', 'Dashboard']) + '</div><div class="seg" id="dmSeg">' + [7, 14, 30, 90].map(function(d){ return '<button type="button" data-r="' + d + '" class="' + (d === dmRange ? 'on' : '') + '">' + d + T3(['d', 'd', 'd']) + '</button>'; }).join('') + '</div>' + bpKpis(arr, st);
+  $('dmChartC').innerHTML = '<div class="kicker">' + T3(['Evolução da pressão', 'Evolución de la presión', 'Blood pressure trend']) + '</div>' + bpChart(arr, dmRange);
+  $('dmPat').innerHTML = '<div class="kicker">' + T3(['Padrões', 'Patrones', 'Patterns']) + '</div>' + bpPatterns(arr);
+  $('dmList').innerHTML = '<div class="kicker">' + T3(['Registros', 'Registros', 'Entries']) + ' · ' + arr.length + '</div>' + bpListHtml(arr);
+  var keepPdf = $('dmPdfOut') ? $('dmPdfOut').innerHTML : '';
+  $('dmTools').innerHTML = bpToolsHtml(); if($('dmPdfOut')) $('dmPdfOut').innerHTML = keepPdf;
+  $('dmDisc').textContent = T3(['O Zelar é informativo e não substitui seu médico. Não diagnostica hipertensão nem sugere remédios. Faixas da Diretriz Brasileira de Hipertensão Arterial 2025 (SBC, SBN e SBH). A meta de cada pessoa é definida pelo médico.', 'Zelar es informativo y no sustituye a tu médico. No diagnostica hipertensión ni sugiere medicamentos. Rangos de la Directriz Brasileña de Hipertensión Arterial 2025 (SBC, SBN y SBH). La meta de cada persona la define el médico.', 'Zelar is informational and does not replace your doctor. It does not diagnose hypertension or suggest medication. Ranges from the 2025 Brazilian Hypertension Guideline (SBC, SBN and SBH). Each person\'s target is set by their doctor.']);
+}
+var bpMom = 'outro';
+function openBp(){
+  dmModal(); bpMom = 'outro';
+  var h = '<h3>🫀 ' + T3(['Registrar pressão', 'Registrar presión', 'Log blood pressure']) + '</h3>' +
+    '<div class="row"><div style="flex:1"><label class="lbl" for="bpS">' + T3(['Máxima (sistólica)', 'Máxima (sistólica)', 'Top (systolic)']) + '</label><input id="bpS" class="dm-in" type="number" inputmode="numeric" step="1" placeholder="120" autocomplete="off"></div>' +
+    '<div style="flex:1"><label class="lbl" for="bpD">' + T3(['Mínima (diastólica)', 'Mínima (diastólica)', 'Bottom (diastolic)']) + '</label><input id="bpD" class="dm-in" type="number" inputmode="numeric" step="1" placeholder="80" autocomplete="off"></div></div>' +
+    '<label class="lbl" for="bpP">' + T3(['Pulso (opcional)', 'Pulso (opcional)', 'Pulse (optional)']) + ' · bpm</label><input id="bpP" class="dm-in" type="number" inputmode="numeric" step="1" placeholder="72" autocomplete="off">' +
+    '<label class="lbl">' + T3(['Momento', 'Momento', 'Moment']) + '</label><div class="dm-chips" id="bpMoms">' + BP_MOM.map(function(x){ return '<button type="button" data-m="' + x[0] + '" class="' + (x[0] === bpMom ? 'on' : '') + '">' + T3(x[1]) + '</button>'; }).join('') + '</div>' +
+    '<details class="dm-dt"><summary>🕒 ' + T3(['Outro dia ou horário', 'Otro día u hora', 'Another day or time']) + '</summary><input id="bpWhen" type="datetime-local" value="' + dmNowLocal() + '" max="' + dmNowLocal() + '"></details>' +
+    '<label class="lbl" for="bpNote">' + T3(['Observação (opcional)', 'Observación (opcional)', 'Note (optional)']) + '</label><input id="bpNote" type="text" maxlength="80" placeholder="' + T3(['Ex.: braço esquerdo, depois do café', 'Ej.: brazo izquierdo, después del café', 'E.g., left arm, after coffee']) + '">' +
+    '<p class="hint" id="bpErr" style="color:#e11d48;margin:6px 0 0"></p>' +
+    '<div class="row" style="margin-top:12px"><button type="button" class="btn" id="bpCancel">' + T3(['Cancelar', 'Cancelar', 'Cancel']) + '</button><button type="button" class="btn primary" id="bpSave">' + T3(['Salvar', 'Guardar', 'Save']) + '</button></div>';
+  $('dmBox').innerHTML = h; open('mDm');
+  $('bpCancel').onclick = dmClose;
+  $('bpMoms').onclick = function(ev){ var b = ev.target.closest('button[data-m]'); if(!b) return; bpMom = b.getAttribute('data-m'); [].forEach.call($('bpMoms').children, function(x){ x.classList.toggle('on', x === b); }); };
+  $('bpSave').onclick = bpSaveRec;
+  ['bpS', 'bpD', 'bpP'].forEach(function(id){ $(id).onkeydown = function(ev){ if(ev.key === 'Enter') bpSaveRec(); }; });
+  setTimeout(function(){ try{ $('bpS').focus(); }catch(e){} }, 60);
+}
+function bpSaveRec(){
+  var s = parseInt($('bpS').value, 10), d = parseInt($('bpD').value, 10), pv = String($('bpP').value || '').trim(), p = pv === '' ? null : parseInt(pv, 10), err = $('bpErr');
+  if(isNaN(s) || isNaN(d)){ err.textContent = T3(['Digite a máxima e a mínima.', 'Escribe la máxima y la mínima.', 'Enter the top and bottom numbers.']); return; }
+  if(s < 70 || s > 260 || d < 40 || d > 160 || d >= s){ err.textContent = T3(['Valores fora do esperado. Confira o aparelho: a máxima (ex.: 120) vem antes da mínima (ex.: 80).', 'Valores fuera de lo esperado. Revisa el aparato: la máxima (ej.: 120) va antes que la mínima (ej.: 80).', 'Values out of range. Check your monitor: the top number (e.g., 120) comes before the bottom (e.g., 80).']); return; }
+  if(p !== null && (isNaN(p) || p < 30 || p > 220)){ err.textContent = T3(['Pulso fora do esperado (30 a 220 bpm).', 'Pulso fuera de lo esperado (30 a 220 lpm).', 'Pulse out of range (30 to 220 bpm).']); return; }
+  var t = Date.now(), w = $('bpWhen') && $('bpWhen').value;
+  if(w){ var tt = new Date(w).getTime(); if(!isNaN(tt)){ if(tt > Date.now() + 60000){ err.textContent = T3(['Escolha agora ou um horário do passado.', 'Elige ahora o una hora pasada.', 'Pick now or a past time.']); return; } if(Math.abs(Date.now() - tt) > 60000) t = tt; } }
+  bp.recs.push({t: t, s: s, d: d, p: p, m: bpMom, n: String($('bpNote').value || '').replace(/[<>]/g, '').trim().slice(0, 80)});
+  bp.recs.sort(function(a, b){ return a.t - b.t; });
+  if(bp.recs.length > 3000) bp.recs = bp.recs.slice(-3000);
+  saveBp(); bpResult(s, d, p, t);
+  renderDm(); renderHome();
+}
+function bpResult(s, d, p, t){
+  var c = bpCls(s, d), box = $('dmBox');
+  var h = '<div class="dm-res" style="--rc:' + c.c + ';--rf:' + c.fg + '"><div class="dm-rtop">' + bpPill(c, true) + '</div><div class="dm-rv">' + s + '/' + d + '<small>mmHg</small></div><div class="dm-rs">' + dmDT(t) + ' · ' + bpMomName(bpMom) + (p ? ' · ♥ ' + p : '') + '</div></div>' +
+    '<p class="dm-rm">' + bpMsg(c.k) + '</p>';
+  if(c.k === 'e3') h += '<p class="dm-warn">⚠ ' + T3(['Se houver dor no peito, falta de ar, fraqueza de um lado, fala enrolada ou alteração da visão, ligue 192 agora.', 'Si hay dolor en el pecho, falta de aire, debilidad de un lado, habla arrastrada o cambios en la visión, llama al 192 ahora.', 'If you have chest pain, shortness of breath, one-sided weakness, slurred speech or vision changes, call 192 now.']) + '</p>';
+  h += '<p class="hint" style="margin:8px 0 0">' + T3(['Informação geral, não substitui seu médico. O app não diagnostica nem sugere remédios.', 'Información general, no sustituye a tu médico. La app no diagnostica ni sugiere medicamentos.', 'General information; it does not replace your doctor. The app does not diagnose or suggest medication.']) + '</p>' +
+    '<div class="row" style="margin-top:12px">' + ((c.k === 'e1' || c.k === 'e2' || c.k === 'e3') ? '<button type="button" class="btn" id="bpAgain">' + T3(['Medir de novo', 'Medir de nuevo', 'Measure again']) + '</button>' : '') + '<button type="button" class="btn primary" id="bpOk">' + T3(['Fechar', 'Cerrar', 'Close']) + '</button></div>';
+  box.innerHTML = h;
+  $('bpOk').onclick = dmClose;
+  if($('bpAgain')) $('bpAgain').onclick = openBp;
+}
+/* ---- PDF de pressão ---- */
+function bpReportPages(days){
+  var PW = 1240, PH = 1754, M = 76, arr = bpPeriod(days), st = bpStats(arr), FONT = '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+  var pages = [], cv, g, y;
+  function newPage(){ cv = document.createElement('canvas'); cv.width = PW; cv.height = PH; g = cv.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, PW, PH); pages.push(cv); y = M; }
+  function tx(s, x, yy, size, col, bold, align){ g.font = (bold ? '700 ' : '400 ') + size + 'px ' + FONT; g.fillStyle = col || '#0f172a'; g.textAlign = align || 'left'; g.textBaseline = 'alphabetic'; g.fillText(s, x, yy); }
+  function rr(x, yy, w, h, r, fill){ g.beginPath(); g.moveTo(x + r, yy); g.arcTo(x + w, yy, x + w, yy + h, r); g.arcTo(x + w, yy + h, x, yy + h, r); g.arcTo(x, yy + h, x, yy, r); g.arcTo(x, yy, x + w, yy, r); g.closePath(); g.fillStyle = fill; g.fill(); }
+  function head(){
+    g.fillStyle = '#4c3aa8'; g.fillRect(0, 0, PW, 150);
+    tx(T3(['Relatório de pressão arterial', 'Informe de presión arterial', 'Blood pressure report']), M, 76, 48, '#fff', true);
+    tx(T3(['Gerado pelo app Zelar · registro feito pelo próprio usuário', 'Generado por la app Zelar · registro hecho por el propio usuario', 'Created by the Zelar app · self-reported by the user']), M, 118, 24, '#e0e7ff');
+    y = 190;
+  }
+  function foot(i, n){
+    g = pages[i].getContext('2d');
+    g.fillStyle = '#e2e8f0'; g.fillRect(M, PH - 110, PW - 2 * M, 2);
+    tx(T3(['Informativo; não é diagnóstico nem substitui a avaliação do médico. Classificação: Diretriz Brasileira de Hipertensão Arterial 2025.', 'Informativo; no es un diagnóstico ni sustituye la evaluación del médico. Clasificación: Directriz Brasileña de Hipertensión Arterial 2025.', 'Informational; not a diagnosis and does not replace your doctor. Classification: 2025 Brazilian Hypertension Guideline.']), M, PH - 70, 18, '#64748b');
+    tx((i + 1) + ' / ' + n, PW - M, PH - 40, 19, '#64748b', false, 'right');
+  }
+  newPage(); head();
+  var from = new Date(Date.now() - days * 86400000);
+  tx((prof.name ? prof.name + ' · ' : '') + from.toLocaleDateString(LOC) + ' – ' + new Date().toLocaleDateString(LOC) + ' (' + days + ' ' + T3(['dias', 'días', 'days']) + ')', M, y, 28, '#0f172a', true); y += 40;
+  tx(T3(['Unidade: mmHg · Estágios: normal < 120/80; pré 120–139/80–89; 1: 140–159/90–99; 2: 160–179/100–109; 3: ≥ 180/110', 'Unidad: mmHg · Estadios: normal < 120/80; pre 120–139/80–89; 1: 140–159/90–99; 2: 160–179/100–109; 3: ≥ 180/110', 'Unit: mmHg · Stages: normal < 120/80; pre 120–139/80–89; 1: 140–159/90–99; 2: 160–179/100–109; 3: ≥ 180/110']), M, y, 19, '#475569'); y += 34;
+  if(!st.n){ tx(T3(['Sem registros neste período.', 'Sin registros en este período.', 'No entries in this period.']), M, y + 30, 28, '#475569'); }
+  else {
+    var cells = [[T3(['Medidas', 'Medidas', 'Readings']), String(st.n)], [T3(['Média', 'Promedio', 'Average']), Math.round(st.ms) + '/' + Math.round(st.md)], [T3(['Pulso médio', 'Pulso medio', 'Average pulse']), st.mp !== null ? String(Math.round(st.mp)) : '—'],
+      [T3(['Sistólica mín. / máx.', 'Sistólica mín. / máx.', 'Systolic min / max']), st.minS + ' / ' + st.maxS], [T3(['Diastólica mín. / máx.', 'Diastólica mín. / máx.', 'Diastolic min / max']), st.minD + ' / ' + st.maxD], [T3(['Elevadas (≥ 140/90)', 'Elevadas (≥ 140/90)', 'Elevated (≥ 140/90)']), dmPlain() ? '—' : st.hi + ' (' + pctTxt(pct(st.hi, st.n)) + ')']];
+    var cw = (PW - 2 * M - 40) / 3;
+    cells.forEach(function(c, i){ var cx = M + (i % 3) * (cw + 20), cy = y + Math.floor(i / 3) * 128; rr(cx, cy, cw, 110, 18, '#f1f5f9'); tx(c[0], cx + 24, cy + 38, 21, '#475569'); tx(c[1], cx + 24, cy + 84, 40, '#0f172a', true); });
+    y += 2 * 128 + 16;
+    if(!dmPlain()){
+      var bx = M, order = ['baixa', 'normal', 'pre', 'e1', 'e2', 'e3'];
+      order.forEach(function(k){ if(!st.by[k]) return; var w = (PW - 2 * M) * st.by[k] / st.n; g.fillStyle = BP_C[k].c; g.fillRect(bx, y, w, 34); bx += w; });
+      y += 72; var lx = M;
+      order.forEach(function(k){ if(!st.by[k]) return; g.fillStyle = BP_C[k].c; g.fillRect(lx, y - 16, 20, 20); var s2 = BP_C[k].ic + ' ' + T3(BP_C[k].t) + ' ' + pctTxt(pct(st.by[k], st.n)); tx(s2, lx + 28, y, 20, '#334155'); lx += 28 + g.measureText(s2).width + 26; });
+      y += 40;
+    }
+    if(st.n < 14){ tx(T3(['Poucas medidas no período; interprete com cautela.', 'Pocas medidas en el período; interpreta con cautela.', 'Few readings in the period; interpret with caution.']), M, y, 20, '#475569'); y += 34; }
+    /* gráfico */
+    var CH = 400, CW = PW - 2 * M - 70, cx0 = M + 70, cy0 = y + 10, endT = Date.now(), fromT = endT - days * 86400000;
+    var mxS = Math.max.apply(null, arr.map(function(x){ return x.s; })), mnD = Math.min.apply(null, arr.map(function(x){ return x.d; }));
+    var y0 = Math.min(50, Math.floor((mnD - 10) / 10) * 10), y1 = Math.max(160, Math.ceil((mxS + 10) / 10) * 10);
+    var X = function(t){ return cx0 + (t - fromT) / (endT - fromT) * CW; }, Y = function(v){ return cy0 + (y1 - v) / (y1 - y0) * CH; };
+    if(!dmPlain()){ g.fillStyle = 'rgba(249,115,22,.10)'; g.fillRect(cx0, cy0, CW, Y(140) - cy0); }
+    g.setLineDash([6, 8]); g.strokeStyle = '#94a3b8'; g.lineWidth = 1.5;
+    [80, 90, 120, 140].forEach(function(v){ if(v < y0 || v > y1) return; g.beginPath(); g.moveTo(cx0, Y(v)); g.lineTo(cx0 + CW, Y(v)); g.stroke(); tx(String(v), cx0 - 12, Y(v) + 7, 20, '#475569', false, 'right'); });
+    g.setLineDash([]);
+    function line(f, col, dash){ if(arr.length < 2) return; g.setLineDash(dash || []); g.beginPath(); arr.forEach(function(x, i){ if(i) g.lineTo(X(x.t), Y(x[f])); else g.moveTo(X(x.t), Y(x[f])); }); g.strokeStyle = col; g.lineWidth = 3; g.lineJoin = 'round'; g.stroke(); g.setLineDash([]); }
+    line('s', 'rgba(76,58,168,.75)'); line('d', 'rgba(15,23,42,.4)', [10, 8]);
+    arr.forEach(function(x){ var c = bpCls(x.s, x.d);
+      g.beginPath(); g.arc(X(x.t), Y(x.s), 8, 0, Math.PI * 2); g.fillStyle = c.c; g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 3; g.stroke();
+      g.beginPath(); g.arc(X(x.t), Y(x.d), 6, 0, Math.PI * 2); g.fillStyle = '#fff'; g.fill(); g.strokeStyle = c.c; g.lineWidth = 3; g.stroke(); });
+    for(var i = 0; i <= 4; i++){ var tt = fromT + (endT - fromT) * i / 4, d = new Date(tt); tx(String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0'), X(tt), cy0 + CH + 34, 20, '#475569', false, i === 0 ? 'left' : (i === 4 ? 'right' : 'center')); }
+    tx('● ' + T3(['Sistólica (máxima)', 'Sistólica (máxima)', 'Systolic (top)']) + '   ○ ' + T3(['Diastólica (mínima)', 'Diastólica (mínima)', 'Diastolic (bottom)']), M, cy0 + CH + 72, 20, '#334155');
+    y = cy0 + CH + 120;
+    /* por período do dia */
+    var blocks = [[0, 6, T3(['Madrugada', 'Madrugada', 'Overnight'])], [6, 12, T3(['Manhã', 'Mañana', 'Morning'])], [12, 18, T3(['Tarde', 'Tarde', 'Afternoon'])], [18, 24, T3(['Noite', 'Noche', 'Evening'])]];
+    tx(T3(['Média por período do dia', 'Promedio por parte del día', 'Average by time of day']), M, y, 28, '#0f172a', true); y += 14;
+    blocks.forEach(function(b){
+      var sub = arr.filter(function(x){ var hh = new Date(x.t).getHours(); return hh >= b[0] && hh < b[1]; }); if(!sub.length) return;
+      var ms = Math.round(bpAvg(sub, 's')), md = Math.round(bpAvg(sub, 'd')), c = bpCls(ms, md); y += 38;
+      tx(b[2], M, y, 22, '#334155'); tx(ms + '/' + md + '  (' + sub.length + '×)', M + 330, y, 22, '#0f172a', true);
+      g.fillStyle = c.c; g.fillRect(M + 650, y - 20, Math.min(440, ms / 200 * 440), 22);
+    });
+    y += 50;
+    /* tabela */
+    var rows = arr.slice().reverse().slice(0, 300), rh = 40;
+    function tHead(){ g.fillStyle = '#e2e8f0'; g.fillRect(M, y, PW - 2 * M, 44); tx(T3(['Data e hora', 'Fecha y hora', 'Date and time']), M + 14, y + 30, 20, '#0f172a', true); tx('mmHg', M + 330, y + 30, 20, '#0f172a', true); tx(T3(['Pulso', 'Pulso', 'Pulse']), M + 470, y + 30, 20, '#0f172a', true); tx(T3(['Classificação', 'Clasificación', 'Class']), M + 590, y + 30, 20, '#0f172a', true); tx(T3(['Momento / nota', 'Momento / nota', 'Moment / note']), M + 840, y + 30, 20, '#0f172a', true); y += 44; }
+    if(y > PH - 360){ newPage(); y = M + 10; }
+    tx(T3(['Registros', 'Registros', 'Readings']), M, y + 6, 28, '#0f172a', true); y += 28; tHead();
+    rows.forEach(function(x, i){
+      if(y + rh > PH - 140){ newPage(); y = M; tHead(); }
+      var c = bpCls(x.s, x.d);
+      if(i % 2){ g.fillStyle = '#f8fafc'; g.fillRect(M, y, PW - 2 * M, rh); }
+      tx(dmDT(x.t, true), M + 14, y + 28, 20, '#0f172a'); tx(x.s + '/' + x.d, M + 330, y + 28, 20, '#0f172a', true); tx(x.p ? String(x.p) : '—', M + 470, y + 28, 20, '#0f172a');
+      g.fillStyle = c.c; g.fillRect(M + 590, y + 8, 22, 22); tx(c.ic + ' ' + T3(c.t), M + 622, y + 28, 19, '#334155');
+      var note = bpMomName(x.m) + (x.n ? ' · ' + x.n : ''); if(note.length > 24) note = note.slice(0, 23) + '…'; tx(note, M + 840, y + 28, 19, '#334155');
+      y += rh;
+    });
+    if(arr.length > 300) tx(T3(['Mostrando os 300 registros mais recentes.', 'Mostrando los 300 registros más recientes.', 'Showing the 300 most recent entries.']), M, y + 30, 19, '#475569');
+  }
+  var n = pages.length; pages.forEach(function(p, i){ foot(i, n); });
+  return pages;
+}
+function bpMakePdf(){
+  var days = parseInt($('bpRepDays').value, 10) || 14;
+  if(!bpPeriod(days).length){ toast(T3(['Sem registros neste período.', 'Sin registros en este período.', 'No entries in this period.'])); return; }
+  var out = $('dmPdfOut'); out.innerHTML = '<p class="hint">' + T3(['Gerando o PDF…', 'Generando el PDF…', 'Creating the PDF…']) + '</p>';
+  setTimeout(function(){
+    try{
+      var blob = dmPdfBlob(bpReportPages(days)), name = 'pressao-' + key() + '.pdf', url = URL.createObjectURL(blob);
+      var canShare = !!(navigator.canShare && window.File && navigator.canShare({files: [new File([blob], name, {type: 'application/pdf'})]}));
+      out.innerHTML = '<div class="row"><a class="btn primary" style="text-align:center;text-decoration:none" href="' + url + '" download="' + name + '">⬇ ' + T3(['Baixar PDF', 'Descargar PDF', 'Download PDF']) + '</a>' + (canShare ? '<button type="button" class="btn" id="bpShare">' + T3(['Compartilhar', 'Compartir', 'Share']) + '</button>' : '') + '</div>';
+      if(canShare) $('bpShare').onclick = function(){ try{ navigator.share({files: [new File([blob], name, {type: 'application/pdf'})], title: name}); }catch(e){} };
+    }catch(e){ out.innerHTML = '<p class="hint">' + T3(['Não foi possível gerar o PDF neste aparelho.', 'No se pudo generar el PDF en este dispositivo.', 'Could not create the PDF on this device.']) + '</p>'; }
+  }, 60);
+}
+(function(){
+  var root = $('tab-dm'); if(!root) return;
+  root.addEventListener('click', function(ev){
+    var t = ev.target, b;
+    if((b = t.closest('#focSeg button'))){ foc = b.getAttribute('data-foc'); save('foc', foc); dmSelT = null; dmSelI = null; renderAll(); return; }
+    if(t.closest('#bpAdd')){ openBp(); return; }
+    if(t.closest('#bpPdf')){ bpMakePdf(); return; }
+    if((b = t.closest('[data-bpdel]'))){
+      var tt = parseInt(b.getAttribute('data-bpdel'), 10), rec = bp.recs.filter(function(x){ return x.t === tt; })[0]; if(!rec) return;
+      bp.recs = bp.recs.filter(function(x){ return x.t !== tt; }); saveBp(); renderDm(); renderHome();
+      toast(T3(['Registro apagado.', 'Registro eliminado.', 'Entry deleted.']), {label: T3(['Desfazer', 'Deshacer', 'Undo']), fn: function(){ bp.recs.push(rec); bp.recs.sort(function(a, b){ return a.t - b.t; }); saveBp(); renderDm(); renderHome(); }});
+      return;
+    }
+    if(t.closest('#bpWipe')){
+      var wb = $('bpWipe');
+      if(wb.getAttribute('data-c') !== '1'){ wb.setAttribute('data-c', '1'); wb.textContent = T3(['Toque de novo para confirmar: apagar tudo', 'Toca de nuevo para confirmar: borrar todo', 'Tap again to confirm: delete everything']); setTimeout(function(){ if(wb && wb.getAttribute('data-c') === '1'){ wb.removeAttribute('data-c'); wb.textContent = T3(['Apagar todos os registros de pressão', 'Borrar todos los registros de presión', 'Delete all blood pressure entries']); } }, 4000); return; }
+      var snap = bp.recs.slice(); bp.recs = []; saveBp(); renderDm(); renderHome();
+      toast(T3(['Registros apagados.', 'Registros borrados.', 'Entries deleted.']), {label: T3(['Desfazer', 'Deshacer', 'Undo']), fn: function(){ bp.recs = snap; saveBp(); renderDm(); renderHome(); }});
+    }
+  });
+})();
 
 /* ---------- mensagem do dia inteligente: usa o que você fez ontem e hoje ---------- */
 function L3(pt, es, en){ return LANG === 'es' ? es : (LANG === 'en' ? en : pt); }
@@ -4433,7 +4853,7 @@ var WDEF = {
   dose: {n: 'Próxima dose', e: '💊', go: 'meds', hc: '--c-meds'},
   tomados: {n: 'Tomados hoje', e: '✅', go: 'meds', hc: '--c-meds'},
   tarefas: {n: 'Tarefas de hoje', e: '📋', go: 'tasks', hc: '--c-tasks'},
-  glic: {n: 'Glicemia', e: '🩸', go: 'dm', hc: '--c-dm'},
+  glic: {get n(){ return curFoc() === 'has' ? T3(['Pressão', 'Presión', 'Blood pressure']) : 'Glicemia'; }, get e(){ return curFoc() === 'has' ? '🫀' : '🩸'; }, go: 'dm', hc: '--c-dm'},
   peso: {n: 'Meu peso', e: '⚖️', go: 'corpo', hc: '--c-corpo'},
   sec_tasks: {n: 'Bloco de tarefas', e: '✅'},
   sec_corpo: {n: 'Bloco Meu corpo', e: '🧍'},
@@ -5868,7 +6288,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'zelar', versao: 6, avatar: avatar, bt: bt, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, gam: gam, dm: dm, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'zelar', versao: 6, avatar: avatar, bt: bt, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, gam: gam, dm: dm, bp: bp, foc: foc, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -5905,6 +6325,8 @@ function importData(file){
     if(d.wcfg) wcfg = {hide: d.wcfg.hide === true};
     if(d.gam) gam = cleanGam(d.gam);
     if(d.dm){ dm = cleanDm(d.dm); saveDm(); }
+    if(d.bp){ bp = cleanBp(d.bp); saveBp(); }
+    if(d.foc === 'dm' || d.foc === 'has'){ foc = d.foc; save('foc', foc); }
     if(d.foto){ foto = cleanFoto(d.foto); save('foto', foto); }
     if(d.bt){ bt = btClean(d.bt); save('bt', bt); rebuildBodies(false); }
     if(d.avatar){ avatar = cleanAvatar(d.avatar); save('avatar', avatar); }
@@ -5979,7 +6401,7 @@ document.addEventListener('click', function(ev){
   var b = ev.target.closest ? ev.target.closest('.add, .tile, .mins button, .btn, .subs button, .seg button') : null;
   if(b && window.FX){ try{ FX.ripple(b); }catch(e){} }
 }, true);
-$('nav-add').onclick = function(){ if(tab === 'meds'){ openMed(null); return; } if(tab === 'dm'){ openDm(); return; }  openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
+$('nav-add').onclick = function(){ if(tab === 'meds'){ openMed(null); return; } if(tab === 'dm'){ if(curFoc() === 'has') openBp(); else openDm(); return; }  openAdd({inicio: 'log', agua: 'log', ex: 'ex', comida: 'fd', corpo: 'log'}[tab] || 'log', true); };
 (function(){
   ['agua', 'ex', 'comida', 'corpo'].forEach(function(id){
     var m = $('tab-' + id), L = document.createElement('div'), R = document.createElement('div'), inL = true;
