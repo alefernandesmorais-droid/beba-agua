@@ -1194,6 +1194,29 @@ body[data-tab="dm"][data-foc="has"]{--t1:#8a6df0;--t2:#6d4fd6}
 .slim:not(.open){display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden;cursor:pointer;position:relative;padding-right:20px}
 .slim:not(.open)::before{content:"ⓘ";position:absolute;right:0;top:0;opacity:.7}
 .slim.open{cursor:pointer}
+
+#fdList{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px}
+#fdList .opt{flex-direction:column;align-items:center;text-align:center;padding:10px 6px;border-radius:14px;gap:2px;min-height:96px;justify-content:flex-start}
+#fdList .opt .dot{display:none}
+#fdList .opt .fdem{font-size:2rem;line-height:1.1}
+#fdList .opt .tx{display:flex;flex-direction:column;align-items:center;min-width:0;width:100%}
+#fdList .opt .tx>span{font-size:.8rem;font-weight:700;line-height:1.2;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+#fdList .opt .tx small{font-size:.68rem;margin-top:2px}
+#fdList .opt .gin{width:100%;margin-top:4px}
+#fdList>p{grid-column:1/-1}
+#exSubList.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px}
+#exSubList.grid .sec{grid-column:1/-1;margin:6px 2px 0}
+#exSubList.grid .opt{flex-direction:column;align-items:center;text-align:center;padding:10px 6px;border-radius:14px;gap:2px;min-height:84px;justify-content:flex-start}
+#exSubList.grid .opt .dot{display:none}
+#exSubList.grid .opt .exem{font-size:1.8rem;line-height:1.1}
+#exSubList.grid .opt .exn{font-size:.78rem;font-weight:700;line-height:1.2}
+#exMuscle{margin:8px 0 0;font-size:.85rem;font-weight:600}
+.imc-n{font-size:2.2rem;font-weight:800;line-height:1}
+.imc-b{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin:12px 0 4px}
+.imc-b span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.6rem;font-weight:700;color:var(--muted);opacity:.55;text-align:center}
+.imc-b span i{display:block;height:8px;width:100%;border-radius:6px}
+.imc-b span.on{opacity:1;color:var(--text)}
+.imc-b span.on i{height:12px}
 </style>
 <style id="palStyle">
 </style>
@@ -1569,7 +1592,7 @@ body[data-tab="dm"][data-foc="has"]{--t1:#8a6df0;--t2:#6d4fd6}
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
     <p class="note"><b>Zelar</b> · <i>Cuidar de você, todo dia.</i></p>
     <p class="note" style="font-weight:600">Informativo: não substitui seu médico.</p>
-    <p class="note">Gratuito e sem anúncios. Versão 45.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 46.</p>
   </footer>
 </div>
 
@@ -1695,7 +1718,8 @@ body[data-tab="dm"][data-foc="has"]{--t1:#8a6df0;--t2:#6d4fd6}
     <p id="exModalHint"></p>
     <label class="lbl">Qual exercício? (opcional)</label>
     <button type="button" class="dd msel-btn" id="exSubBtn" aria-haspopup="listbox" aria-expanded="false">Não detalhar (só o grupo)</button>
-    <div class="msel" id="exSubList" role="listbox" aria-multiselectable="true" hidden></div>
+    <div class="msel grid" id="exSubList" role="listbox" aria-multiselectable="true" hidden></div>
+    <div id="exMuscle" aria-live="polite"></div>
     <p class="hint" id="exSubHint" style="margin:2px 2px 0" hidden>Vários selecionados: o tempo total é dividido igualmente entre eles e a série/carga vale para cada um.</p>
     <div id="exSets">
       <label class="lbl">Séries, repetições e carga (opcional)</label>
@@ -2192,6 +2216,17 @@ function mkSubs(map, id){ return (map[id] || []).map(function(a){ return {id: a[
 function subShort(grp, sid){
   for(var i = 0; i < grp.subs.length; i++) if(grp.subs[i].id === sid) return grp.subs[i].nome.split(' (')[0];
   return '';
+}
+
+/* ===== v46: ícones e músculos por exercício ===== */
+var SUB_EM = [['flexao','🤸'],['barrafixa','🧗'],['puxada','⬇️'],['remadalta','🏋️'],['remada','🚣'],['hiper','🧎'],['desenv','🙆'],['lateral','↔️'],['frontal','⬆️'],['rosca','💪'],['biceps','💪'],['alternada','💪'],['martelo','💪'],['triceps','🦾'],['testa','🦾'],['paralelas','🦾'],['prancha','🧘'],['abdominal','🔥'],['pernas','🦵'],['remador','🔥'],['agacho','🦵'],['legpress','🦵'],['cadeira','🦵'],['flexora','🦵'],['afundo','🚶'],['sumo','🍑'],['hipthrust','🍑'],['abdutora','🍑'],['panturrilha','🦶'],['caminhada','🚶'],['corrida','🏃'],['bike','🚴'],['natacao','🏊'],['esteira','🏃'],['eliptico','🏃'],['remo','🚣'],['corda','🪢'],['futebol','⚽'],['volei','🏐'],['basquete','🏀'],['handebol','🤾'],['tenis','🎾'],['beach','🏖️'],['mesa','🏓'],['badminton','🏸'],['lutas','🥊'],['danca','💃'],['surfe','🏄'],['ginastica','🤸'],['yoga','🧘'],['pilates','🧘'],['alongamento','🤸'],['hiit','⚡'],['funcional','🔁'],['calistenia','🤸']];
+function subEmoji(id, dflt){ for(var i = 0; i < SUB_EM.length; i++) if(id.indexOf(SUB_EM[i][0]) === 0) return SUB_EM[i][1]; return dflt; }
+var MU = {pei: ['Peitoral', 'Pectorales', 'Chest'], tri: ['Tríceps', 'Tríceps', 'Triceps'], omb: ['Ombros', 'Hombros', 'Shoulders'], cos: ['Costas', 'Espalda', 'Back'], bic: ['Bíceps', 'Bíceps', 'Biceps'], lom: ['Lombar', 'Lumbar', 'Lower back'], glu: ['Glúteos', 'Glúteos', 'Glutes'], tra: ['Trapézio', 'Trapecio', 'Traps'], ant: ['Antebraço', 'Antebrazo', 'Forearms'], abd: ['Abdômen', 'Abdomen', 'Abs'], qua: ['Quadríceps', 'Cuádriceps', 'Quads'], pos: ['Posterior de coxa', 'Isquiotibiales', 'Hamstrings'], adu: ['Adutores', 'Aductores', 'Adductors'], pan: ['Panturrilha', 'Pantorrillas', 'Calves']};
+var SUB_MU = {supino: 'pei tri omb', supinoinc: 'pei omb', flexao: 'pei tri omb', crucifixo: 'pei', peck: 'pei', barrafixa: 'cos bic', puxada: 'cos bic', remada: 'cos bic', unilateral: 'cos bic', hiper: 'lom glu', desenv: 'omb tri', lateral: 'omb', frontal: 'omb', remadalta: 'omb tra', biceps: 'bic', alternada: 'bic', martelo: 'bic ant', rosca21: 'bic', triceps: 'tri', testa: 'tri', supfechado: 'tri pei', paralelas: 'tri pei', prancha: 'abd', abdominal: 'abd', pernas: 'abd', remador: 'abd', agacho: 'qua glu', legpress: 'qua glu', cadeira: 'qua', flexora: 'pos', afundo: 'qua glu', sumo: 'glu adu', hipthrust: 'glu', abdutora: 'glu', panturrilhae: 'pan', panturrilhas: 'pan'};
+function subMuscles(e, ids){
+  var seen = {}, out = [];
+  (ids && ids.length ? ids : e.subs.map(function(x){ return x.id; })).forEach(function(id){ (SUB_MU[id] || '').split(' ').forEach(function(k){ if(k && !seen[k]){ seen[k] = 1; out.push(T3(MU[k])); } }); });
+  return ids && ids.length ? out.join(', ') : '';
 }
 function subOk(grp, sid){ for(var i = 0; i < grp.subs.length; i++) if(grp.subs[i].id === sid) return true; return false; }
 
@@ -3150,6 +3185,14 @@ function nutriDay(k){
 }
 function nf1(x){ return String(Math.round(x * 10) / 10).replace('.', ','); }
 var fdGroup = null, fdPick = {}, fdScope = 'grupo';
+
+/* ===== v46: ícone por alimento ===== */
+var FD_EM = [['banana','🍌'],['maca','🍎'],['uva','🍇'],['laranja','🍊'],['tangerina','🍊'],['mexerica','🍊'],['limao','🍋'],['abacaxi','🍍'],['manga','🥭'],['melancia','🍉'],['melao','🍈'],['morango','🍓'],['pera','🍐'],['pessego','🍑'],['cereja','🍒'],['abacate','🥑'],['coco','🥥'],['kiwi','🥝'],['mamao','🍈'],['goiaba','🍈'],['tomate','🍅'],['cenoura','🥕'],['batata doce','🍠'],['batata','🥔'],['milho','🌽'],['pepino','🥒'],['brocolis','🥦'],['couve','🥬'],['alface','🥬'],['espinafre','🥬'],['repolho','🥬'],['cebola','🧅'],['alho','🧄'],['pimentao','🫑'],['berinjela','🍆'],['abobora','🎃'],['feijao','🫘'],['lentilha','🫘'],['grao de bico','🫘'],['ervilha','🫛'],['arroz','🍚'],['macarrao','🍝'],['pao','🍞'],['bolo','🍰'],['biscoito','🍪'],['bolacha','🍪'],['cuscuz','🌽'],['tapioca','🫓'],['aveia','🥣'],['ovo','🥚'],['frango','🍗'],['peru','🍗'],['carne','🥩'],['bife','🥩'],['boi','🥩'],['porco','🥓'],['bacon','🥓'],['linguica','🌭'],['salsicha','🌭'],['presunto','🍖'],['peixe','🐟'],['tilapia','🐟'],['sardinha','🐟'],['atum','🐟'],['salmao','🐟'],['camarao','🦐'],['leite','🥛'],['iogurte','🥛'],['queijo','🧀'],['requeijao','🧀'],['manteiga','🧈'],['azeite','🫒'],['azeitona','🫒'],['oleo','🫒'],['castanha','🌰'],['amendoim','🥜'],['nozes','🌰'],['chocolate','🍫'],['sorvete','🍨'],['acucar','🍬'],['mel','🍯'],['cafe','☕'],['cha','🍵'],['suco','🧃'],['refrigerante','🥤'],['cerveja','🍺'],['vinho','🍷'],['pizza','🍕'],['hamburguer','🍔'],['pastel','🥟'],['coxinha','🥟'],['sopa','🍲'],['farinha','🌾'],['fuba','🌾']];
+function foodEmoji(t){
+  var n = ' ' + (t.n || '') + ' ';
+  for(var i = 0; i < FD_EM.length; i++){ if(n.indexOf(' ' + FD_EM[i][0]) >= 0) return FD_EM[i][1]; }
+  var g = t.g ? foodById(t.g) : null; return g ? g.emoji : '🍽️';
+}
 function fdRender(){
   var q = tacoNorm($('fdQ').value).trim(), toks = q ? q.split(/\s+/) : [];
   var f = foodById(fdGroup), list = TACO.filter(function(t){
@@ -3164,9 +3207,10 @@ function fdRender(){
     var b = document.createElement('div'); b.className = 'opt'; b.setAttribute('role', 'option'); b.tabIndex = 0;
     var on = fdPick[t[0]] !== undefined; b.setAttribute('aria-selected', on ? 'true' : 'false');
     var det = (t[3] === null ? '' : Math.round(t[3]) + ' kcal') + (t[5] === null ? '' : ' · carbo ' + nf1(t[5]) + ' g') + (t[4] === null ? '' : ' · prot. ' + nf1(t[4]) + ' g');
-    b.innerHTML = '<span class="dot"></span><span class="tx"><span></span><small></small></span>' + (on ? '<input class="gin" type="number" inputmode="numeric" min="1" max="2000" aria-label="Gramas">' : '');
+    b.innerHTML = '<span class="dot"></span><span class="fdem" aria-hidden="true"></span><span class="tx"><span></span><small></small></span>' + (on ? '<input class="gin" type="number" inputmode="numeric" min="1" max="2000" aria-label="Gramas">' : '');
+    b.querySelector('.fdem').textContent = foodEmoji(t);
     b.querySelector('.tx > span').textContent = tname(t);
-    b.querySelector('small').textContent = (fdScope === 'todos' && t.g ? foodById(t.g).nome + ' · ' : (fdScope === 'todos' ? TCATS[t[2]] + ' · ' : '')) + det;
+    b.querySelector('small').textContent = (t[3] === null ? '' : Math.round(t[3]) + ' kcal');
     var gi = b.querySelector('.gin');
     if(gi){ gi.value = fdPick[t[0]]; gi.onclick = function(ev){ ev.stopPropagation(); }; gi.onkeydown = function(ev){ ev.stopPropagation(); }; gi.oninput = function(){ var v = parseInt(gi.value, 10); fdPick[t[0]] = (v >= 1 && v <= 2000) ? v : 100; fdSumm(); }; }
     function tog(){ if(fdPick[t[0]] === undefined) fdPick[t[0]] = 100; else delete fdPick[t[0]]; fdRender(); fdSumm(); }
@@ -5809,6 +5853,44 @@ function wWindowAvg(off){
   for(i = off; i < off + 7; i++){ var v = wlog[key(daysBack(i))]; if(v) vals.push(v); }
   return vals.length >= 2 ? vals.reduce(function(a, b){ return a + b; }, 0) / vals.length : null;
 }
+
+/* ===== v46: IMC no peso ===== */
+var hgt = (function(v){ v = typeof v === 'number' ? v : null; return v && v >= 100 && v <= 230 ? Math.round(v) : null; })(load('hgt', null));
+var IMC_C = [
+  {max: 18.5, c: '#0ea5e9', t: ['Baixo peso', 'Bajo peso', 'Underweight'], s: ['Baixo', 'Bajo', 'Low']},
+  {max: 25, c: '#16a34a', t: ['Peso normal', 'Peso normal', 'Normal weight'], s: ['Normal', 'Normal', 'Normal']},
+  {max: 30, c: '#f59e0b', t: ['Sobrepeso', 'Sobrepeso', 'Overweight'], s: ['Sobrep.', 'Sobrep.', 'Over.']},
+  {max: 35, c: '#f97316', t: ['Obesidade grau I', 'Obesidad grado I', 'Obesity class I'], s: ['Ob. I', 'Ob. I', 'Ob. I']},
+  {max: 40, c: '#e11d48', t: ['Obesidade grau II', 'Obesidad grado II', 'Obesity class II'], s: ['Ob. II', 'Ob. II', 'Ob. II']},
+  {max: 999, c: '#9f1239', t: ['Obesidade grau III', 'Obesidad grado III', 'Obesity class III'], s: ['Ob. III', 'Ob. III', 'Ob. III']}
+];
+function imcOf(kg){ return hgt && kg ? kg / Math.pow(hgt / 100, 2) : null; }
+function imcIdx(v){ for(var i = 0; i < IMC_C.length; i++) if(v < IMC_C[i].max) return i; return IMC_C.length - 1; }
+function imcHtml(lastKg){
+  var h = '<div class="dm-sub" style="margin:0 0 6px">' + T3(['IMC', 'IMC', 'BMI']) + '</div>';
+  if(!hgt){
+    return h + '<p class="hint" style="margin:0 0 8px">' + T3(['Informe sua altura para ver o IMC.', 'Indica tu altura para ver el IMC.', 'Enter your height to see your BMI.']) + '</p><div class="row" style="margin:0 0 14px"><input id="hgtIn" type="number" inputmode="numeric" min="100" max="230" placeholder="175" aria-label="' + T3(['Altura em cm', 'Altura en cm', 'Height in cm']) + '" style="flex:1;min-width:0;width:auto;padding:12px;font:inherit;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)"><button type="button" class="btn" id="hgtSave">cm · ' + T3(['Salvar', 'Guardar', 'Save']) + '</button></div>';
+  }
+  var wks = Object.keys(wlog).sort(), first = wks.length ? wlog[wks[0]] : null, cur = imcOf(lastKg);
+  if(cur === null) return h + '<p class="hint" style="margin:0 0 8px">' + T3(['Registre seu peso para calcular.', 'Registra tu peso para calcular.', 'Log your weight to calculate.']) + '</p><button type="button" class="link" id="hgtEdit">' + T3(['Altura: ', 'Altura: ', 'Height: ']) + hgt + ' cm · ' + T3(['editar', 'editar', 'edit']) + '</button>';
+  var i = imcIdx(cur), c = IMC_C[i], fm = function(v){ return v.toFixed(1).replace('.', ','); };
+  h += '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span class="imc-n" style="color:' + c.c + '">' + fm(cur) + '</span><span class="dm-pill" style="background:' + c.c + ';color:' + (i === 2 || i === 3 ? '#2b1700' : '#fff') + '">' + T3(c.t) + '</span></div>';
+  h += '<div class="imc-b" role="img" aria-label="' + T3(['Escala do IMC', 'Escala del IMC', 'BMI scale']) + '">' + IMC_C.map(function(x, k){ return '<span class="' + (k === i ? 'on' : '') + '"><i style="background:' + x.c + '"></i>' + T3(x.s) + '</span>'; }).join('') + '</div>';
+  if(first && wks.length > 1){
+    var f = imcOf(first), d = cur - f, fi = imcIdx(f);
+    h += '<p class="hint" style="margin:6px 0 0">' + (fi !== i ? T3(['Desde o primeiro registro você foi de ', 'Desde el primer registro pasaste de ', 'Since your first entry you moved from ']) + T3(IMC_C[fi].t).toLowerCase() + T3([' para ', ' a ', ' to ']) + T3(c.t).toLowerCase() + '.' : T3(['Desde o primeiro registro: ', 'Desde el primer registro: ', 'Since your first entry: ']) + (d > 0 ? '+' : '') + fm(d) + ' ' + T3(['no IMC.', 'en el IMC.', 'on BMI.'])) + '</p>';
+  }
+  h += '<p class="hint" style="margin:6px 0 0">' + T3(['O IMC é só uma referência: não mede músculo, idade nem gordura. Converse com seu médico ou nutricionista.', 'El IMC es solo una referencia: no mide músculo, edad ni grasa. Habla con tu médico o nutricionista.', 'BMI is only a reference: it does not measure muscle, age or fat. Talk to your doctor or dietitian.']) + '</p>';
+  h += '<button type="button" class="link" id="hgtEdit" style="margin:6px 0 14px">' + T3(['Altura: ', 'Altura: ', 'Height: ']) + hgt + ' cm · ' + T3(['editar', 'editar', 'edit']) + '</button>';
+  return h;
+}
+(function(){
+  var c = document.getElementById('wCard'); if(!c) return;
+  c.addEventListener('click', function(ev){
+    if(ev.target.closest('#hgtSave')){ var v = parseInt(($('hgtIn').value || '').trim(), 10); if(isNaN(v) || v < 100 || v > 230){ toast(T3(['Altura entre 100 e 230 cm.', 'Altura entre 100 y 230 cm.', 'Height between 100 and 230 cm.'])); return; } hgt = v; save('hgt', hgt); renderWeight(); renderHome(); return; }
+    if(ev.target.closest('#hgtEdit')){ hgt = null; save('hgt', null); renderWeight(); renderHome(); }
+  });
+})();
 function renderWeight(){
   var b = $('wBody'); if(!b) return;
   if(prof.age !== null && prof.age < 18){ b.innerHTML = '<p class="latest">Para adolescentes, o acompanhamento de peso deve ser feito com pediatra ou nutricionista. O app não mostra gráfico de peso.</p>'; return; }
@@ -5816,6 +5898,7 @@ function renderWeight(){
   if(wcfg.hide){ b.innerHTML = '<p class="hint" style="margin-top:0">Gráfico de peso oculto. Você pode ativá-lo quando quiser.</p><button class="btn" type="button" data-w="show">Mostrar o gráfico de peso</button>'; return; }
   var n = wRange, days = series(function(k){ return k; }, n, 0), h = '', wks = Object.keys(wlog).sort(), wl = wks[wks.length - 1];
   if(wl) h += '<div class="hm-v" style="font-size:1.9rem;margin:0 0 10px">' + String(wlog[wl]).replace('.', ',') + ' kg <span style="font-size:.85rem;font-weight:600;color:var(--muted)">último registro: ' + tkLabel(wl).toLowerCase() + '</span></div>';
+  h += imcHtml(wl ? wlog[wl] : null);
   h += '<div class="row" style="margin-top:0"><input id="wIn" style="flex:1;min-width:0;width:auto;padding:12px;font:inherit;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text)" type="number" inputmode="decimal" min="20" max="300" step="0.1" placeholder="Peso de hoje (kg)" aria-label="Peso de hoje em quilos"><button class="btn primary" type="button" data-w="add" style="flex:none;width:110px">Registrar</button></div>';
   h += '<div class="wdate"><button class="link wdl" type="button" data-w="date">📅 Registrar em outra data</button><span id="wDateRow" hidden><input id="wDate" type="date" max="' + key() + '" aria-label="Data do registro"></span></div>';
   h += '<div class="seg" style="margin-top:10px"><button type="button" data-w="r7" class="' + (n === 7 ? 'on' : '') + '">7 dias</button><button type="button" data-w="r30" class="' + (n === 30 ? 'on' : '') + '">30 dias</button></div>';
@@ -6177,12 +6260,14 @@ function openEx(g){
     else if(n === 1) btn.textContent = e.subs.filter(function(x){ return x.id === exSub[0]; })[0].nome;
     else btn.textContent = n + ' exercícios selecionados';
     $('exSubHint').hidden = n < 2;
+    var mu = subMuscles(e, exSub); $('exMuscle').textContent = mu ? '💪 ' + T3(['Músculos trabalhados: ', 'Músculos trabajados: ', 'Muscles worked: ']) + mu : '';
   }
   var lastSec = '';
+  box.hidden = false; btn.hidden = true; box.classList.add('grid');
   e.subs.forEach(function(x){
     if(x.sec && x.sec !== lastSec){ var h = document.createElement('div'); h.className = 'sec'; h.textContent = x.sec; box.appendChild(h); lastSec = x.sec; }
     var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.setAttribute('role', 'option'); b.setAttribute('aria-selected', 'false');
-    b.innerHTML = '<span class="dot"></span><span></span>'; b.lastChild.textContent = x.nome;
+    b.innerHTML = '<span class="dot"></span><span class="exem" aria-hidden="true"></span><span class="exn"></span>'; b.querySelector('.exem').textContent = subEmoji(x.id, e.emoji); b.querySelector('.exn').textContent = x.nome.split(' (')[0];
     b.onclick = function(){
       var i = exSub.indexOf(x.id);
       if(i < 0) exSub.push(x.id); else exSub.splice(i, 1);
@@ -6190,7 +6275,6 @@ function openEx(g){
     };
     box.appendChild(b);
   });
-  btn.onclick = function(){ box.hidden = !box.hidden; btn.setAttribute('aria-expanded', String(!box.hidden)); };
   sumry();
   open('mEx');
 }
@@ -6456,7 +6540,7 @@ function cleanRest(o){
   return r;
 }
 function exportData(){
-  var data = {app: 'zelar', versao: 6, avatar: avatar, bt: bt, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, gam: gam, dm: dm, bp: bp, lab: lab, foc: foc, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
+  var data = {app: 'zelar', versao: 6, avatar: avatar, bt: bt, exg: exg, avoid: avoid, wlog: wlog, wcfg: wcfg, gam: gam, dm: dm, bp: bp, lab: lab, hgt: hgt, foc: foc, meds: meds, tasks: tasks, dash: dash, foto: foto, exportado: new Date().toISOString(), weight: weight, cfg: cfg, prof: prof, log: log, ex: ex, fd: fd, rest: rest, theme: theme};
   try{
     var blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     var a = document.createElement('a');
@@ -6495,6 +6579,7 @@ function importData(file){
     if(d.dm){ dm = cleanDm(d.dm); saveDm(); }
     if(d.bp){ bp = cleanBp(d.bp); saveBp(); }
     if(d.lab){ lab = cleanLab(d.lab); saveLab(); }
+    if(typeof d.hgt === 'number' && d.hgt >= 100 && d.hgt <= 230){ hgt = Math.round(d.hgt); save('hgt', hgt); }
     if(d.foc === 'dm' || d.foc === 'has' || d.foc === 'lab'){ foc = d.foc; save('foc', foc); }
     if(d.foto){ foto = cleanFoto(d.foto); save('foto', foto); }
     if(d.bt){ bt = btClean(d.bt); save('bt', bt); rebuildBodies(false); }
