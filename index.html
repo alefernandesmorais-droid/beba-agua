@@ -1254,6 +1254,26 @@ body[data-tab="dm"][data-foc="has"]{--t1:#8a6df0;--t2:#6d4fd6}
  .tabin .card,.tabin .hm,.tabin .dm-hero,.tabin .opt,.tabin .row,.tabin .li,.overlay.open,.overlay.open .modal,.nav button.on span,#exSubList.grid .opt[aria-selected="true"]::after,#fdList .opt[aria-selected="true"]::after{animation:none!important}
  .hm:hover,.opt:hover,:where(button,.opt,.hm):active{transform:none!important}
 }
+/* v50: exercícios em movimento (hover/toque/selecionado) */
+@keyframes mvPush{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(-12%) scale(1.06)}}
+@keyframes mvPull{0%,100%{transform:translateX(0)}45%{transform:translateX(-12%) scale(.96)}}
+@keyframes mvCurl{0%,100%{transform:rotate(0)}45%{transform:rotate(-14deg) scale(1.05)}}
+@keyframes mvSquat{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(9%) scale(1.08,.88)}}
+@keyframes mvRun{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(5%,-8%) rotate(3deg)}50%{transform:translate(0,0)}75%{transform:translate(-5%,-8%) rotate(-3deg)}}
+@keyframes mvJump{0%,100%{transform:translateY(0) scale(1)}15%{transform:translateY(4%) scale(1.1,.88)}50%{transform:translateY(-20%) scale(.95,1.08)}}
+@keyframes mvSway{0%,100%{transform:rotate(0) translateX(0)}30%{transform:rotate(-7deg) translateX(-5%)}70%{transform:rotate(7deg) translateX(5%)}}
+@keyframes mvBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+#exSubList.grid .opt .exem svg{transform-origin:50% 90%}
+#exSubList.grid .opt:hover .exem svg,#exSubList.grid .opt:active .exem svg,#exSubList.grid .opt:focus-visible .exem svg,#exSubList.grid .opt[aria-selected="true"] .exem svg{animation-duration:.95s;animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+#exSubList.grid .opt:hover .exem[data-mv="push"] svg,#exSubList.grid .opt:active .exem[data-mv="push"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="push"] svg{animation-name:mvPush}
+#exSubList.grid .opt:hover .exem[data-mv="pull"] svg,#exSubList.grid .opt:active .exem[data-mv="pull"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="pull"] svg{animation-name:mvPull}
+#exSubList.grid .opt:hover .exem[data-mv="curl"] svg,#exSubList.grid .opt:active .exem[data-mv="curl"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="curl"] svg{animation-name:mvCurl;transform-origin:20% 90%}
+#exSubList.grid .opt:hover .exem[data-mv="squat"] svg,#exSubList.grid .opt:active .exem[data-mv="squat"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="squat"] svg{animation-name:mvSquat}
+#exSubList.grid .opt:hover .exem[data-mv="run"] svg,#exSubList.grid .opt:active .exem[data-mv="run"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="run"] svg{animation-name:mvRun;animation-duration:.7s}
+#exSubList.grid .opt:hover .exem[data-mv="jump"] svg,#exSubList.grid .opt:active .exem[data-mv="jump"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="jump"] svg{animation-name:mvJump;animation-duration:.8s}
+#exSubList.grid .opt:hover .exem[data-mv="sway"] svg,#exSubList.grid .opt:active .exem[data-mv="sway"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="sway"] svg{animation-name:mvSway}
+#exSubList.grid .opt:hover .exem[data-mv="breathe"] svg,#exSubList.grid .opt:active .exem[data-mv="breathe"] svg,#exSubList.grid .opt[aria-selected="true"] .exem[data-mv="breathe"] svg{animation-name:mvBreathe;animation-duration:1.8s}
+@media (prefers-reduced-motion:reduce){#exSubList.grid .opt .exem svg{animation:none!important}}
 </style>
 <style id="palStyle">
 </style>
@@ -1629,7 +1649,7 @@ body[data-tab="dm"][data-foc="has"]{--t1:#8a6df0;--t2:#6d4fd6}
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
     <p class="note"><b>Zelar</b> · <i>Cuidar de você, todo dia.</i></p>
     <p class="note" style="font-weight:600">Informativo: não substitui seu médico.</p>
-    <p class="note">Gratuito e sem anúncios. Versão 50.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 51.</p>
   </footer>
 </div>
 
@@ -6352,7 +6372,7 @@ function openEx(g){
   e.subs.forEach(function(x){
     if(x.sec && x.sec !== lastSec){ var h = document.createElement('div'); h.className = 'sec'; h.textContent = x.sec; box.appendChild(h); lastSec = x.sec; }
     var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.setAttribute('role', 'option'); b.setAttribute('aria-selected', 'false');
-    b.innerHTML = '<span class="dot"></span><span class="exem" aria-hidden="true"></span><span class="exn"></span>'; var ee = b.querySelector('.exem'), es = (window.EX_SVG || {})[x.id]; if(es) ee.innerHTML = es; else ee.textContent = subEmoji(x.id, e.emoji); b.querySelector('.exn').textContent = x.nome.split(' (')[0];
+    b.innerHTML = '<span class="dot"></span><span class="exem" aria-hidden="true"></span><span class="exn"></span>'; var ee = b.querySelector('.exem'), es = (window.EX_SVG || {})[x.id]; ee.setAttribute('data-mv', EX_MV[x.id] || 'breathe'); if(es) ee.innerHTML = es; else ee.textContent = subEmoji(x.id, e.emoji); b.querySelector('.exn').textContent = x.nome.split(' (')[0];
     b.onclick = function(){
       var i = exSub.indexOf(x.id);
       if(i < 0) exSub.push(x.id); else exSub.splice(i, 1);
@@ -6719,6 +6739,18 @@ if(window.matchMedia){
 
 /* ---------- abas ---------- */
 var TITLES = {dm: '🩸 Diabetes', tasks: '✅ Tarefas', meds: '💊 Rotina', inicio: '🏠 Início', agua: '💧 Água', ex: '💪 Exercício', comida: '🍎 Alimentação', corpo: '🧍 Meu corpo'};
+/* v50: movimento dos exercícios */
+var EX_MV = {};
+(function(){ var g = {
+ push:'supino supinoinc flexao crucifixo peck desenv supfechado paralelas triceps testa frontal lateral prancha abdominal',
+ pull:'barrafixa puxada remada unilateral hiper remadalta remador remo',
+ curl:'biceps alternada martelo rosca21',
+ squat:'pernas agacho legpress cadeira flexora afundo sumo hipthrust abdutora panturrilhae panturrilhas escada calistenia',
+ run:'caminhada caminhadarapida corrida esteira eliptico futebol passeio compras handebol',
+ jump:'corda polichinelo hiit funcional volei basquete beach tenis badminton peteca mesa danca',
+ sway:'bike bikesubida natacao surfe lutas',
+ breathe:'alongamento yoga pilates ginastica jardim faxinaleve faxinapesada'
+ }; for(var k in g) g[k].split(' ').forEach(function(i){ EX_MV[i] = k; }); })();
 /* v50: entrada escalonada da aba */
 var _tabInT = null;
 function tabEnter(t){
