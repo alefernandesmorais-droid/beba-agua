@@ -1267,6 +1267,24 @@ html[data-rm="1"] #exSubList.grid .opt .exem.ph img{animation:none!important}
 #exSubList.grid .opt:hover .exem.ph.solo img.pa,#exSubList.grid .opt:active .exem.ph.solo img.pa,#exSubList.grid .opt:focus-visible .exem.ph.solo img.pa,#exSubList.grid .opt[aria-selected="true"] .exem.ph.solo img.pa{animation:soloWalk .9s ease-in-out infinite!important;transform-origin:50% 100%}
 #exSubList.grid .opt:hover .exem.ph.bob img.pa,#exSubList.grid .opt:active .exem.ph.bob img.pa,#exSubList.grid .opt:focus-visible .exem.ph.bob img.pa,#exSubList.grid .opt[aria-selected="true"] .exem.ph.bob img.pa{animation:poseA 1.1s linear infinite,soloWalk .9s ease-in-out infinite!important;transform-origin:50% 100%}
 #exSubList.grid .opt:hover .exem.ph.bob img.pb,#exSubList.grid .opt:active .exem.ph.bob img.pb,#exSubList.grid .opt:focus-visible .exem.ph.bob img.pb,#exSubList.grid .opt[aria-selected="true"] .exem.ph.bob img.pb{animation:poseB 1.1s linear infinite,soloWalk .9s ease-in-out infinite!important;transform-origin:50% 100%}
+/* ===== v65: tour guiado ===== */
+.tr-root{position:fixed;inset:0;z-index:10050}
+.tr-hi{position:fixed;border-radius:16px;box-shadow:0 0 0 9999px rgba(3,10,18,.72);outline:2px solid var(--accent,#19c2a8);outline-offset:0;pointer-events:none;transition:left .3s ease,top .3s ease,width .3s ease,height .3s ease}
+.tr-card{position:fixed;background:var(--card,#fff);color:var(--text,#0b1b2b);border:1px solid var(--line,#ddd);border-radius:20px;padding:16px 16px 14px;box-shadow:0 18px 50px rgba(0,0,0,.45);max-height:calc(100vh - 24px);overflow:auto;transition:left .3s ease,top .3s ease}
+.tr-card h3{margin:2px 0 6px;font-size:1.15rem;line-height:1.25}
+.tr-card p{margin:0;font-size:.95rem;line-height:1.5;color:var(--text,#0b1b2b);opacity:.92}
+.tr-dots{display:flex;gap:5px;margin-bottom:8px}
+.tr-dots i{width:7px;height:7px;border-radius:99px;background:var(--line,#ccc);transition:width .25s,background .25s}
+.tr-dots i.on{width:20px;background:var(--accent,#19c2a8)}
+.tr-imgs{display:flex;gap:6px;margin-top:10px}
+.tr-imgs img{width:54px;height:54px;object-fit:contain;background:#fff;border-radius:12px;border:1px solid var(--line,#ddd)}
+.tr-btns{display:flex;align-items:center;gap:8px;margin-top:14px}
+.tr-btns button{font:inherit;font-weight:700;font-size:.92rem;border-radius:12px;padding:10px 14px;cursor:pointer;border:1px solid var(--line,#ddd);background:var(--bg,#f4f4f4);color:var(--text,#0b1b2b)}
+.tr-btns .tr-n{margin-left:auto;border:0;color:#fff;background:linear-gradient(180deg,var(--t1,#19c2a8),var(--t2,#0e8f7c))}
+.tr-btns .tr-skip{border:0;background:none;color:var(--muted,#667);padding:10px 4px}
+.tr-btns .tr-skip:empty{display:none}
+.tr-btns .tr-b+.tr-n{margin-left:0}
+#btnTour{display:block;margin:10px auto 0;background:none;border:0;color:var(--muted);font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;padding:8px;text-decoration:underline}
 </style>
 <style id="palStyle">
 </style>
@@ -1640,9 +1658,10 @@ html[data-rm="1"] #exSubList.grid .opt .exem.ph img{animation:none!important}
 
   <footer>
     <button class="donate" id="btnDonate" type="button">💙 Apoiar o app</button>
+    <button type="button" id="btnTour"></button>
     <p class="note"><b>Zelar</b> · <i>Cuidar de você, todo dia.</i></p>
     <p class="note" style="font-weight:600">Informativo: não substitui seu médico.</p>
-    <p class="note">Gratuito e sem anúncios. Versão 64.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 65.</p>
   </footer>
 </div>
 
@@ -2643,6 +2662,7 @@ function cleanMeds(o){
 }
 function cleanDash(o){
   var d = {order: WIDS.slice(), hidden: {glic: true, streak: true, mes: true, musculos: true, melhor: true, dose: true, tomados: true, foto: true}, wide: {msg: true, tarefas: true, semana: true, mes: true, resumo: true, desafio: true}, tall: {}, sz: {}, col: {}, n: 3, tf: 'hoje', pal: 'padrao', msgOff: false, mantra: ''};
+  WIDS.forEach(function(w){ d.hidden[w] = true; });
   if(!o || typeof o !== 'object') return d;
   var known = Array.isArray(o.order) ? o.order : [];
   if(Array.isArray(o.order)){
@@ -3249,10 +3269,12 @@ function fdFams(){
   });
   return FAMS;
 }
+var FAM_TR = {"en":{"Abacate":"Avocado","Abacaxi":"Pineapple","Açaí":"Açaí","Ameixa":"Plum","Atemóia":"Atemoya","Banana":"Banana","Cacau":"Cacao","Caju":"Cashew apple","Caqui":"Persimmon","Carambola":"Starfruit","Ciriguela":"Spanish plum","Figo":"Fig","Fruta-pão":"Breadfruit","Goiaba":"Guava","Graviola":"Soursop","Jaca":"Jackfruit","Jambo":"Rose apple","Jamelão":"Java plum","Laranja":"Orange","Limão":"Lime","Maçã":"Apple","Mamão":"Papaya","Mamão verde":"Green papaya","Maracujá":"Passion fruit","Melancia":"Watermelon","Melão":"Melon","Mexerica":"Mandarin","Morango":"Strawberry","Nêspera":"Loquat","Pêra":"Pear","Pêssego":"Peach","Pinha":"Sugar apple","Pitanga":"Surinam cherry","Romã":"Pomegranate","Tangerina":"Tangerine","Uva":"Grape","Abóbora":"Pumpkin","Abobrinha":"Zucchini","Agrião":"Watercress","Aipo":"Celery","Alface":"Lettuce","Alfavaca":"Basil (alfavaca)","Alho":"Garlic","Alho-poró":"Leek","Almeirão":"Chicory (almeirão)","Batata":"Potato","Berinjela":"Eggplant","Beterraba":"Beet","Brócolis":"Broccoli","Cará":"Yam (cará)","Caruru":"Amaranth greens","Catalonha":"Wild chicory","Cebola":"Onion","Cebolinha":"Chives","Cenoura":"Carrot","Chicória":"Chicory","Couve":"Collard greens","Couve-flor":"Cauliflower","Espinafre":"Spinach","Feijão":"Beans","Inhame":"Taro","Mandioca":"Cassava","Manjericão":"Basil","Maxixe":"Gherkin (maxixe)","Mostarda":"Mustard greens","Palmito":"Palm heart","Pimentão":"Bell pepper","Quiabo":"Okra","Rabanete":"Radish","Repolho":"Cabbage","Salsa":"Parsley","Seleta de legumes":"Mixed vegetables","Serralha":"Sow thistle","Taioba":"Taioba (taro leaves)","Vagem":"Green beans","Quibebe":"Pumpkin purée (quibebe)","Salada":"Salad","Tabule":"Tabbouleh","Macarrão":"Pasta","Apresuntado":"Pressed ham","Caldo de carne":"Beef bouillon","Caldo de galinha":"Chicken bouillon","Carne bovina":"Beef","Coxinha de frango":"Chicken coxinha","Croquete":"Croquette","Empada de frango":"Chicken pie (empada)","Empada":"Small pie (empada)","Frango":"Chicken","Hambúrguer":"Burger patty","Lingüiça":"Sausage","Mortadela":"Mortadella","Peru":"Turkey","Porco":"Pork","Presunto":"Ham","Quibe":"Kibbeh","Toucinho":"Pork fat","Omelete":"Omelet","Ovo":"Egg","Bife à cavalo":"Steak with fried egg","Bolinho de arroz":"Rice ball","Charuto":"Cabbage roll","Dobradinha":"Tripe stew","Estrogonofe de carne":"Beef stroganoff","Estrogonofe de frango":"Chicken stroganoff","Salpicão":"Chicken salad (salpicão)","Vaca atolada":"Beef rib stew","Abadejo":"Pollock","Atum":"Tuna","Bacalhau":"Cod","Cação":"Dogfish shark","Camarão":"Shrimp","Caranguejo":"Crab","Corimbatá":"Curimbatá","Corvina de água doce":"Freshwater croaker","Corvina do mar":"Sea croaker","Corvina grande":"Large croaker","Dourada de água doce":"Freshwater dorado","Manjuba":"Anchovy (manjuba)","Merluza":"Hake","Pescada":"Whitemouth croaker","Pescadinha":"Small hake (pescadinha)","Pintado":"Spotted catfish","Porquinho":"Filefish (porquinho)","Salmão":"Salmon","Sardinha":"Sardine","Camarão à baiana":"Bahian shrimp","Arroz":"Rice","Aveia":"Oats","Biscoito":"Cookie","Bolo":"Cake","Cereais":"Cereals","Cereal matinal":"Breakfast cereal","Creme de arroz":"Rice cream","Creme de milho":"Corn cream","Curau":"Curau (sweet corn pudding)","Farinha":"Flour","Lasanha":"Lasagna","Milho":"Corn","Mingau tradicional":"Traditional porridge","Pão":"Bread","Pastel":"Fried pastry (pastel)","Pipoca":"Popcorn","Torrada":"Toast","Fécula":"Starch","Nhoque":"Gnocchi","Polvilho":"Cassava starch","Cuscuz":"Cornmeal couscous","Feijão tropeiro mineiro":"Feijão tropeiro","Amendoim":"Peanut","Ervilha":"Peas","Grão-de-bico":"Chickpeas","Guandu":"Pigeon peas","Lentilha":"Lentils","Soja":"Soy","Tremoço":"Lupini beans","Amêndoa":"Almond","Castanha-de-caju":"Cashew nut","Castanha-do-Brasil":"Brazil nut","Gergelim":"Sesame","Linhaça":"Flaxseed","Pinhão":"Araucaria pine nut","Pupunha":"Peach palm","Noz":"Walnut","Bebida láctea":"Dairy drink","Creme de Leite":"Cream","Iogurte":"Yogurt","Leite":"Milk","Queijo":"Cheese","Azeite":"Oil (azeite)","Manteiga":"Butter","Óleo":"Oil","Bebida isotônica":"Sports drink","Cana":"Cachaça","Cerveja":"Beer","Chá":"Tea","Refrigerante":"Soda","Achocolatado":"Chocolate drink mix","Açúcar":"Sugar","Cocada branca":"Coconut candy (cocada)","Doce":"Sweet (doce)","Geléia":"Jelly","Glicose de milho":"Corn syrup","Maria mole":"Maria mole (marshmallow)","Marmelada":"Quince paste","Mel":"Honey","Melado":"Cane molasses","Rapadura":"Raw cane sugar","Capuccino":"Cappuccino","Fermento em pó":"Baking powder","Fermento":"Yeast","Gelatina":"Gelatin","Sal":"Salt","Shoyu":"Soy sauce","Tempero a base de sal":"Salt-based seasoning","Azeitona":"Olive","Chantilly":"Whipped cream","Maionese":"Mayonnaise","Coco":"Coconut","Acelga":"Chard","Chuchu":"Chayote","Coentro":"Cilantro","Nabo":"Turnip","Pepino":"Cucumber","Rúcula":"Arugula","Tomate":"Tomato","Manga":"Mango","Tamarindo":"Tamarind","Margarina":"Margarine","Salame":"Salami","Café":"Coffee","Chocolate":"Chocolate","Canjica":"Hominy (canjica)","Tucunaré":"Peacock bass","Paçoca":"Peanut candy (paçoca)","Pé-de-moleque":"Peanut brittle (pé-de-moleque)"},"es":{"Abacate":"Aguacate","Abacaxi":"Piña","Açaí":"Açaí","Ameixa":"Ciruela","Atemóia":"Atemoya","Banana":"Plátano","Cacau":"Cacao","Caju":"Marañón","Caqui":"Caqui","Carambola":"Carambola","Ciriguela":"Ciriguela","Figo":"Higo","Fruta-pão":"Fruta del pan","Goiaba":"Guayaba","Graviola":"Guanábana","Jaca":"Yaca","Jambo":"Pomarrosa","Jamelão":"Jambolán","Laranja":"Naranja","Limão":"Limón","Maçã":"Manzana","Mamão":"Papaya","Mamão verde":"Papaya verde","Maracujá":"Maracuyá","Melancia":"Sandía","Melão":"Melón","Mexerica":"Mandarina (mexerica)","Morango":"Fresa","Nêspera":"Níspero","Pêra":"Pera","Pêssego":"Durazno","Pinha":"Chirimoya","Pitanga":"Pitanga","Romã":"Granada","Tangerina":"Mandarina","Uva":"Uva","Abóbora":"Calabaza","Abobrinha":"Calabacín","Agrião":"Berro","Aipo":"Apio","Alface":"Lechuga","Alfavaca":"Albahaca (alfavaca)","Alho":"Ajo","Alho-poró":"Puerro","Almeirão":"Achicoria (almeirão)","Batata":"Papa","Berinjela":"Berenjena","Beterraba":"Remolacha","Brócolis":"Brócoli","Cará":"Ñame (cará)","Caruru":"Amaranto (caruru)","Catalonha":"Achicoria silvestre","Cebola":"Cebolla","Cebolinha":"Cebollino","Cenoura":"Zanahoria","Chicória":"Achicoria","Couve":"Col rizada","Couve-flor":"Coliflor","Espinafre":"Espinaca","Feijão":"Frijoles","Inhame":"Ñame","Mandioca":"Yuca","Manjericão":"Albahaca","Maxixe":"Maxixe","Mostarda":"Hojas de mostaza","Palmito":"Palmito","Pimentão":"Pimiento","Quiabo":"Quimbombó","Rabanete":"Rábano","Repolho":"Repollo","Salsa":"Perejil","Seleta de legumes":"Verduras mixtas","Serralha":"Cerraja","Taioba":"Taioba (hojas de taro)","Vagem":"Judías verdes","Quibebe":"Puré de calabaza (quibebe)","Salada":"Ensalada","Tabule":"Tabulé","Macarrão":"Pasta","Apresuntado":"Jamón cocido","Caldo de carne":"Caldo de carne","Caldo de galinha":"Caldo de gallina","Carne bovina":"Carne de res","Coxinha de frango":"Coxinha de pollo","Croquete":"Croqueta","Empada de frango":"Empanada de pollo","Empada":"Tartaleta (empada)","Frango":"Pollo","Hambúrguer":"Hamburguesa","Lingüiça":"Longaniza","Mortadela":"Mortadela","Peru":"Pavo","Porco":"Cerdo","Presunto":"Jamón","Quibe":"Kibe","Toucinho":"Tocino","Omelete":"Tortilla","Ovo":"Huevo","Bife à cavalo":"Bife a caballo","Bolinho de arroz":"Bolita de arroz","Charuto":"Charuto de repollo","Dobradinha":"Guiso de callos","Estrogonofe de carne":"Estrogonofe de carne","Estrogonofe de frango":"Estrogonofe de pollo","Salpicão":"Ensalada de pollo (salpicão)","Vaca atolada":"Guiso de costilla con yuca","Abadejo":"Abadejo","Atum":"Atún","Bacalhau":"Bacalao","Cação":"Cazón","Camarão":"Camarón","Caranguejo":"Cangrejo","Corimbatá":"Curimbatá","Corvina de água doce":"Corvina de agua dulce","Corvina do mar":"Corvina de mar","Corvina grande":"Corvina grande","Dourada de água doce":"Dorada de agua dulce","Manjuba":"Manjúa","Merluza":"Merluza","Pescada":"Pescada","Pescadinha":"Pescadilla","Pintado":"Pintado","Porquinho":"Pez ballesta (porquinho)","Salmão":"Salmón","Sardinha":"Sardina","Camarão à baiana":"Camarón a la bahiana","Arroz":"Arroz","Aveia":"Avena","Biscoito":"Galleta","Bolo":"Pastel","Cereais":"Cereales","Cereal matinal":"Cereal de desayuno","Creme de arroz":"Crema de arroz","Creme de milho":"Crema de maíz","Curau":"Curau (budín de maíz)","Farinha":"Harina","Lasanha":"Lasaña","Milho":"Maíz","Mingau tradicional":"Papilla tradicional","Pão":"Pan","Pastel":"Pastel frito","Pipoca":"Palomitas","Torrada":"Tostada","Fécula":"Fécula","Nhoque":"Ñoquis","Polvilho":"Almidón de yuca","Cuscuz":"Cuscús de maíz","Feijão tropeiro mineiro":"Frijol tropeiro","Amendoim":"Maní","Ervilha":"Arvejas","Grão-de-bico":"Garbanzos","Guandu":"Guandú","Lentilha":"Lentejas","Soja":"Soja","Tremoço":"Altramuces","Amêndoa":"Almendra","Castanha-de-caju":"Nuez de cajú","Castanha-do-Brasil":"Nuez de Brasil","Gergelim":"Sésamo","Linhaça":"Linaza","Pinhão":"Piñón de araucaria","Pupunha":"Pupunha","Noz":"Nuez","Bebida láctea":"Bebida láctea","Creme de Leite":"Crema de leche","Iogurte":"Yogur","Leite":"Leche","Queijo":"Queso","Azeite":"Aceite (azeite)","Manteiga":"Mantequilla","Óleo":"Aceite","Bebida isotônica":"Bebida isotónica","Cana":"Aguardiente de caña","Cerveja":"Cerveza","Chá":"Té","Refrigerante":"Refresco","Achocolatado":"Chocolate en polvo","Açúcar":"Azúcar","Cocada branca":"Cocada blanca","Doce":"Dulce","Geléia":"Jalea","Glicose de milho":"Glucosa de maíz","Maria mole":"Maria mole (malvavisco)","Marmelada":"Dulce de membrillo","Mel":"Miel","Melado":"Melaza de caña","Rapadura":"Rapadura","Capuccino":"Capuchino","Fermento em pó":"Polvo de hornear","Fermento":"Levadura","Gelatina":"Gelatina","Sal":"Sal","Shoyu":"Salsa de soja","Tempero a base de sal":"Condimento a base de sal","Azeitona":"Aceituna","Chantilly":"Crema chantilly","Maionese":"Mayonesa","Coco":"Coco","Acelga":"Acelga","Chuchu":"Chayote","Coentro":"Cilantro","Nabo":"Nabo","Pepino":"Pepino","Rúcula":"Rúcula","Tomate":"Tomate","Manga":"Mango","Tamarindo":"Tamarindo","Margarina":"Margarina","Salame":"Salame","Café":"Café","Chocolate":"Chocolate","Canjica":"Maíz blanco (canjica)","Tucunaré":"Tucunaré","Paçoca":"Dulce de maní (paçoca)","Pé-de-moleque":"Turrón de maní (pé-de-moleque)"}};
 function famLabel(f){
   if(LANG === 'pt') return f.nm;
   if(f.k === 'carne_bovina') return T3(['Carne bovina', 'Carne vacuna', 'Beef']);
-  return tname(f.first).split(',')[0].trim();
+  var d = FAM_TR[LANG];
+  return (d && d[f.nm]) || f.nm;
 }
 function varLabel(t){
   if(LANG !== 'pt') return tname(t);
@@ -3512,7 +3534,7 @@ function renderCross(){
 
 function dmSync(){
   var on = dmOn(), nb = $('nav-dm'); if(nb) nb.hidden = !on;
-  if(on && !dm.hw){ dm.hw = true; delete dash.hidden.glic; saveDm(); saveDash(); }
+  if(on && !dm.hw){ dm.hw = true; if(prof.done) delete dash.hidden.glic; saveDm(); saveDash(); }
   if(!on && tab === 'dm'){ tab = 'inicio'; }
 }
 function renderAll(){ try{ dmSync(); }catch(e){} try{ gamTick(); }catch(e){} setGreet(); renderWater(); renderEx(); renderFood(); renderCorpo(); renderCross(); renderExGoal(); renderFoodRef(); renderNotes(); renderCharts(); renderHome(); renderMeds(); renderTasks(); renderWeight(); try{ renderDm(); }catch(e){} }
@@ -6497,6 +6519,7 @@ $('btnWeight').onclick = function(){ openSettings(false); };
 $('wCancel').onclick = function(){ close('mWeight'); };
 $('ageInput').oninput = updateBlockHint;
 $('wSave').onclick = function(){
+  var wasFirst = !prof.done;
   var err = $('weightErr');
   var ageS = String($('ageInput').value).trim(), age = null;
   if(ageS !== ''){
@@ -6532,6 +6555,7 @@ $('wSave').onclick = function(){
   close('mWeight');
   renderAll();
   toast(blocked() ? 'Ajustes salvos. No seu caso o app não calcula a meta de água.' : 'Meta de hoje: ' + fmt(goal()) + ' ml, com um copo a cada ' + dur(cfg.interval * MS_MIN) + ' 💧');
+  if(wasFirst && !load('tour', false)) setTimeout(function(){ startTour(); }, 1100);
 };
 
 $('btnOther').onclick = function(){
@@ -7249,6 +7273,122 @@ setDate();
 showTab(tab);
 requestAnimationFrame(function(){ requestAnimationFrame(renderAll); });
 setInterval(function(){ tick(true); }, 30000);
+/* ===== v65: tour guiado (passo a passo com destaque nos botões reais) ===== */
+var tourI = -1, tourEl = null, tourPrevTab = null;
+function tourImgs(kind){
+  var o = '', i;
+  function im(u){ return u ? '<img alt="" draggable="false" src="' + u + '">' : ''; }
+  if(kind === 'ex'){
+    var S = (window.EX_IMG || {})[bt && bt.sex === 'f' ? 'f' : 'm'] || {};
+    ['agacho', 'corrida', 'yoga', 'flexao'].forEach(function(id){ var p = S[id]; if(p){ o += im(p[0]); } });
+  } else if(kind === 'food'){
+    var F = window.FD_IMG || {};
+    ['banana', 'arroz', 'frango', 'alface', 'leite'].forEach(function(k){ o += im(F[k]); });
+  }
+  return o ? '<div class="tr-imgs">' + o + '</div>' : '';
+}
+function tourSteps(){
+  return [
+    {t: T3(['Bem-vindo ao Zelar 👋', 'Bienvenido a Zelar 👋', 'Welcome to Zelar 👋']), x: T3(['Cuidar de você, todo dia. Em 1 minuto você vê onde fica cada coisa. Pode pular quando quiser.', 'Cuidarte, todos los días. En 1 minuto ves dónde está cada cosa. Puedes saltarlo cuando quieras.', 'Taking care of you, every day. In 1 minute you will see where everything is. You can skip anytime.']), tab: 'inicio'},
+    {s: '#homeHero', tab: 'inicio', t: T3(['Resumo de hoje', 'Resumen de hoy', 'Today’s summary']), x: T3(['Um recado curto sobre como está o seu dia. Ele muda conforme você registra água, exercício e comida.', 'Un mensaje corto sobre cómo va tu día. Cambia a medida que registras agua, ejercicio y comida.', 'A short note on how your day is going. It changes as you log water, exercise and food.'])},
+    {s: '#dashEdit', tab: 'inicio', t: T3(['Monte o seu painel', 'Arma tu panel', 'Build your dashboard']), x: T3(['Seu painel começa limpo de propósito. Toque em Editar painel para adicionar gráficos e cards. Só entra o que você gosta de ver.', 'Tu panel empieza limpio a propósito. Toca en Editar panel para agregar gráficos y tarjetas. Solo entra lo que te gusta ver.', 'Your dashboard starts clean on purpose. Tap Edit dashboard to add charts and cards. Only what you like to see goes in.'])},
+    {s: '#hHidden', tab: 'inicio', t: T3(['Cards disponíveis', 'Tarjetas disponibles', 'Available cards']), x: T3(['Os cards escondidos ficam aqui. Toque em um para colocá-lo no painel. Depois use ↑ ↓ para a ordem, ⇔ para o tamanho e ⊘ para esconder.', 'Las tarjetas ocultas están aquí. Toca una para ponerla en el panel. Luego usa ↑ ↓ para el orden, ⇔ para el tamaño y ⊘ para ocultar.', 'Hidden cards live here. Tap one to add it to the dashboard. Then use ↑ ↓ for order, ⇔ for size and ⊘ to hide.']),
+      enter: function(){ if(!dashEditing){ dashEditing = true; $('mantraInput').value = dash.mantra; $('msgOff').checked = dash.msgOff; renderHome(); } },
+      leave: function(){ if(dashEditing){ dashEditing = false; renderHome(); } }},
+    {s: '#goSettings', tab: 'inicio', t: T3(['Personalizar', 'Personalizar', 'Customize']), x: T3(['Nome, peso, meta de água, tema claro ou escuro, idioma e backup dos seus dados ficam aqui.', 'Nombre, peso, meta de agua, tema claro u oscuro, idioma y copia de seguridad están aquí.', 'Name, weight, water goal, light or dark theme, language and data backup are here.'])},
+    {s: '#nav-agua', tab: 'inicio', t: T3(['💧 Água', '💧 Agua', '💧 Water']), x: T3(['Registre cada copo. A meta do dia é calculada pelo seu peso e o app lembra você nos horários que escolher.', 'Registra cada vaso. La meta del día se calcula con tu peso y la app te avisa en los horarios que elijas.', 'Log every glass. The daily goal is based on your weight and the app reminds you at the times you choose.'])},
+    {s: '#nav-ex', tab: 'inicio', img: 'ex', t: T3(['💪 Exercício', '💪 Ejercicio', '💪 Exercise']), x: T3(['72 atividades com foto. Passe o dedo ou o mouse sobre uma para ver o movimento. Seu corpo mostra os músculos trabalhados.', '72 actividades con foto. Pasa el dedo o el mouse sobre una para ver el movimiento. Tu cuerpo muestra los músculos trabajados.', '72 activities with photos. Hover or touch one to see the movement. Your body shows the muscles worked.'])},
+    {s: '#nav-comida', tab: 'inicio', img: 'food', t: T3(['🍎 Comida', '🍎 Comida', '🍎 Food']), x: T3(['Escolha o grupo e depois o alimento, todos com foto. O app mostra a variedade do seu dia.', 'Elige el grupo y luego el alimento, todos con foto. La app muestra la variedad de tu día.', 'Pick the group, then the food, all with photos. The app shows the variety of your day.'])},
+    {s: '#nav-dm', tab: 'inicio', t: T3(['🩸 Saúde', '🩸 Salud', '🩸 Health']), x: T3(['Glicemia, pressão ou exames, conforme o seu perfil. Os gráficos são informativos e não substituem o seu médico.', 'Glucemia, presión o exámenes, según tu perfil. Los gráficos son informativos y no sustituyen a tu médico.', 'Glucose, blood pressure or lab tests, depending on your profile. Charts are informative and do not replace your doctor.'])},
+    {s: '#nav-add', tab: 'inicio', t: T3(['Registrar agora', 'Registrar ahora', 'Log now']), x: T3(['Este botão + registra água, exercício ou comida em segundos, de qualquer tela.', 'Este botón + registra agua, ejercicio o comida en segundos, desde cualquier pantalla.', 'This + button logs water, exercise or food in seconds, from any screen.'])},
+    {s: '#nav-acc', tab: 'inicio', t: T3(['Minha conta', 'Mi cuenta', 'My account']), x: T3(['Seu perfil e os ajustes ficam aqui. Seus dados ficam só neste aparelho.', 'Tu perfil y los ajustes están aquí. Tus datos quedan solo en este dispositivo.', 'Your profile and settings are here. Your data stays only on this device.'])},
+    {t: T3(['Pronto! 🎉', '¡Listo! 🎉', 'All set! 🎉']), x: T3(['Para rever este passo a passo, toque em “Como usar o app” no rodapé do Início.', 'Para volver a ver este paso a paso, toca en “Cómo usar la app” al pie del Inicio.', 'To see this walkthrough again, tap “How to use the app” at the bottom of Home.']), tab: 'inicio'}
+  ];
+}
+function tourVis(el){ if(!el) return false; var r = el.getBoundingClientRect(); return r.width > 4 && r.height > 4; }
+function tourEnd(){
+  var st = tourSteps()[tourI]; if(st && st.leave) st.leave();
+  tourI = -1; save('tour', 1);
+  if(tourEl){ tourEl.remove(); tourEl = null; }
+  document.removeEventListener('keydown', tourKey, true); window.removeEventListener('resize', tourPlace);
+  if(tourPrevTab && tourPrevTab !== 'inicio') showTab(tourPrevTab); else { try{ window.scrollTo(0, 0); }catch(e){} }
+}
+function tourKey(ev){
+  if(ev.key === 'Escape'){ ev.preventDefault(); tourEnd(); }
+  else if(ev.key === 'ArrowRight'){ ev.preventDefault(); tourGo(1); }
+  else if(ev.key === 'ArrowLeft'){ ev.preventDefault(); tourGo(-1); }
+}
+function tourGo(dir){
+  var S = tourSteps(), old = S[tourI], i = tourI + dir;
+  if(old && old.leave) old.leave();
+  while(i >= 0 && i < S.length){
+    var st = S[i];
+    if(st.tab) showTab(st.tab);
+    if(st.enter) st.enter();
+    if(!st.s || tourVis(document.querySelector(st.s))) break;
+    if(st.leave) st.leave();
+    i += dir;
+  }
+  if(i < 0) i = 0;
+  if(i >= S.length){ tourI = S.length - 1; tourEnd(); return; }
+  tourI = i; tourDraw();
+}
+function tourDraw(){
+  var S = tourSteps(), st = S[tourI], n = S.length;
+  var dots = '', k; for(k = 0; k < n; k++) dots += '<i' + (k === tourI ? ' class="on"' : '') + '></i>';
+  var last = tourI === n - 1;
+  tourEl.querySelector('.tr-card').innerHTML =
+    '<div class="tr-dots" aria-hidden="true">' + dots + '</div>' +
+    '<h3 id="trT">' + st.t + '</h3><p>' + st.x + '</p>' + (st.img ? tourImgs(st.img) : '') +
+    '<div class="tr-btns"><button type="button" class="tr-skip" data-a="skip">' + (last ? '' : T3(['Pular', 'Saltar', 'Skip'])) + '</button>' +
+    (tourI > 0 ? '<button type="button" class="tr-b" data-a="back">' + T3(['Voltar', 'Atrás', 'Back']) + '</button>' : '') +
+    '<button type="button" class="tr-n" data-a="next">' + (last ? T3(['Começar', 'Empezar', 'Start']) : T3(['Próximo', 'Siguiente', 'Next'])) + '</button></div>';
+  var nb = tourEl.querySelector('[data-a="next"]'); if(nb) nb.focus({preventScroll: true});
+  var el = st.s ? document.querySelector(st.s) : null;
+  if(el && el.scrollIntoView){ try{ el.scrollIntoView({block: 'center', inline: 'nearest'}); }catch(e){} }
+  setTimeout(tourPlace, 60);
+}
+function tourPlace(){
+  if(!tourEl || tourI < 0) return;
+  var st = tourSteps()[tourI], card = tourEl.querySelector('.tr-card'), hi = tourEl.querySelector('.tr-hi');
+  var vw = window.innerWidth, vh = window.innerHeight, el = st.s ? document.querySelector(st.s) : null;
+  var cw = Math.min(340, vw - 24); card.style.width = cw + 'px';
+  var ch = card.offsetHeight;
+  if(!el || !tourVis(el)){
+    hi.style.cssText = 'left:50%;top:50%;width:0;height:0';
+    card.style.left = Math.max(12, (vw - cw) / 2) + 'px'; card.style.top = Math.max(12, (vh - ch) / 2) + 'px';
+    return;
+  }
+  var r = el.getBoundingClientRect(), pad = 6;
+  var x = Math.max(4, r.left - pad), y = Math.max(4, r.top - pad), w = Math.min(vw - 8, r.width + pad * 2), h = r.height + pad * 2;
+  hi.style.left = x + 'px'; hi.style.top = y + 'px'; hi.style.width = w + 'px'; hi.style.height = h + 'px';
+  var below = vh - (y + h), above = y, top;
+  if(below >= ch + 16 || below >= above) top = y + h + 12; else top = y - ch - 12;
+  top = Math.max(12, Math.min(vh - ch - 12, top));
+  if(top < y + h && top + ch > y){ top = (above > below) ? Math.max(12, y - ch - 12) : Math.min(vh - ch - 12, y + h + 12); }
+  var left = Math.max(12, Math.min(vw - cw - 12, x + w / 2 - cw / 2));
+  card.style.left = left + 'px'; card.style.top = top + 'px';
+}
+function startTour(){
+  if(tourEl) return;
+  tourPrevTab = tab;
+  document.querySelectorAll('.overlay.open').forEach(function(o){ o.classList.remove('open'); });
+  tourEl = document.createElement('div'); tourEl.className = 'tr-root'; tourEl.setAttribute('role', 'dialog'); tourEl.setAttribute('aria-modal', 'true'); tourEl.setAttribute('aria-labelledby', 'trT');
+  tourEl.innerHTML = '<div class="tr-hi"></div><div class="tr-card" aria-live="polite"></div>';
+  tourEl.addEventListener('click', function(ev){
+    var b = ev.target.closest ? ev.target.closest('[data-a]') : null; if(!b) return;
+    var a = b.getAttribute('data-a');
+    if(a === 'skip') tourEnd(); else if(a === 'back') tourGo(-1); else if(tourI >= tourSteps().length - 1) tourEnd(); else tourGo(1);
+  });
+  document.body.appendChild(tourEl);
+  document.addEventListener('keydown', tourKey, true); window.addEventListener('resize', tourPlace);
+  tourI = -1; tourGo(1);
+}
+(function(){
+  var b = $('btnTour'); if(!b) return;
+  b.textContent = '📖 ' + T3(['Como usar o app', 'Cómo usar la app', 'How to use the app']);
+  b.onclick = startTour;
+})();
 if(!prof.done) setTimeout(function(){ openSettings(true); }, 400);
 
 if('serviceWorker' in navigator){
