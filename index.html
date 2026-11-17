@@ -1276,7 +1276,7 @@ html[data-rm="1"] #exSubList.grid .opt .exem.ph img{animation:none!important}
 .tr-dots{display:flex;gap:5px;margin-bottom:8px}
 .tr-dots i{width:7px;height:7px;border-radius:99px;background:var(--line,#ccc);transition:width .25s,background .25s}
 .tr-dots i.on{width:20px;background:var(--accent,#19c2a8)}
-.tr-imgs{display:flex;gap:6px;margin-top:10px}
+.tr-imgs{display:flex;gap:6px;margin-top:10px}.tr-imgs.wrap{flex-wrap:wrap}.tr-imgs.wrap img{width:44px;height:44px}
 .tr-imgs img{width:54px;height:54px;object-fit:contain;background:#fff;border-radius:12px;border:1px solid var(--line,#ddd)}
 .tr-btns{display:flex;align-items:center;gap:8px;margin-top:14px}
 .tr-btns button{font:inherit;font-weight:700;font-size:.92rem;border-radius:12px;padding:10px 14px;cursor:pointer;border:1px solid var(--line,#ddd);background:var(--bg,#f4f4f4);color:var(--text,#0b1b2b)}
@@ -1740,7 +1740,7 @@ main.pet-on>*:not(.petsel):not(.petpanel){display:none!important}
     <button type="button" id="btnTour"></button>
     <p class="note"><b>Zelar</b> · <i>Cuidar de você, todo dia.</i></p>
     <p class="note" style="font-weight:600">Informativo: não substitui seu médico.</p>
-    <p class="note">Gratuito e sem anúncios. Versão 66.</p>
+    <p class="note">Gratuito e sem anúncios. Versão 67.</p>
   </footer>
 </div>
 
@@ -8105,21 +8105,36 @@ showTab(tab);
 requestAnimationFrame(function(){ requestAnimationFrame(renderAll); });
 setInterval(function(){ tick(true); }, 30000);
 /* ===== v65: tour guiado (passo a passo com destaque nos botões reais) ===== */
-var tourI = -1, tourEl = null, tourPrevTab = null;
+var tourI = -1, tourEl = null, tourPrevTab = null, tourMode = 'all';
 function tourImgs(kind){
   var o = '', i;
   function im(u){ return u ? '<img alt="" draggable="false" src="' + u + '">' : ''; }
   if(kind === 'ex'){
     var S = (window.EX_IMG || {})[bt && bt.sex === 'f' ? 'f' : 'm'] || {};
     ['agacho', 'corrida', 'yoga', 'flexao'].forEach(function(id){ var p = S[id]; if(p){ o += im(p[0]); } });
+  } else if(kind === 'pet' || kind === 'petall'){
+    var PI = window.PET_IMG || {};
+    (kind === 'pet' ? ['dm_c', 'g_s', 'dg_l', 'g_c'] : ['dp_c', 'dp_l', 'dm_c', 'dm_l', 'dg_c', 'dg_l', 'g_c', 'g_l', 'g_s', 'g_r']).forEach(function(k){ if(PI[k]) o += im(PI[k].u); });
+    return o ? '<div class="tr-imgs wrap">' + o + '</div>' : '';
   } else if(kind === 'food'){
     var F = window.FD_IMG || {};
     ['banana', 'arroz', 'frango', 'alface', 'leite'].forEach(function(k){ o += im(F[k]); });
   }
   return o ? '<div class="tr-imgs">' + o + '</div>' : '';
 }
-function tourSteps(){
+function petTourSteps(){
   return [
+    {t: T3(['Novo: seu bichinho no Zelar 🐾', 'Nuevo: tu mascota en Zelar 🐾', 'New: your pet in Zelar 🐾']), x: T3(['O Zelar agora cuida de você e do seu cão ou gato. Veja em poucos passos como adicionar.', 'Zelar ahora cuida de ti y de tu perro o gato. Mira en pocos pasos cómo añadirlo.', 'Zelar now looks after you and your dog or cat. See in a few steps how to add one.']), tab: 'inicio', img: 'pet'},
+    {s: '#goSettings', tab: 'inicio', t: T3(['1. Abra Personalizar', '1. Abre Personalizar', '1. Open Customize']), x: T3(['Toque em Personalizar. No computador, também dá para usar Minha conta, no menu.', 'Toca en Personalizar. En el ordenador, también puedes usar Mi cuenta, en el menú.', 'Tap Customize. On a computer you can also use My account in the menu.'])},
+    {s: '#petSet .btn', tab: 'inicio', t: T3(['2. Adicionar cão ou gato', '2. Añadir perro o gato', '2. Add a dog or cat']), x: T3(['Nos ajustes, toque em Adicionar cão ou gato. Digite o nome, escolha a espécie e informe o peso. O resto é opcional.', 'En los ajustes, toca Añadir perro o gato. Escribe el nombre, elige la especie e indica el peso. Lo demás es opcional.', 'In settings, tap Add a dog or cat. Type the name, pick the species and enter the weight. The rest is optional.']),
+      enter: function(){ open('mWeight'); }, leave: function(){ close('mWeight'); }},
+    {tab: 'inicio', img: 'petall', t: T3(['3. Escolha o estilo do corpo', '3. Elige el estilo del cuerpo', '3. Pick the body style']), x: T3(['Escolha a foto parecida com o seu bichinho: porte e pelagem do cão, ou um dos 4 estilos de gato. Se preferir, use uma foto dele.', 'Elige la foto parecida a tu mascota: tamaño y pelaje del perro, o uno de los 4 estilos de gato. Si prefieres, usa una foto suya.', 'Pick the photo that looks like your pet: size and coat for dogs, or one of 4 cat styles. Or use a photo of your own.'])},
+    {tab: 'inicio', img: 'pet', t: T3(['4. Ele aparece em todo lugar', '4. Aparece en todas partes', '4. It shows up everywhere']), x: T3(['Ele ganha a aba Pets, com vacinas, banho, remédios, peso e passeio. Em Água, Exercício, Comida e Saúde aparece o seletor Eu | Pet, e em Meu corpo ele fica ao seu lado.', 'Tendrá la pestaña Pets, con vacunas, baño, medicamentos, peso y paseos. En Agua, Ejercicio, Comida y Salud aparece el selector Yo | Mascota, y en Mi cuerpo estará a tu lado.', 'It gets the Pets tab, with vaccines, bath, medication, weight and walks. Water, Exercise, Food and Health get a Me | Pet switch, and in My body it stands next to you.'])}
+  ];
+}
+function tourSteps(){
+  if(tourMode === 'pets') return petTourSteps();
+  var A = [
     {t: T3(['Bem-vindo ao Zelar 👋', 'Bienvenido a Zelar 👋', 'Welcome to Zelar 👋']), x: T3(['Cuidar de você, todo dia. Em 1 minuto você vê onde fica cada coisa. Pode pular quando quiser.', 'Cuidarte, todos los días. En 1 minuto ves dónde está cada cosa. Puedes saltarlo cuando quieras.', 'Taking care of you, every day. In 1 minute you will see where everything is. You can skip anytime.']), tab: 'inicio'},
     {s: '#homeHero', tab: 'inicio', t: T3(['Resumo de hoje', 'Resumen de hoy', 'Today’s summary']), x: T3(['Um recado curto sobre como está o seu dia. Ele muda conforme você registra água, exercício e comida.', 'Un mensaje corto sobre cómo va tu día. Cambia a medida que registras agua, ejercicio y comida.', 'A short note on how your day is going. It changes as you log water, exercise and food.'])},
     {s: '#dashEdit', tab: 'inicio', t: T3(['Monte o seu painel', 'Arma tu panel', 'Build your dashboard']), x: T3(['Seu painel começa limpo de propósito. Toque em Editar painel para adicionar gráficos e cards. Só entra o que você gosta de ver.', 'Tu panel empieza limpio a propósito. Toca en Editar panel para agregar gráficos y tarjetas. Solo entra lo que te gusta ver.', 'Your dashboard starts clean on purpose. Tap Edit dashboard to add charts and cards. Only what you like to see goes in.'])},
@@ -8132,15 +8147,16 @@ function tourSteps(){
     {s: '#nav-comida', tab: 'inicio', img: 'food', t: T3(['🍎 Comida', '🍎 Comida', '🍎 Food']), x: T3(['Escolha o grupo e depois o alimento, todos com foto. O app mostra a variedade do seu dia.', 'Elige el grupo y luego el alimento, todos con foto. La app muestra la variedad de tu día.', 'Pick the group, then the food, all with photos. The app shows the variety of your day.'])},
     {s: '#nav-dm', tab: 'inicio', t: T3(['🩸 Saúde', '🩸 Salud', '🩸 Health']), x: T3(['Glicemia, pressão ou exames, conforme o seu perfil. Os gráficos são informativos e não substituem o seu médico.', 'Glucemia, presión o exámenes, según tu perfil. Los gráficos son informativos y no sustituyen a tu médico.', 'Glucose, blood pressure or lab tests, depending on your profile. Charts are informative and do not replace your doctor.'])},
     {s: '#nav-add', tab: 'inicio', t: T3(['Registrar agora', 'Registrar ahora', 'Log now']), x: T3(['Este botão + registra água, exercício ou comida em segundos, de qualquer tela.', 'Este botón + registra agua, ejercicio o comida en segundos, desde cualquier pantalla.', 'This + button logs water, exercise or food in seconds, from any screen.'])},
-    {s: '#nav-acc', tab: 'inicio', t: T3(['Seu animalzinho 🐾', 'Tu mascota 🐾', 'Your pet 🐾']), x: T3(['Tem cão ou gato? Em Minha conta, toque em Adicionar cão ou gato. Ele ganha uma aba própria e aparece ao lado de você em Água, Exercício, Comida e Saúde.', '¿Tienes perro o gato? En Mi cuenta, toca Añadir perro o gato. Tendrá su pestaña y aparecerá junto a ti en Agua, Ejercicio, Comida y Salud.', 'Have a dog or cat? In My account, tap Add a dog or cat. It gets its own tab and shows up next to you in Water, Exercise, Food and Health.'])},
     {s: '#nav-acc', tab: 'inicio', t: T3(['Minha conta', 'Mi cuenta', 'My account']), x: T3(['Seu perfil e os ajustes ficam aqui. Seus dados ficam só neste aparelho.', 'Tu perfil y los ajustes están aquí. Tus datos quedan solo en este dispositivo.', 'Your profile and settings are here. Your data stays only on this device.'])},
     {t: T3(['Pronto! 🎉', '¡Listo! 🎉', 'All set! 🎉']), x: T3(['Para rever este passo a passo, toque em “Como usar o app” no rodapé do Início.', 'Para volver a ver este paso a paso, toca en “Cómo usar la app” al pie del Inicio.', 'To see this walkthrough again, tap “How to use the app” at the bottom of Home.']), tab: 'inicio'}
   ];
+  A.splice.apply(A, [A.length - 2, 0].concat(petTourSteps().slice(2)));
+  return A;
 }
 function tourVis(el){ if(!el) return false; var r = el.getBoundingClientRect(); return r.width > 4 && r.height > 4; }
 function tourEnd(){
   var st = tourSteps()[tourI]; if(st && st.leave) st.leave();
-  tourI = -1; save('tour', 1);
+  tourI = -1; save('tour', 1); save('tourPet', 1);
   if(tourEl){ tourEl.remove(); tourEl = null; }
   document.removeEventListener('keydown', tourKey, true); window.removeEventListener('resize', tourPlace);
   if(tourPrevTab && tourPrevTab !== 'inicio') showTab(tourPrevTab); else { try{ window.scrollTo(0, 0); }catch(e){} }
@@ -8201,8 +8217,9 @@ function tourPlace(){
   var left = Math.max(12, Math.min(vw - cw - 12, x + w / 2 - cw / 2));
   card.style.left = left + 'px'; card.style.top = top + 'px';
 }
-function startTour(){
+function startTour(mode){
   if(tourEl) return;
+  tourMode = mode === 'pets' ? 'pets' : 'all';
   tourPrevTab = tab;
   document.querySelectorAll('.overlay.open').forEach(function(o){ o.classList.remove('open'); });
   tourEl = document.createElement('div'); tourEl.className = 'tr-root'; tourEl.setAttribute('role', 'dialog'); tourEl.setAttribute('aria-modal', 'true'); tourEl.setAttribute('aria-labelledby', 'trT');
@@ -8219,9 +8236,10 @@ function startTour(){
 (function(){
   var b = $('btnTour'); if(!b) return;
   b.textContent = '📖 ' + T3(['Como usar o app', 'Cómo usar la app', 'How to use the app']);
-  b.onclick = startTour;
+  b.onclick = function(){ startTour('all'); };
 })();
 if(!prof.done) setTimeout(function(){ openSettings(true); }, 400);
+else if(!load('tourPet', false)) setTimeout(function(){ if(petsOn() || tourEl || document.querySelector('.overlay.open')){ save('tourPet', 1); return; } startTour('pets'); }, 1400);
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
